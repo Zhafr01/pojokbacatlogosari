@@ -1,9 +1,14 @@
 /* =============================================================
    sw.js — Service Worker
    Perpustakaan Digital — Offline-first caching strategy
+   
+   ⚠️  PENTING: Setiap kali kamu update books.json atau isi buku,
+   naikkan angka versi di CACHE_NAME (v1 → v2 → v3 dst.)
+   agar semua pengguna otomatis mendapat versi terbaru.
    ============================================================= */
 
-const CACHE_NAME = 'perpustakaan-v1';
+const CACHE_NAME = 'perpustakaan-v2';
+
 
 // Static assets to cache immediately on install
 const STATIC_ASSETS = [
