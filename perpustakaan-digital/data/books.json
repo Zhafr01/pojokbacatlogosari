@@ -1,0 +1,29 @@
+[
+  {
+    "id": "buku-contoh-1",
+    "judul": "Panduan Bertani Organik",
+    "penulis": "Tim Penyuluh Pertanian",
+    "kategori": "Pertanian",
+    "deskripsi": "Panduan lengkap bertani organik untuk meningkatkan hasil panen tanpa bahan kimia berbahaya.",
+    "cover": "covers/buku-contoh-1.jpg",
+    "pdf": "books/buku-contoh-1.pdf"
+  },
+  {
+    "id": "buku-contoh-2",
+    "judul": "Kesehatan Ibu dan Anak",
+    "penulis": "Dinas Kesehatan",
+    "kategori": "Kesehatan",
+    "deskripsi": "Informasi penting tentang kesehatan ibu hamil, menyusui, dan tumbuh kembang anak balita.",
+    "cover": "covers/buku-contoh-2.jpg",
+    "pdf": "books/buku-contoh-2.pdf"
+  },
+  {
+    "id": "buku-contoh-3",
+    "judul": "Wirausaha Desa Mandiri",
+    "penulis": "Kementerian Desa",
+    "kategori": "Ekonomi",
+    "deskripsi": "Tips dan strategi membangun usaha kecil di desa yang menguntungkan dan berkelanjutan.",
+    "cover": "covers/buku-contoh-3.jpg",
+    "pdf": "books/buku-contoh-3.pdf"
+  }
+]
