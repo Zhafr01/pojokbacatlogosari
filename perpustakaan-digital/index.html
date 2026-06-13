@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Pojok Baca Tlogosari — Katalog buku pilihan lengkap dengan sinopsis, rating, dan link baca atau beli resmi">
+  <meta name="theme-color" content="#0E9F7E">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Pojok Baca">
+  <title>Pojok Baca Tlogosari — Katalog Digital</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="icon" type="image/png" href="icons/icon-192.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ── HEADER ── -->
+  <header class="header">
+    <div class="header-top">
+      <div class="header-logo" aria-hidden="true">📚</div>
+      <div class="header-text">
+        <h1 class="header-title">Pojok Baca <span>Tlogosari</span></h1>
+        <p class="header-subtitle">Temukan buku favoritmu di sini</p>
+      </div>
+    </div>
+
+    <!-- Search -->
+    <div class="search-wrap">
+      <span class="search-icon" aria-hidden="true">🔍</span>
+      <input
+        id="search-input"
+        type="search"
+        class="search-input"
+        placeholder="Cari judul, penulis, atau topik..."
+        aria-label="Cari buku"
+        autocomplete="off"
+        spellcheck="false"
+      >
+    </div>
+  </header>
+
+  <!-- ── PWA INSTALL BANNER ── -->
+  <div id="install-banner" class="install-banner hidden" role="banner">
+    <div class="install-text">
+      <span>📲</span>
+      <span>Pasang aplikasi untuk akses lebih mudah</span>
+    </div>
+    <button id="install-btn" class="install-btn">Pasang</button>
+    <button id="install-dismiss" class="install-dismiss" aria-label="Tutup">✕</button>
+  </div>
+
+  <!-- ── MAIN CONTENT ── -->
+  <main class="main">
+
+    <!-- Stats -->
+    <div class="stats-bar">
+      <span id="book-count">Memuat koleksi...</span>
+    </div>
+
+    <!-- Category Filter -->
+    <div id="filter-bar" class="filter-bar" role="group" aria-label="Filter kategori buku"></div>
+
+    <!-- Book List -->
+    <div id="book-grid" class="book-grid" role="list" aria-label="Daftar buku">
+      <div class="skeleton-card" aria-hidden="true"></div>
+      <div class="skeleton-card" aria-hidden="true"></div>
+      <div class="skeleton-card" aria-hidden="true"></div>
+      <div class="skeleton-card" aria-hidden="true"></div>
+    </div>
+
+    <!-- Empty State -->
+    <div id="empty-state" class="empty-state hidden" aria-live="polite">
+      <div class="empty-icon">🔍</div>
+      <h2>Buku tidak ditemukan</h2>
+      <p>Coba kata kunci lain atau pilih kategori yang berbeda</p>
+    </div>
+
+  </main>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
