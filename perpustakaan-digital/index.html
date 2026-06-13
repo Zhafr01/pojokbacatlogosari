@@ -60,32 +60,6 @@
       </div>
     </section>
 
-    <!-- Filters -->
-    <div class="filters-bar">
-      <div class="filter-group">
-        <label class="filter-label">Genre</label>
-        <select id="filter-genre" class="filter-select">
-          <option value="">Semua</option>
-        </select>
-      </div>
-      <div class="filter-group">
-        <label class="filter-label">Rating</label>
-        <select id="filter-rating" class="filter-select">
-          <option value="">Semua</option>
-          <option value="4.5">4.5+</option>
-          <option value="4">4.0+</option>
-        </select>
-      </div>
-      <div class="filter-group">
-        <label class="filter-label">Urutan</label>
-        <select id="filter-sort" class="filter-select">
-          <option value="rating">Rating Tertinggi</option>
-          <option value="tahun">Terbaru</option>
-          <option value="judul">A–Z</option>
-        </select>
-      </div>
-      <button class="reset-btn" id="reset-btn">↺ Reset</button>
-    </div>
 
     <!-- Popular Books -->
     <section class="books-section" id="popular-section">
@@ -102,6 +76,34 @@
 
     <!-- All Books -->
     <section class="books-section" id="all-section">
+
+      <!-- Filters — di atas grid Semua Buku -->
+      <div class="filters-bar">
+        <div class="filter-group">
+          <label class="filter-label">Genre</label>
+          <select id="filter-genre" class="filter-select">
+            <option value="">Semua</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label class="filter-label">Rating</label>
+          <select id="filter-rating" class="filter-select">
+            <option value="">Semua</option>
+            <option value="4.5">4.5+</option>
+            <option value="4">4.0+</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label class="filter-label">Urutan</label>
+          <select id="filter-sort" class="filter-select">
+            <option value="rating">Rating Tertinggi</option>
+            <option value="tahun">Terbaru</option>
+            <option value="judul">A–Z</option>
+          </select>
+        </div>
+        <button class="reset-btn" id="reset-btn">↺ Reset</button>
+      </div>
+
       <div class="section-header">
         <h2 class="section-title">Semua Buku</h2>
         <span id="book-count" class="book-count-badge"></span>

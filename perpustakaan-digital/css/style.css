@@ -307,9 +307,7 @@ h1 {
    ============================================================ */
 .filters-bar {
   display: flex; align-items: flex-end; gap: 10px;
-  padding: 16px 24px;
-  background: var(--bg-card);
-  border-bottom: 1px solid var(--border);
+  padding: 0 0 16px;
   flex-wrap: wrap;
 }
 
