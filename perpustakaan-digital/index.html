@@ -3,78 +3,68 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="Perpustakaan Digital — Baca buku secara offline di mana saja dan kapan saja">
-  <meta name="theme-color" content="#8B5E3C">
+  <meta name="description" content="Pojok Baca Tlogosari — Katalog buku pilihan lengkap dengan sinopsis, rating, dan link baca atau beli resmi">
+  <meta name="theme-color" content="#2C1A0E">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Perpustakaan">
-  <title>Perpustakaan Digital</title>
+  <meta name="apple-mobile-web-app-title" content="Pojok Baca">
+  <title>Pojok Baca Tlogosari — Katalog Digital</title>
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="icon" type="image/png" href="icons/icon-192.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <!-- Offline Banner -->
-  <div id="offline-banner" class="offline-banner hidden">
-    📵 &nbsp;Kamu sedang offline — buku yang belum dibuka memerlukan koneksi
-  </div>
-
-  <!-- App Header -->
+  <!-- ── HEADER ── -->
   <header class="header">
-    <div class="header-content">
-      <div class="header-icon">📚</div>
-      <div>
-        <h1 class="header-title">Perpustakaan Digital</h1>
-        <p class="header-subtitle">Baca buku kapan saja, di mana saja</p>
+    <div class="header-top">
+      <div class="header-logo" aria-hidden="true">📚</div>
+      <div class="header-text">
+        <h1 class="header-title">Pojok Baca <span>Tlogosari</span></h1>
+        <p class="header-subtitle">Temukan buku favoritmu di sini</p>
       </div>
+    </div>
+
+    <!-- Search -->
+    <div class="search-wrap">
+      <span class="search-icon" aria-hidden="true">🔍</span>
+      <input
+        id="search-input"
+        type="search"
+        class="search-input"
+        placeholder="Cari judul, penulis, atau topik..."
+        aria-label="Cari buku"
+        autocomplete="off"
+        spellcheck="false"
+      >
     </div>
   </header>
 
-  <!-- PWA Install Banner -->
-  <div id="install-banner" class="install-banner hidden">
+  <!-- ── PWA INSTALL BANNER ── -->
+  <div id="install-banner" class="install-banner hidden" role="banner">
     <div class="install-text">
       <span>📲</span>
-      <span>Pasang aplikasi ini untuk akses offline lebih mudah</span>
+      <span>Pasang aplikasi untuk akses lebih mudah</span>
     </div>
     <button id="install-btn" class="install-btn">Pasang</button>
     <button id="install-dismiss" class="install-dismiss" aria-label="Tutup">✕</button>
   </div>
 
-  <!-- Download All Button Bar -->
-  <div id="download-bar" class="download-all-bar hidden">
-    <span class="download-all-text">💡 Unduh semua buku saat ada WiFi untuk akses offline</span>
-    <button id="download-all-btn" class="download-all-btn">
-      <span>⬇</span> Unduh Semua
-    </button>
-  </div>
-
-  <!-- Download Progress Bar -->
-  <div id="progress-wrap" class="progress-bar-wrap hidden">
-    <div class="progress-label">
-      <span id="progress-text">Mengunduh buku...</span>
-      <span id="progress-count">0 / 0</span>
-    </div>
-    <div class="progress-bar">
-      <div id="progress-fill" class="progress-fill"></div>
-    </div>
-  </div>
-
-  <!-- Main Content -->
+  <!-- ── MAIN CONTENT ── -->
   <main class="main">
+
+    <!-- Stats -->
     <div class="stats-bar">
-      <span id="book-count">Memuat...</span>
-      <span id="connection-status" class="status-badge">🔄</span>
+      <span id="book-count">Memuat koleksi...</span>
     </div>
 
-    <!-- Book Grid -->
-    <div id="book-grid" class="book-grid" role="list">
-      <!-- Skeleton loaders -->
+    <!-- Category Filter -->
+    <div id="filter-bar" class="filter-bar" role="group" aria-label="Filter kategori buku"></div>
+
+    <!-- Book List -->
+    <div id="book-grid" class="book-grid" role="list" aria-label="Daftar buku">
       <div class="skeleton-card" aria-hidden="true"></div>
       <div class="skeleton-card" aria-hidden="true"></div>
       <div class="skeleton-card" aria-hidden="true"></div>
@@ -83,13 +73,14 @@
 
     <!-- Empty State -->
     <div id="empty-state" class="empty-state hidden" aria-live="polite">
-      <div class="empty-icon">📖</div>
-      <h2>Belum ada buku</h2>
-      <p>Tambahkan file PDF ke folder <code>books/</code><br>dan update <code>data/books.json</code></p>
+      <div class="empty-icon">🔍</div>
+      <h2>Buku tidak ditemukan</h2>
+      <p>Coba kata kunci lain atau pilih kategori yang berbeda</p>
     </div>
+
   </main>
 
-  <!-- Toast Notification -->
+  <!-- Toast -->
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <script src="js/app.js"></script>
