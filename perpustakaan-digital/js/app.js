@@ -1,58 +1,56 @@
 /* =============================================================
    app.js — Pojok Baca Tlogosari
-   Two-panel catalog: list + detail on click
    ============================================================= */
 'use strict';
 
-let allBooks     = [];
+let allBooks      = [];
 let filteredBooks = [];
+let filterState   = { genre: '', rating: '', sort: 'rating' };
+let customSelects = {};
 
 // ── DOM refs ──────────────────────────────────────────────────
-const appWrapper    = document.getElementById('app-wrapper');
-const detailPanel   = document.getElementById('detail-panel');
-const detailBackdrop= document.getElementById('detail-backdrop');
-const popularGrid   = document.getElementById('popular-grid');
-const bookGrid      = document.getElementById('book-grid');
-const bookCount     = document.getElementById('book-count');
-const emptyState    = document.getElementById('empty-state');
-const searchInput   = document.getElementById('search-input');
-const filterGenre   = document.getElementById('filter-genre');
-const filterRating  = document.getElementById('filter-rating');
-const filterSort    = document.getElementById('filter-sort');
-const resetBtn      = document.getElementById('reset-btn');
-const toastEl       = document.getElementById('toast');
+const appWrapper     = document.getElementById('app-wrapper');
+const detailPanel    = document.getElementById('detail-panel');
+const detailBackdrop = document.getElementById('detail-backdrop');
+const popularGrid    = document.getElementById('popular-grid');
+const bookGrid       = document.getElementById('book-grid');
+const bookCount      = document.getElementById('book-count');
+const emptyState     = document.getElementById('empty-state');
+const searchInput    = document.getElementById('search-input');
+const resetBtn       = document.getElementById('reset-btn');
+const toastEl        = document.getElementById('toast');
 
 // Detail DOM
-const detailCoverFallback = document.getElementById('detail-cover-fallback');
+const detailCoverWrap     = document.getElementById('detail-cover-wrap');
 const detailCoverEmoji    = document.getElementById('detail-cover-emoji');
 const detailCoverTitle    = document.getElementById('detail-cover-title');
-const detailCoverWrap     = document.getElementById('detail-cover-wrap');
-const detailCat    = document.getElementById('detail-cat');
-const detailTitle  = document.getElementById('detail-title');
-const detailScore  = document.getElementById('detail-score');
-const detailCount  = document.getElementById('detail-count');
-const diPenulis    = document.getElementById('di-penulis');
-const diTahun      = document.getElementById('di-tahun');
-const diBahasa     = document.getElementById('di-bahasa');
-const diHalaman    = document.getElementById('di-halaman');
-const detailSynopsis   = document.getElementById('detail-synopsis');
-const detailReadLinks  = document.getElementById('detail-read-links');
-const detailBuyLinks   = document.getElementById('detail-buy-links');
+const detailCat           = document.getElementById('detail-cat');
+const detailTitle         = document.getElementById('detail-title');
+const detailScore         = document.getElementById('detail-score');
+const detailCount         = document.getElementById('detail-count');
+const diPenulis           = document.getElementById('di-penulis');
+const diTahun             = document.getElementById('di-tahun');
+const diBahasa            = document.getElementById('di-bahasa');
+const diHalaman           = document.getElementById('di-halaman');
+const detailSynopsis      = document.getElementById('detail-synopsis');
+const detailReadLinks     = document.getElementById('detail-read-links');
+const detailBuyLinks      = document.getElementById('detail-buy-links');
 
-// ── Cover palette ─────────────────────────────────────────────
+// ── Palettes & helpers ────────────────────────────────────────
 const PALETTE = [
-  ['#FF6B35','#F7C59F'], ['#2D6A4F','#1B4332'],
-  ['#F4D03F','#E67E22'], ['#7C3AED','#4C1D95'],
+  ['#FF6B35','#F7A06B'], ['#2D6A4F','#1B4332'],
+  ['#F59E0B','#D97706'], ['#7C3AED','#5B21B6'],
   ['#0E9F7E','#065F46'], ['#1A73E8','#0D47A1'],
-  ['#E91E63','#880E4F'], ['#FF5722','#BF360C'],
+  ['#E91E63','#880E4F'], ['#DC2626','#991B1B'],
+  ['#D97706','#92400E'], ['#1E3A5F','#0F172A'],
 ];
 const CAT_EMOJI = {
   'Novel':'📖','Sastra':'🪶','Pendidikan':'🎓',
   'Pengembangan Diri':'🌱','Sains':'🔬','Sejarah':'🏛️',
   'Teknologi':'💻','Umum':'📚',
 };
-function catEmoji(cat) { return CAT_EMOJI[cat] || '📚'; }
-function getPalette(i) { return PALETTE[i % PALETTE.length]; }
+const catEmoji = cat => CAT_EMOJI[cat] || '📚';
+const getPalette = i => PALETTE[i % PALETTE.length];
 
 // ── Toast ─────────────────────────────────────────────────────
 let _toast;
@@ -63,7 +61,91 @@ function showToast(msg, ms = 2600) {
   _toast = setTimeout(() => toastEl.classList.remove('show'), ms);
 }
 
-// ── Build book cover element ──────────────────────────────────
+// ── Custom Select ─────────────────────────────────────────────
+function buildCustomSelect(containerId, label, options, onChange) {
+  const wrap = document.getElementById(containerId);
+  if (!wrap) return;
+  wrap.innerHTML = '';
+
+  let current = options[0];
+
+  // Chevron SVG
+  const chevronSVG = `<svg class="cs-chevron" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`;
+
+  // Trigger
+  const trigger = document.createElement('button');
+  trigger.type = 'button';
+  trigger.className = 'cs-trigger';
+
+  const lblEl  = document.createElement('span');
+  lblEl.className = 'cs-lbl';
+  lblEl.textContent = label;
+
+  const divEl  = document.createElement('span');
+  divEl.className = 'cs-divider';
+
+  const valEl  = document.createElement('span');
+  valEl.className = 'cs-val';
+  valEl.textContent = current.label;
+
+  trigger.appendChild(lblEl);
+  trigger.appendChild(divEl);
+  trigger.appendChild(valEl);
+  trigger.insertAdjacentHTML('beforeend', chevronSVG);
+
+  // Dropdown
+  const dropdown = document.createElement('div');
+  dropdown.className = 'cs-dropdown';
+
+  function selectOpt(opt, silent = false) {
+    current = opt;
+    valEl.textContent = opt.label;
+    dropdown.querySelectorAll('.cs-item').forEach(el => {
+      el.classList.toggle('selected', el.dataset.value === String(opt.value));
+    });
+    wrap.classList.remove('open');
+    if (!silent) onChange(opt.value);
+  }
+
+  options.forEach(opt => {
+    const item = document.createElement('div');
+    item.className = 'cs-item' + (opt.value === current.value ? ' selected' : '');
+    item.dataset.value = opt.value;
+
+    const dot = document.createElement('span');
+    dot.className = 'cs-item-dot';
+    item.appendChild(dot);
+    item.appendChild(document.createTextNode(opt.label));
+
+    item.addEventListener('click', () => selectOpt(opt));
+    dropdown.appendChild(item);
+  });
+
+  trigger.addEventListener('click', e => {
+    e.stopPropagation();
+    const isOpen = wrap.classList.contains('open');
+    // Close all other selects
+    document.querySelectorAll('.cs-wrap.open').forEach(el => el.classList.remove('open'));
+    if (!isOpen) wrap.classList.add('open');
+  });
+
+  wrap.appendChild(trigger);
+  wrap.appendChild(dropdown);
+
+  return {
+    reset() { selectOpt(options[0], false); },
+    getValue() { return current.value; },
+  };
+}
+
+// Close any open dropdown on outside click
+document.addEventListener('click', () => {
+  document.querySelectorAll('.cs-wrap.open').forEach(el => el.classList.remove('open'));
+});
+
+// ── Cover builder ─────────────────────────────────────────────
 function buildCover(book, idx, extraClass = '') {
   const [c1, c2] = book.cover_colors || getPalette(idx);
   const cat = book.kategori || 'Umum';
@@ -72,35 +154,30 @@ function buildCover(book, idx, extraClass = '') {
   wrap.className = 'book-cover' + (extraClass ? ' ' + extraClass : '');
   wrap.style.background = `linear-gradient(155deg,${c1} 0%,${c2} 100%)`;
 
-  // Spine
   const spine = document.createElement('div');
   spine.className = 'book-spine';
   spine.style.background = c2;
   wrap.appendChild(spine);
 
-  // Image (if provided)
   if (book.cover) {
     const img = document.createElement('img');
     img.src = book.cover;
     img.alt = book.judul;
     img.loading = 'lazy';
-    img.onerror = () => { img.remove(); };
+    img.onerror = () => img.remove();
     wrap.appendChild(img);
   }
 
-  // Fallback text
   const fallback = document.createElement('div');
   fallback.className = 'cover-fallback';
   fallback.innerHTML = `
     <span class="cf-emoji">${catEmoji(cat)}</span>
-    <span class="cf-title">${book.judul}</span>
-  `;
+    <span class="cf-title">${book.judul}</span>`;
   wrap.appendChild(fallback);
-
   return wrap;
 }
 
-// ── Render a book card ────────────────────────────────────────
+// ── Book card ─────────────────────────────────────────────────
 function buildCard(book, idx) {
   const card = document.createElement('article');
   card.className = 'book-card';
@@ -109,8 +186,7 @@ function buildCard(book, idx) {
   card.setAttribute('aria-label', `Lihat detail: ${book.judul}`);
   card.style.animationDelay = `${idx * 0.055}s`;
 
-  const cover = buildCover(book, allBooks.indexOf(book));
-  card.appendChild(cover);
+  card.appendChild(buildCover(book, allBooks.indexOf(book)));
 
   const info = document.createElement('div');
   info.innerHTML = `
@@ -118,21 +194,21 @@ function buildCard(book, idx) {
     <div class="card-rating">
       <span class="card-star">★</span>
       ${(book.rating || 0).toFixed(1)}
-    </div>
-  `;
+    </div>`;
   card.appendChild(info);
 
   card.addEventListener('click', () => openDetail(book));
-  card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openDetail(book); });
-
+  card.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') openDetail(book);
+  });
   return card;
 }
 
-// ── Render catalogs ───────────────────────────────────────────
+// ── Render ────────────────────────────────────────────────────
 function renderPopular(books) {
   popularGrid.innerHTML = '';
   const popular = books.filter(b => b.populer);
-  if (popular.length === 0) {
+  if (!popular.length) {
     document.getElementById('popular-section').style.display = 'none';
     return;
   }
@@ -152,16 +228,13 @@ function renderGrid(books) {
   bookCount.textContent = books.length === total
     ? `${total} buku`
     : `${books.length} / ${total} buku`;
-
   books.forEach((book, i) => bookGrid.appendChild(buildCard(book, i)));
 }
 
 // ── Filter & sort ─────────────────────────────────────────────
 function applyFilters() {
-  const q      = searchInput.value.trim().toLowerCase();
-  const genre  = filterGenre.value;
-  const rating = parseFloat(filterRating.value) || 0;
-  const sort   = filterSort.value;
+  const q   = searchInput.value.trim().toLowerCase();
+  const { genre, rating, sort } = filterState;
 
   filteredBooks = allBooks.filter(b => {
     const mQ = !q ||
@@ -169,65 +242,72 @@ function applyFilters() {
       b.penulis.toLowerCase().includes(q) ||
       (b.sinopsis || '').toLowerCase().includes(q);
     const mG = !genre || (b.kategori || 'Umum') === genre;
-    const mR = !rating || (b.rating || 0) >= rating;
+    const mR = !rating || (b.rating || 0) >= parseFloat(rating);
     return mQ && mG && mR;
   });
 
   filteredBooks.sort((a, b) => {
-    if (sort === 'tahun')  return (b.tahun || 0) - (a.tahun || 0);
-    if (sort === 'judul')  return a.judul.localeCompare(b.judul);
-    return (b.rating || 0) - (a.rating || 0); // default: rating
+    if (sort === 'tahun') return (b.tahun || 0) - (a.tahun || 0);
+    if (sort === 'judul') return a.judul.localeCompare(b.judul);
+    return (b.rating || 0) - (a.rating || 0);
   });
 
   renderGrid(filteredBooks);
 }
 
-// ── Build genre filter options ────────────────────────────────
-function buildGenreOptions(books) {
+// ── Init custom selects ───────────────────────────────────────
+function initSelects(books) {
   const genres = [...new Set(books.map(b => b.kategori || 'Umum'))];
-  filterGenre.innerHTML = '<option value="">Semua</option>';
-  genres.forEach(g => {
-    const opt = document.createElement('option');
-    opt.value = g;
-    opt.textContent = catEmoji(g) + ' ' + g;
-    filterGenre.appendChild(opt);
-  });
+  const genreOpts = [
+    { value: '', label: 'Semua Genre' },
+    ...genres.map(g => ({ value: g, label: `${catEmoji(g)} ${g}` })),
+  ];
+
+  const ratingOpts = [
+    { value: '',    label: 'Semua Rating' },
+    { value: '4.5', label: '★ 4.5 ke atas' },
+    { value: '4',   label: '★ 4.0 ke atas' },
+  ];
+
+  const sortOpts = [
+    { value: 'rating', label: 'Rating Tertinggi' },
+    { value: 'tahun',  label: 'Terbaru' },
+    { value: 'judul',  label: 'A – Z' },
+  ];
+
+  customSelects.genre  = buildCustomSelect('cs-genre',  'Genre',  genreOpts,  v => { filterState.genre  = v; applyFilters(); });
+  customSelects.rating = buildCustomSelect('cs-rating', 'Rating', ratingOpts, v => { filterState.rating = v; applyFilters(); });
+  customSelects.sort   = buildCustomSelect('cs-sort',   'Urutan', sortOpts,   v => { filterState.sort   = v; applyFilters(); });
 }
 
-// ── Open detail panel ────────────────────────────────────────
+// ── Open detail ───────────────────────────────────────────────
 function openDetail(book) {
   const idx = allBooks.indexOf(book);
   const [c1, c2] = book.cover_colors || getPalette(idx);
   const cat = book.kategori || 'Umum';
 
-  // Cover
   detailCoverWrap.style.background = `linear-gradient(155deg,${c1} 0%,${c2} 100%)`;
   detailCoverEmoji.textContent = catEmoji(cat);
   detailCoverTitle.textContent = book.judul;
-
-  // Meta
-  detailCat.textContent = catEmoji(cat) + ' ' + cat;
+  detailCat.textContent = `${catEmoji(cat)} ${cat}`;
   detailTitle.textContent = book.judul;
   detailScore.textContent = (book.rating || 0).toFixed(1);
   detailCount.textContent = book.rating_count ? `(${book.rating_count} rating)` : '';
-  diPenulis.textContent  = book.penulis || '—';
-  diTahun.textContent    = book.tahun   || '—';
-  diBahasa.textContent   = book.bahasa  || '—';
-  diHalaman.textContent  = book.halaman ? book.halaman + ' halaman' : '—';
+  diPenulis.textContent  = book.penulis  || '—';
+  diTahun.textContent    = book.tahun    || '—';
+  diBahasa.textContent   = book.bahasa   || '—';
+  diHalaman.textContent  = book.halaman  ? `${book.halaman} halaman` : '—';
   detailSynopsis.textContent = book.sinopsis || 'Sinopsis belum tersedia.';
 
-  // Links
   function buildLinks(container, links) {
     container.innerHTML = '';
-    if (!links || !links.length) {
-      container.innerHTML = '<p style="font-size:0.75rem;color:#9CA3AF;padding:4px 0">Tidak tersedia</p>';
+    if (!links?.length) {
+      container.innerHTML = '<p style="font-size:.75rem;color:#9CA3AF;padding:4px 0">Tidak tersedia</p>';
       return;
     }
     links.forEach(l => {
       const a = document.createElement('a');
-      a.href = l.url;
-      a.target = '_blank';
-      a.rel = 'noopener noreferrer';
+      a.href = l.url; a.target = '_blank'; a.rel = 'noopener noreferrer';
       a.className = 'legal-link';
       a.innerHTML = `<span>${l.nama}</span><span class="legal-link-arrow">↗</span>`;
       container.appendChild(a);
@@ -236,19 +316,17 @@ function openDetail(book) {
   buildLinks(detailReadLinks, book.link_baca);
   buildLinks(detailBuyLinks,  book.link_beli);
 
-  // Show panel
   appWrapper.classList.add('detail-open');
   detailPanel.setAttribute('aria-hidden', 'false');
   detailPanel.scrollTop = 0;
 
-  // Mobile backdrop
   if (window.innerWidth <= 768) {
     detailBackdrop.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
   }
 }
 
-// ── Close detail panel ────────────────────────────────────────
+// ── Close detail ──────────────────────────────────────────────
 window.closeDetail = function () {
   appWrapper.classList.remove('detail-open');
   detailPanel.setAttribute('aria-hidden', 'true');
@@ -256,21 +334,19 @@ window.closeDetail = function () {
   document.body.style.overflow = '';
 };
 
-// Close on Escape
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && appWrapper.classList.contains('detail-open')) closeDetail();
 });
 
 // ── Event listeners ───────────────────────────────────────────
 searchInput.addEventListener('input', applyFilters);
-filterGenre.addEventListener('change', applyFilters);
-filterRating.addEventListener('change', applyFilters);
-filterSort.addEventListener('change', applyFilters);
+
 resetBtn.addEventListener('click', () => {
   searchInput.value = '';
-  filterGenre.value = '';
-  filterRating.value = '';
-  filterSort.value = 'rating';
+  filterState = { genre: '', rating: '', sort: 'rating' };
+  customSelects.genre?.reset();
+  customSelects.rating?.reset();
+  customSelects.sort?.reset();
   applyFilters();
 });
 
@@ -281,7 +357,7 @@ async function init() {
     if (!res.ok) throw new Error('books.json tidak ditemukan');
     allBooks = await res.json();
     filteredBooks = [...allBooks];
-    buildGenreOptions(allBooks);
+    initSelects(allBooks);
     renderPopular(allBooks);
     renderGrid(allBooks);
   } catch (err) {
