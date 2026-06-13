@@ -3,86 +3,211 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="description" content="Pojok Baca Tlogosari — Katalog buku pilihan lengkap dengan sinopsis, rating, dan link baca atau beli resmi">
-  <meta name="theme-color" content="#0E9F7E">
-  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="description" content="Pojok Baca Tlogosari — Katalog buku pilihan dengan sumber legal untuk dibaca online atau dibeli">
+  <meta name="theme-color" content="#6366F1">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Pojok Baca">
-  <title>Pojok Baca Tlogosari — Katalog Digital</title>
+  <title>Pojok Baca Tlogosari</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="icon" type="image/png" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <!-- ── HEADER ── -->
-  <header class="header">
-    <div class="header-top">
-      <div class="header-logo" aria-hidden="true">📚</div>
-      <div class="header-text">
-        <h1 class="header-title">Pojok Baca <span>Tlogosari</span></h1>
-        <p class="header-subtitle">Temukan buku favoritmu di sini</p>
+<div class="app-wrapper" id="app-wrapper">
+
+  <!-- ══ CATALOG PANEL ══ -->
+  <div class="catalog-panel" id="catalog-panel">
+
+    <!-- Header -->
+    <header class="cat-header">
+      <div class="logo">
+        <div class="logo-icon">📚</div>
+        <span class="logo-text"><b>Pojok</b>Baca</span>
       </div>
+      <div class="search-wrap">
+        <span class="search-ic">🔍</span>
+        <input id="search-input" type="search" class="search-input"
+          placeholder="Cari judul, penulis, atau genre..."
+          autocomplete="off" spellcheck="false">
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-text">
+        <p class="hero-eyebrow">📍 Pojok Baca Tlogosari</p>
+        <h1>Temukan buku<br><span class="hero-accent">terbaik untukmu</span></h1>
+        <p class="hero-sub">Katalog buku pilihan dengan sumber legal<br>untuk dibaca online atau dibeli.</p>
+        <div class="hero-btns">
+          <button class="btn-primary" onclick="document.getElementById('all-section').scrollIntoView({behavior:'smooth'})">
+            Jelajahi Semua Buku
+          </button>
+          <button class="btn-outline" onclick="document.getElementById('popular-section').scrollIntoView({behavior:'smooth'})">
+            Buku Populer
+          </button>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="book-art ba1">📘</div>
+        <div class="book-art ba2">📗</div>
+        <div class="book-art ba3">📕</div>
+        <div class="book-art ba4">📙</div>
+      </div>
+    </section>
+
+    <!-- Filters -->
+    <div class="filters-bar">
+      <div class="filter-group">
+        <label class="filter-label">Genre</label>
+        <select id="filter-genre" class="filter-select">
+          <option value="">Semua</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">Rating</label>
+        <select id="filter-rating" class="filter-select">
+          <option value="">Semua</option>
+          <option value="4.5">4.5+</option>
+          <option value="4">4.0+</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">Urutan</label>
+        <select id="filter-sort" class="filter-select">
+          <option value="rating">Rating Tertinggi</option>
+          <option value="tahun">Terbaru</option>
+          <option value="judul">A–Z</option>
+        </select>
+      </div>
+      <button class="reset-btn" id="reset-btn">↺ Reset</button>
     </div>
 
-    <!-- Search -->
-    <div class="search-wrap">
-      <span class="search-icon" aria-hidden="true">🔍</span>
-      <input
-        id="search-input"
-        type="search"
-        class="search-input"
-        placeholder="Cari judul, penulis, atau topik..."
-        aria-label="Cari buku"
-        autocomplete="off"
-        spellcheck="false"
-      >
+    <!-- Popular Books -->
+    <section class="books-section" id="popular-section">
+      <div class="section-header">
+        <h2 class="section-title">🔥 Buku Populer</h2>
+      </div>
+      <div class="books-scroll" id="popular-grid">
+        <div class="skeleton-cover"></div>
+        <div class="skeleton-cover"></div>
+        <div class="skeleton-cover"></div>
+        <div class="skeleton-cover"></div>
+      </div>
+    </section>
+
+    <!-- All Books -->
+    <section class="books-section" id="all-section">
+      <div class="section-header">
+        <h2 class="section-title">Semua Buku</h2>
+        <span id="book-count" class="book-count-badge"></span>
+      </div>
+      <div class="books-grid" id="book-grid" role="list">
+        <div class="skeleton-cover"></div>
+        <div class="skeleton-cover"></div>
+        <div class="skeleton-cover"></div>
+        <div class="skeleton-cover"></div>
+        <div class="skeleton-cover"></div>
+        <div class="skeleton-cover"></div>
+      </div>
+      <div id="empty-state" class="empty-state hidden">
+        <div class="empty-icon">🔍</div>
+        <p>Buku tidak ditemukan</p>
+      </div>
+    </section>
+
+  </div><!-- /catalog-panel -->
+
+  <!-- ══ DETAIL PANEL ══ -->
+  <aside class="detail-panel" id="detail-panel" aria-hidden="true">
+    <div class="detail-inner">
+
+      <!-- Detail Header -->
+      <div class="detail-header">
+        <button class="back-btn" id="back-btn" onclick="closeDetail()">
+          <span>←</span> Kembali
+        </button>
+      </div>
+
+      <!-- Cover + Meta -->
+      <div class="detail-top">
+        <div class="detail-cover-wrap" id="detail-cover-wrap">
+          <div class="detail-cover-fallback" id="detail-cover-fallback">
+            <span class="dcf-emoji" id="detail-cover-emoji">📗</span>
+            <span class="dcf-title" id="detail-cover-title"></span>
+          </div>
+        </div>
+        <div class="detail-meta">
+          <span class="detail-cat-badge" id="detail-cat"></span>
+          <h2 class="detail-title" id="detail-title">—</h2>
+          <div class="detail-rating-row" id="detail-rating-row">
+            <span class="detail-star">★</span>
+            <span class="detail-score" id="detail-score"></span>
+            <span class="detail-count" id="detail-count"></span>
+          </div>
+          <table class="detail-info-table" id="detail-info-table">
+            <tr><td>Penulis</td><td id="di-penulis">—</td></tr>
+            <tr><td>Tahun Terbit</td><td id="di-tahun">—</td></tr>
+            <tr><td>Bahasa</td><td id="di-bahasa">—</td></tr>
+            <tr><td>Jumlah Halaman</td><td id="di-halaman">—</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- Synopsis -->
+      <div class="detail-section">
+        <h3 class="detail-section-title">Sinopsis</h3>
+        <p class="detail-synopsis" id="detail-synopsis">—</p>
+      </div>
+
+      <!-- Legal Links -->
+      <div class="detail-section">
+        <h3 class="detail-section-title">Tersedia Secara Legal</h3>
+        <div class="legal-cards">
+          <div class="legal-card">
+            <div class="legal-card-head">
+              <span class="legal-card-icon lci-read">📖</span>
+              <div>
+                <div class="legal-card-title">Baca Online</div>
+                <div class="legal-card-sub">Baca secara legal melalui platform resmi dan dukung penulis.</div>
+              </div>
+            </div>
+            <div class="legal-links" id="detail-read-links"></div>
+          </div>
+          <div class="legal-card">
+            <div class="legal-card-head">
+              <span class="legal-card-icon lci-buy">🛒</span>
+              <div>
+                <div class="legal-card-title">Beli Buku</div>
+                <div class="legal-card-sub">Dapatkan buku fisik atau e-book original dari toko resmi.</div>
+              </div>
+            </div>
+            <div class="legal-links" id="detail-buy-links"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Disclaimer -->
+      <div class="detail-disclaimer">
+        ⚠️ <strong>Dukung penulis</strong> dengan membaca atau membeli buku secara legal.
+        Konten bajakan merugikan penulis dan industri penerbitan.
+      </div>
+
     </div>
-  </header>
+  </aside><!-- /detail-panel -->
 
-  <!-- ── PWA INSTALL BANNER ── -->
-  <div id="install-banner" class="install-banner hidden" role="banner">
-    <div class="install-text">
-      <span>📲</span>
-      <span>Pasang aplikasi untuk akses lebih mudah</span>
-    </div>
-    <button id="install-btn" class="install-btn">Pasang</button>
-    <button id="install-dismiss" class="install-dismiss" aria-label="Tutup">✕</button>
-  </div>
+</div><!-- /app-wrapper -->
 
-  <!-- ── MAIN CONTENT ── -->
-  <main class="main">
+<!-- Mobile overlay backdrop -->
+<div class="detail-backdrop hidden" id="detail-backdrop" onclick="closeDetail()"></div>
 
-    <!-- Stats -->
-    <div class="stats-bar">
-      <span id="book-count">Memuat koleksi...</span>
-    </div>
+<!-- Toast -->
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-    <!-- Category Filter -->
-    <div id="filter-bar" class="filter-bar" role="group" aria-label="Filter kategori buku"></div>
-
-    <!-- Book List -->
-    <div id="book-grid" class="book-grid" role="list" aria-label="Daftar buku">
-      <div class="skeleton-card" aria-hidden="true"></div>
-      <div class="skeleton-card" aria-hidden="true"></div>
-      <div class="skeleton-card" aria-hidden="true"></div>
-      <div class="skeleton-card" aria-hidden="true"></div>
-    </div>
-
-    <!-- Empty State -->
-    <div id="empty-state" class="empty-state hidden" aria-live="polite">
-      <div class="empty-icon">🔍</div>
-      <h2>Buku tidak ditemukan</h2>
-      <p>Coba kata kunci lain atau pilih kategori yang berbeda</p>
-    </div>
-
-  </main>
-
-  <!-- Toast -->
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
-
-  <script src="js/app.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>

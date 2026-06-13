@@ -1,68 +1,140 @@
 [
   {
-    "id": "buku-informatika-1",
-    "judul": "Informatika Semester 1 Bab 3 — Fase E",
-    "penulis": "Tim Kemendikbud",
-    "kategori": "Pendidikan",
-    "sinopsis": "Buku teks resmi pelajaran Informatika untuk jenjang SMA Fase E (Kelas X), Semester 1, Bab 3. Membahas konsep dasar berpikir komputasional, algoritma, dan pengenalan pemrograman sebagai fondasi literasi digital di era modern.",
-    "cover": "",
-    "rating": 4.3,
-    "link_baca": "https://buku.kemdikbud.go.id/katalog/informatika-untuk-sma-kelas-x",
-    "link_beli": "https://tokobuku.kemdikbud.go.id"
-  },
-  {
     "id": "laskar-pelangi",
     "judul": "Laskar Pelangi",
     "penulis": "Andrea Hirata",
     "kategori": "Novel",
-    "sinopsis": "Kisah inspiratif sepuluh anak Belitung yang berjuang meraih mimpi di tengah keterbatasan. Novel ini menjadi salah satu karya sastra Indonesia paling berpengaruh, menggambarkan semangat pendidikan dan persahabatan yang menyentuh hati.",
-    "cover": "",
+    "tahun": 2005,
+    "bahasa": "Indonesia",
+    "halaman": 534,
     "rating": 4.8,
-    "link_baca": "https://www.gramedia.com/products/laskar-pelangi",
-    "link_beli": "https://www.gramedia.com/products/laskar-pelangi"
+    "rating_count": "32.1k",
+    "populer": true,
+    "cover": "",
+    "cover_colors": ["#FF6B35", "#F7C59F"],
+    "sinopsis": "Kisah inspiratif sepuluh anak Belitung yang berjuang meraih mimpi di tengah keterbatasan. Novel ini menjadi salah satu karya sastra Indonesia paling berpengaruh, menggambarkan semangat pendidikan dan persahabatan yang menyentuh hati jutaan pembaca di seluruh dunia.",
+    "link_baca": [
+      {"nama": "Google Books", "url": "https://books.google.com/books?q=laskar+pelangi"},
+      {"nama": "Scribd", "url": "https://www.scribd.com/search?query=laskar+pelangi"}
+    ],
+    "link_beli": [
+      {"nama": "Gramedia", "url": "https://www.gramedia.com/products/laskar-pelangi"},
+      {"nama": "Tokopedia", "url": "https://www.tokopedia.com/search?q=laskar+pelangi"}
+    ]
   },
   {
     "id": "bumi-manusia",
     "judul": "Bumi Manusia",
     "penulis": "Pramoedya Ananta Toer",
     "kategori": "Sastra",
-    "sinopsis": "Novel pertama dari Tetralogi Buru karya Pram. Berlatar era kolonial Belanda, mengisahkan Minke, pemuda pribumi terpelajar, yang berhadapan dengan realitas sosial dan perjuangan kemanusiaan di atas tanah jajahannya sendiri.",
-    "cover": "",
+    "tahun": 1980,
+    "bahasa": "Indonesia",
+    "halaman": 535,
     "rating": 4.9,
-    "link_baca": "https://www.gramedia.com/products/bumi-manusia",
-    "link_beli": "https://www.gramedia.com/products/bumi-manusia"
+    "rating_count": "18.4k",
+    "populer": true,
+    "cover": "",
+    "cover_colors": ["#2D6A4F", "#1B4332"],
+    "sinopsis": "Novel pertama dari Tetralogi Buru karya Pram. Berlatar era kolonial Belanda, mengisahkan Minke, pemuda pribumi terpelajar yang berhadapan dengan realitas sosial dan perjuangan kemanusiaan di atas tanah jajahannya sendiri. Sebuah mahakarya sastra Indonesia.",
+    "link_baca": [
+      {"nama": "Google Books", "url": "https://books.google.com/books?q=bumi+manusia+pramoedya"},
+      {"nama": "Scribd", "url": "https://www.scribd.com/search?query=bumi+manusia"}
+    ],
+    "link_beli": [
+      {"nama": "Gramedia", "url": "https://www.gramedia.com/products/bumi-manusia"},
+      {"nama": "Tokopedia", "url": "https://www.tokopedia.com/search?q=bumi+manusia"}
+    ]
   },
   {
     "id": "atomic-habits",
     "judul": "Atomic Habits",
     "penulis": "James Clear",
     "kategori": "Pengembangan Diri",
-    "sinopsis": "Panduan praktis membangun kebiasaan baik dan menghapus kebiasaan buruk. James Clear menjelaskan bahwa perubahan kecil yang konsisten — sekecil 1% setiap hari — mampu menghasilkan transformasi besar dalam jangka panjang.",
-    "cover": "",
+    "tahun": 2018,
+    "bahasa": "Indonesia",
+    "halaman": 320,
     "rating": 4.7,
-    "link_baca": "https://www.gramedia.com/products/atomic-habits",
-    "link_beli": "https://www.gramedia.com/products/atomic-habits"
+    "rating_count": "125k",
+    "populer": true,
+    "cover": "",
+    "cover_colors": ["#F4D03F", "#E67E22"],
+    "sinopsis": "Panduan praktis membangun kebiasaan baik dan menghapus kebiasaan buruk. James Clear menjelaskan bahwa perubahan kecil yang konsisten — sekecil 1% setiap hari — mampu menghasilkan transformasi besar dalam jangka panjang melalui sistem yang tepat.",
+    "link_baca": [
+      {"nama": "Google Books", "url": "https://books.google.com/books?q=atomic+habits+james+clear"},
+      {"nama": "Scribd", "url": "https://www.scribd.com/search?query=atomic+habits"}
+    ],
+    "link_beli": [
+      {"nama": "Gramedia", "url": "https://www.gramedia.com/products/atomic-habits"},
+      {"nama": "Tokopedia", "url": "https://www.tokopedia.com/search?q=atomic+habits"}
+    ]
   },
   {
     "id": "filosofi-teras",
     "judul": "Filosofi Teras",
     "penulis": "Henry Manampiring",
     "kategori": "Pengembangan Diri",
-    "sinopsis": "Pengantar filsafat Stoisisme ditulis dengan gaya ringan dan kontekstual untuk pembaca Indonesia. Buku ini memandu pembaca mengelola emosi, menghadapi hal-hal di luar kendali, dan menjalani hidup yang lebih bermakna.",
-    "cover": "",
+    "tahun": 2018,
+    "bahasa": "Indonesia",
+    "halaman": 276,
     "rating": 4.6,
-    "link_baca": "https://www.gramedia.com/products/filosofi-teras",
-    "link_beli": "https://www.gramedia.com/products/filosofi-teras"
+    "rating_count": "24.7k",
+    "populer": true,
+    "cover": "",
+    "cover_colors": ["#7C3AED", "#4C1D95"],
+    "sinopsis": "Pengantar filsafat Stoisisme ditulis dengan gaya ringan dan kontekstual untuk pembaca Indonesia. Buku ini memandu pembaca mengelola emosi, menghadapi hal-hal di luar kendali, dan menjalani hidup yang lebih bermakna dan tenang.",
+    "link_baca": [
+      {"nama": "Google Books", "url": "https://books.google.com/books?q=filosofi+teras"},
+      {"nama": "Scribd", "url": "https://www.scribd.com/search?query=filosofi+teras"}
+    ],
+    "link_beli": [
+      {"nama": "Gramedia", "url": "https://www.gramedia.com/products/filosofi-teras"},
+      {"nama": "Tokopedia", "url": "https://www.tokopedia.com/search?q=filosofi+teras"}
+    ]
   },
   {
     "id": "negeri-5-menara",
     "judul": "Negeri 5 Menara",
     "penulis": "A. Fuadi",
     "kategori": "Novel",
-    "sinopsis": "Kisah nyata Alif yang merantau ke pesantren Gontor, dilanda dilema antara keinginan orang tua dan impian pribadinya. Di sana ia belajar bahwa dengan tekad dan doa — 'man jadda wajada' — semua mimpi bisa diraih.",
-    "cover": "",
+    "tahun": 2009,
+    "bahasa": "Indonesia",
+    "halaman": 423,
     "rating": 4.5,
-    "link_baca": "https://www.gramedia.com/products/negeri-5-menara",
-    "link_beli": "https://www.gramedia.com/products/negeri-5-menara"
+    "rating_count": "19.2k",
+    "populer": false,
+    "cover": "",
+    "cover_colors": ["#0E9F7E", "#065F46"],
+    "sinopsis": "Kisah nyata Alif yang merantau ke pesantren Gontor, dilanda dilema antara keinginan orang tua dan impian pribadinya. Di sana ia belajar bahwa dengan tekad dan doa — 'man jadda wajada' — semua mimpi bisa diraih.",
+    "link_baca": [
+      {"nama": "Google Books", "url": "https://books.google.com/books?q=negeri+5+menara"},
+      {"nama": "Scribd", "url": "https://www.scribd.com/search?query=negeri+5+menara"}
+    ],
+    "link_beli": [
+      {"nama": "Gramedia", "url": "https://www.gramedia.com/products/negeri-5-menara"},
+      {"nama": "Tokopedia", "url": "https://www.tokopedia.com/search?q=negeri+5+menara"}
+    ]
+  },
+  {
+    "id": "informatika-fase-e",
+    "judul": "Informatika Fase E — Semester 1",
+    "penulis": "Tim Kemendikbud",
+    "kategori": "Pendidikan",
+    "tahun": 2022,
+    "bahasa": "Indonesia",
+    "halaman": 180,
+    "rating": 4.3,
+    "rating_count": "5.2k",
+    "populer": false,
+    "cover": "",
+    "cover_colors": ["#1A73E8", "#0D47A1"],
+    "sinopsis": "Buku teks resmi pelajaran Informatika untuk jenjang SMA Fase E (Kelas X), Semester 1, Bab 3. Membahas konsep dasar berpikir komputasional, algoritma, dan pengenalan pemrograman sebagai fondasi literasi digital.",
+    "link_baca": [
+      {"nama": "Kemdikbud", "url": "https://buku.kemdikbud.go.id/katalog/informatika-untuk-sma-kelas-x"},
+      {"nama": "Scribd", "url": "https://www.scribd.com/search?query=informatika+sma"}
+    ],
+    "link_beli": [
+      {"nama": "Toko Kemdikbud", "url": "https://tokobuku.kemdikbud.go.id"},
+      {"nama": "Tokopedia", "url": "https://www.tokopedia.com/search?q=buku+informatika+sma"}
+    ]
   }
 ]
