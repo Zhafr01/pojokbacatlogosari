@@ -69,41 +69,76 @@ select { font-family:var(--font); }
 .catalog-panel::-webkit-scrollbar-track { background: transparent; }
 .catalog-panel::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
 
+/* ── DETAIL WRAPPER (handles width + close tab) ─────────── */
+.detail-wrapper {
+  position: relative;
+  flex-shrink: 0;
+  width: 0;
+  height: 100dvh;
+  transition: width 0.38s var(--ease);
+}
+.app-wrapper.detail-open .detail-wrapper {
+  width: 460px;
+}
+
+/* Close tab — sticks out on the left edge of the detail wrapper */
+.detail-close-tab {
+  position: absolute;
+  left: -38px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px; height: 72px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-right: none;
+  border-radius: 12px 0 0 12px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  box-shadow: -4px 0 16px rgba(0,0,0,0.09);
+  color: var(--text-light);
+  font-size: 1rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s, color 0.15s, background 0.15s;
+  z-index: 10;
+}
+.app-wrapper.detail-open .detail-close-tab {
+  opacity: 1;
+  pointer-events: all;
+}
+.detail-close-tab:hover {
+  background: var(--primary-pale);
+  color: var(--primary);
+}
+
 /* ── DETAIL PANEL ────────────────────────────────────────── */
 .detail-panel {
-  width: 0;
-  flex-shrink: 0;
-  height: 100dvh;
-  overflow: hidden;
+  position: absolute;
+  inset: 0;
   overflow-y: auto;
   background: var(--bg-card);
   border-left: 1px solid var(--border);
-  transition: width 0.38s var(--ease);
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
 }
 .detail-panel::-webkit-scrollbar { width: 4px; }
 .detail-panel::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
 
-.app-wrapper.detail-open .detail-panel {
-  width: 460px;
-}
-
 /* Mobile: detail as overlay */
 @media (max-width: 768px) {
-  .detail-panel {
+  .detail-wrapper {
     position: fixed;
     top: 0; right: 0; bottom: 0;
     z-index: 200;
     width: 0 !important;
     box-shadow: none;
-    border-left: none;
     transition: width 0.38s var(--ease), box-shadow 0.38s;
   }
-  .app-wrapper.detail-open .detail-panel {
+  .app-wrapper.detail-open .detail-wrapper {
     width: 100% !important;
     box-shadow: var(--s-lg);
   }
+  .detail-close-tab { display: none; }
 }
 
 /* Backdrop for mobile */
@@ -179,16 +214,18 @@ select { font-family:var(--font); }
    ============================================================ */
 .hero {
   display: flex; align-items: center;
-  gap: 24px; padding: 40px 24px 32px;
+  gap: 24px; padding: 40px 24px 36px;
   background: linear-gradient(135deg,
-    #FAFAFE 0%, #F0F0FF 50%, #FEF9F0 100%);
+    #EEF2FF 0%, #E0E7FF 45%, #F5F3FF 100%);
   position: relative; overflow: hidden;
+  border-bottom: 1px solid #C7D2FE;
 }
 .hero::before {
   content: '';
   position: absolute; inset: 0;
-  background: radial-gradient(ellipse 60% 80% at 90% 50%,
-    rgba(99,102,241,0.07) 0%, transparent 70%);
+  background:
+    radial-gradient(ellipse 55% 70% at 90% 50%, rgba(99,102,241,0.15) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 50% at 10% 80%, rgba(249,115,22,0.06) 0%, transparent 60%);
   pointer-events: none;
 }
 

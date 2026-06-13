@@ -122,8 +122,16 @@
 
   </div><!-- /catalog-panel -->
 
-  <!-- ══ DETAIL PANEL ══ -->
-  <aside class="detail-panel" id="detail-panel" aria-hidden="true">
+  <!-- ══ DETAIL WRAPPER ══ -->
+  <div class="detail-wrapper" id="detail-wrapper">
+
+    <!-- Close tab on left edge -->
+    <button class="detail-close-tab" id="detail-close-tab"
+      onclick="closeDetail()" aria-label="Tutup panel detail">
+      <span style="font-size:1.2rem;line-height:1">‹</span>
+    </button>
+
+    <aside class="detail-panel" id="detail-panel" aria-hidden="true">
     <div class="detail-inner">
 
       <!-- Detail Header -->
@@ -198,7 +206,9 @@
       </div>
 
     </div>
-  </aside><!-- /detail-panel -->
+    </aside><!-- /detail-panel -->
+
+  </div><!-- /detail-wrapper -->
 
 </div><!-- /app-wrapper -->
 
