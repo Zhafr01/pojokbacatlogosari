@@ -379,7 +379,7 @@ h1 {
 /* ── All Books: grid ─────────────────────────────────────── */
 .books-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
   gap: 16px;
 }
 
@@ -462,7 +462,7 @@ h1 {
 
 /* Popular card: slightly wider */
 .books-scroll .book-card {
-  width: 120px; flex-shrink: 0;
+  width: 170px; flex-shrink: 0;
 }
 
 /* ── SKELETON ────────────────────────────────────────────── */
@@ -477,7 +477,7 @@ h1 {
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
 }
-.books-scroll .skeleton-cover { width: 120px; flex-shrink: 0; }
+.books-scroll .skeleton-cover { width: 170px; flex-shrink: 0; }
 
 /* ── EMPTY STATE ─────────────────────────────────────────── */
 .empty-state {
