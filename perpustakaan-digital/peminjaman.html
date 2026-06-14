@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Cek status peminjaman buku di Pojok Baca Tlogosari">
+  <meta name="theme-color" content="#6366F1">
+  <title>Peminjaman — Pojok Baca Tlogosari</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="icons/icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body class="page-body">
+
+  <!-- Header -->
+  <header class="page-header">
+    <div class="page-header-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">📚</div>
+        <span class="logo-text"><b>Pojok</b>Baca</span>
+      </a>
+      <h1 class="page-title">📋 Status Peminjaman</h1>
+      <nav class="header-nav">
+        <a href="index.html" class="nav-link">
+          <span class="nav-icon">📖</span>
+          <span class="nav-text">Katalog</span>
+        </a>
+        <a href="admin.html" class="nav-link nav-admin">
+          <span class="nav-icon">⚙️</span>
+          <span class="nav-text">Admin</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="page-main">
+
+    <!-- Search Section -->
+    <section class="search-section">
+      <div class="search-card">
+        <div class="search-card-icon">🔍</div>
+        <h2>Cek Status Peminjaman</h2>
+        <p>Masukkan nama, nomor HP, atau nama dusun untuk mencari data peminjaman Anda.</p>
+        <div class="search-form">
+          <input type="text" id="loan-search" class="search-input-page"
+            placeholder="Cari nama, No. HP, atau dusun..."
+            autocomplete="off" spellcheck="false">
+          <button class="btn-search" id="btn-search" onclick="searchLoans()">
+            Cari
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Results -->
+    <section class="results-section hidden" id="results-section">
+      <div class="results-header">
+        <h3 id="results-title">Hasil Pencarian</h3>
+        <span class="results-count" id="results-count"></span>
+      </div>
+      <div class="loan-list" id="loan-list"></div>
+    </section>
+
+    <!-- Empty state -->
+    <div class="empty-search hidden" id="empty-search">
+      <div class="empty-search-icon">📭</div>
+      <p class="empty-search-text">Tidak ditemukan data peminjaman.</p>
+      <p class="empty-search-sub">Pastikan nama atau nomor HP yang Anda masukkan sudah benar.</p>
+    </div>
+
+  </main>
+
+<script src="js/db.js"></script>
+<script src="js/peminjaman.js"></script>
+</body>
+</html>

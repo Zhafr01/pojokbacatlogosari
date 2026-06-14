@@ -35,6 +35,8 @@ const diHalaman           = document.getElementById('di-halaman');
 const detailSynopsis      = document.getElementById('detail-synopsis');
 const detailReadLinks     = document.getElementById('detail-read-links');
 const detailBuyLinks      = document.getElementById('detail-buy-links');
+const detailStock         = document.getElementById('detail-stock');
+const btnBorrow           = document.getElementById('btn-borrow');
 
 // ── Palettes & helpers ────────────────────────────────────────
 const PALETTE = [
@@ -324,6 +326,26 @@ function openDetail(book) {
     detailBackdrop.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
   }
+
+  // ── Stock & borrow ───────────────────────────────────────
+  const totalStok = book.stok || 0;
+  const activeLoans = LoanDB.getActiveLoansForBook(book.id);
+  const available = Math.max(0, totalStok - activeLoans);
+  detailStock.textContent = `${available} / ${totalStok}`;
+  detailStock.className = 'borrow-stock-badge ' + (available > 0 ? 'stock-ok' : 'stock-empty');
+
+  if (available > 0) {
+    btnBorrow.disabled = false;
+    btnBorrow.textContent = '';
+    btnBorrow.innerHTML = '<span>📖</span> Pinjam Buku Ini';
+  } else {
+    btnBorrow.disabled = true;
+    btnBorrow.textContent = '';
+    btnBorrow.innerHTML = '<span>❌</span> Stok Habis';
+  }
+
+  // Store current book for modal
+  window._currentBorrowBook = book;
 }
 
 // ── Close detail ──────────────────────────────────────────────
@@ -333,10 +355,6 @@ window.closeDetail = function () {
   detailBackdrop.classList.add('hidden');
   document.body.style.overflow = '';
 };
-
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && appWrapper.classList.contains('detail-open')) closeDetail();
-});
 
 // ── Event listeners ───────────────────────────────────────────
 searchInput.addEventListener('input', applyFilters);
@@ -348,6 +366,83 @@ resetBtn.addEventListener('click', () => {
   customSelects.rating?.reset();
   customSelects.sort?.reset();
   applyFilters();
+});
+
+// ── Borrow Modal ──────────────────────────────────────────────
+const borrowModalOverlay = document.getElementById('borrow-modal-overlay');
+const borrowForm         = document.getElementById('borrow-form');
+const modalBookInfo      = document.getElementById('modal-book-info');
+
+window.openBorrowModal = function () {
+  const book = window._currentBorrowBook;
+  if (!book) return;
+  modalBookInfo.innerHTML = `
+    <div class="mbi-title">${book.judul}</div>
+    <div class="mbi-author">${book.penulis}</div>`;
+  borrowModalOverlay.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeBorrowModal = function () {
+  borrowModalOverlay.classList.add('hidden');
+  if (!appWrapper.classList.contains('detail-open') || window.innerWidth > 768) {
+    document.body.style.overflow = '';
+  }
+  borrowForm.reset();
+};
+
+window.submitBorrow = function (e) {
+  e.preventDefault();
+  const book = window._currentBorrowBook;
+  if (!book) return;
+
+  const nama  = document.getElementById('borrow-nama').value.trim();
+  const dusun = document.getElementById('borrow-dusun').value.trim();
+  const hp    = document.getElementById('borrow-hp').value.trim();
+
+  if (!nama || !dusun || !hp) {
+    showToast('⚠️ Lengkapi semua field', 3000);
+    return;
+  }
+
+  // Check if user already has active loan for this book
+  if (LoanDB.hasActiveLoan(book.id, hp)) {
+    showToast('⚠️ Anda sudah meminjam buku ini', 3000);
+    return;
+  }
+
+  // Check stock availability
+  const totalStok = book.stok || 0;
+  const activeLoans = LoanDB.getActiveLoansForBook(book.id);
+  if (activeLoans >= totalStok) {
+    showToast('❌ Stok buku habis', 3000);
+    return;
+  }
+
+  LoanDB.createLoan({
+    bookId: book.id,
+    bookTitle: book.judul,
+    nama,
+    dusun,
+    hp,
+  });
+
+  closeBorrowModal();
+  showToast('✅ Peminjaman berhasil diajukan!', 3500);
+
+  // Refresh stock display
+  openDetail(book);
+};
+
+// ── Keyboard shortcuts ────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (borrowModalOverlay && !borrowModalOverlay.classList.contains('hidden')) {
+      closeBorrowModal();
+    } else if (appWrapper.classList.contains('detail-open')) {
+      closeDetail();
+    }
+  }
 });
 
 // ── Init ──────────────────────────────────────────────────────

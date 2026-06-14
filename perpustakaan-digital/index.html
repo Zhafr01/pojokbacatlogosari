@@ -35,6 +35,16 @@
           placeholder="Cari judul, penulis, atau genre..."
           autocomplete="off" spellcheck="false">
       </div>
+      <nav class="header-nav">
+        <a href="peminjaman.html" class="nav-link" id="nav-peminjaman">
+          <span class="nav-icon">📋</span>
+          <span class="nav-text">Peminjaman</span>
+        </a>
+        <a href="admin.html" class="nav-link nav-admin" id="nav-admin">
+          <span class="nav-icon">⚙️</span>
+          <span class="nav-text">Admin</span>
+        </a>
+      </nav>
     </header>
 
     <!-- Hero -->
@@ -182,6 +192,21 @@
         </div>
       </div>
 
+      <!-- Borrow Section -->
+      <div class="detail-section borrow-section">
+        <h3 class="detail-section-title">📦 Pinjam Buku Fisik</h3>
+        <div class="borrow-card">
+          <div class="borrow-stock-row">
+            <span class="borrow-stock-label">Stok tersedia:</span>
+            <span class="borrow-stock-badge" id="detail-stock">—</span>
+          </div>
+          <p class="borrow-info">Pinjam buku fisik di Pojok Baca Tlogosari. Durasi peminjaman <strong>10 hari</strong>.</p>
+          <button class="btn-borrow" id="btn-borrow" onclick="openBorrowModal()">
+            <span>📖</span> Pinjam Buku Ini
+          </button>
+        </div>
+      </div>
+
       <!-- Disclaimer -->
       <div class="detail-disclaimer">
         ⚠️ <strong>Dukung penulis</strong> dengan membaca atau membeli buku secara legal.
@@ -201,6 +226,38 @@
 <!-- Toast -->
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
+<!-- Borrow Modal -->
+<div class="modal-overlay hidden" id="borrow-modal-overlay" onclick="closeBorrowModal()">
+  <div class="modal-card" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <h3 class="modal-title">📖 Form Peminjaman</h3>
+      <button class="modal-close" onclick="closeBorrowModal()" aria-label="Tutup">✕</button>
+    </div>
+    <div class="modal-book-info" id="modal-book-info"></div>
+    <form id="borrow-form" onsubmit="submitBorrow(event)">
+      <div class="form-group">
+        <label for="borrow-nama">Nama Lengkap</label>
+        <input type="text" id="borrow-nama" placeholder="Masukkan nama lengkap" required autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label for="borrow-dusun">Dusun / Alamat</label>
+        <input type="text" id="borrow-dusun" placeholder="Contoh: Dusun Tlogosari" required>
+      </div>
+      <div class="form-group">
+        <label for="borrow-hp">Nomor HP / WhatsApp</label>
+        <input type="tel" id="borrow-hp" placeholder="08xxxxxxxxxx" required pattern="[0-9]{10,15}">
+      </div>
+      <div class="form-note">
+        <span>ℹ️</span> Peminjaman akan dikonfirmasi oleh admin. Durasi pinjam: <strong>10 hari</strong>.
+      </div>
+      <button type="submit" class="btn-submit-borrow">
+        Ajukan Peminjaman
+      </button>
+    </form>
+  </div>
+</div>
+
+<script src="js/db.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

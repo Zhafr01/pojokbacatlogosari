@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Dashboard Admin Pojok Baca Tlogosari — Kelola peminjaman buku">
+  <meta name="theme-color" content="#6366F1">
+  <title>Admin — Pojok Baca Tlogosari</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="icons/icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body class="page-body">
+
+  <!-- Login Screen -->
+  <div class="login-screen" id="login-screen">
+    <div class="login-bg-shapes">
+      <div class="login-shape ls1"></div>
+      <div class="login-shape ls2"></div>
+      <div class="login-shape ls3"></div>
+    </div>
+    <div class="login-card">
+      <div class="login-logo">
+        <div class="logo-icon">📚</div>
+        <span class="logo-text"><b>Pojok</b>Baca</span>
+      </div>
+      <h1 class="login-title">Admin Dashboard</h1>
+      <p class="login-sub">Masukkan password admin untuk mengelola peminjaman buku.</p>
+      <form onsubmit="attemptLogin(event)">
+        <div class="form-group">
+          <label for="admin-password">Password</label>
+          <div class="password-wrap">
+            <input type="password" id="admin-password" placeholder="Masukkan password admin"
+              required autocomplete="current-password">
+            <button type="button" class="toggle-pw" onclick="togglePassword()" aria-label="Tampilkan password">
+              👁️
+            </button>
+          </div>
+        </div>
+        <button type="submit" class="btn-login">Masuk</button>
+        <p class="login-error hidden" id="login-error">❌ Password salah!</p>
+      </form>
+      <a href="index.html" class="login-back">← Kembali ke Katalog</a>
+    </div>
+  </div>
+
+  <!-- Admin Dashboard -->
+  <div class="admin-dashboard hidden" id="admin-dashboard">
+
+    <!-- Header -->
+    <header class="page-header">
+      <div class="page-header-inner">
+        <a href="index.html" class="logo">
+          <div class="logo-icon">📚</div>
+          <span class="logo-text"><b>Pojok</b>Baca</span>
+        </a>
+        <h1 class="page-title">⚙️ Dashboard Admin</h1>
+        <nav class="header-nav">
+          <a href="index.html" class="nav-link">
+            <span class="nav-icon">📖</span>
+            <span class="nav-text">Katalog</span>
+          </a>
+          <a href="peminjaman.html" class="nav-link">
+            <span class="nav-icon">📋</span>
+            <span class="nav-text">Peminjaman</span>
+          </a>
+          <button class="nav-link nav-logout" onclick="logout()">
+            <span class="nav-icon">🚪</span>
+            <span class="nav-text">Logout</span>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="page-main">
+
+      <!-- Stats Cards -->
+      <section class="stats-grid">
+        <div class="stat-card stat-total">
+          <div class="stat-icon">📊</div>
+          <div class="stat-num" id="stat-total">0</div>
+          <div class="stat-label">Total Peminjaman</div>
+        </div>
+        <div class="stat-card stat-pending">
+          <div class="stat-icon">⏳</div>
+          <div class="stat-num" id="stat-menunggu">0</div>
+          <div class="stat-label">Menunggu</div>
+        </div>
+        <div class="stat-card stat-active">
+          <div class="stat-icon">📖</div>
+          <div class="stat-num" id="stat-dipinjam">0</div>
+          <div class="stat-label">Dipinjam</div>
+        </div>
+        <div class="stat-card stat-returned">
+          <div class="stat-icon">✅</div>
+          <div class="stat-num" id="stat-dikembalikan">0</div>
+          <div class="stat-label">Dikembalikan</div>
+        </div>
+      </section>
+
+      <!-- Filter Bar -->
+      <section class="admin-filter-bar">
+        <button class="admin-filter-btn active" data-status="" onclick="filterAdmin('')">Semua</button>
+        <button class="admin-filter-btn" data-status="menunggu" onclick="filterAdmin('menunggu')">⏳ Menunggu</button>
+        <button class="admin-filter-btn" data-status="dipinjam" onclick="filterAdmin('dipinjam')">📖 Dipinjam</button>
+        <button class="admin-filter-btn" data-status="dikembalikan" onclick="filterAdmin('dikembalikan')">✅ Kembali</button>
+        <button class="admin-filter-btn" data-status="ditolak" onclick="filterAdmin('ditolak')">❌ Ditolak</button>
+      </section>
+
+      <!-- Loan Table / Cards -->
+      <section class="admin-loans" id="admin-loans"></section>
+
+      <!-- Empty Admin -->
+      <div class="empty-admin hidden" id="empty-admin">
+        <div class="empty-search-icon">📭</div>
+        <p class="empty-search-text">Belum ada data peminjaman.</p>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- Confirm Modal -->
+  <div class="modal-overlay hidden" id="confirm-modal">
+    <div class="modal-card modal-confirm">
+      <div class="modal-header">
+        <h3 class="modal-title" id="confirm-title">Konfirmasi</h3>
+        <button class="modal-close" onclick="closeConfirmModal()" aria-label="Tutup">✕</button>
+      </div>
+      <p class="confirm-message" id="confirm-message"></p>
+      <div class="confirm-actions">
+        <button class="btn-cancel" onclick="closeConfirmModal()">Batal</button>
+        <button class="btn-confirm" id="btn-confirm">Ya, Lanjutkan</button>
+      </div>
+    </div>
+  </div>
+
+<script src="js/db.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
