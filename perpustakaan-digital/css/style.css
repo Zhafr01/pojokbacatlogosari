@@ -168,19 +168,11 @@ select { font-family:var(--font); }
   flex-shrink: 0;
   text-decoration: none;
 }
-.logo-icon {
-  width: 36px; height: 36px;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-  border-radius: var(--r-sm);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.1rem;
-  box-shadow: 0 2px 8px rgba(99,102,241,0.35);
+.logo-img {
+  height: 44px;
+  width: auto;
+  object-fit: contain;
 }
-.logo-text {
-  font-size: 1rem; color: var(--text-dark);
-  letter-spacing: -0.3px;
-}
-.logo-text b { color: var(--primary); }
 
 /* Search */
 .search-wrap {
