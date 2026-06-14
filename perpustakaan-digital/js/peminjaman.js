@@ -11,10 +11,10 @@ const loanList         = document.getElementById('loan-list');
 const emptySearch      = document.getElementById('empty-search');
 
 const STATUS_CONFIG = {
-  menunggu:     { label: 'Menunggu Konfirmasi', emoji: '⏳', cls: 'status-pending' },
-  dipinjam:     { label: 'Sedang Dipinjam',     emoji: '📖', cls: 'status-active' },
-  dikembalikan: { label: 'Sudah Dikembalikan',  emoji: '✅', cls: 'status-returned' },
-  ditolak:      { label: 'Ditolak',             emoji: '❌', cls: 'status-rejected' },
+  menunggu:     { label: 'Menunggu Konfirmasi', cls: 'status-pending' },
+  dipinjam:     { label: 'Sedang Dipinjam',     cls: 'status-active' },
+  dikembalikan: { label: 'Sudah Dikembalikan',  cls: 'status-returned' },
+  ditolak:      { label: 'Ditolak',             cls: 'status-rejected' },
 };
 
 function formatDate(dateStr) {
@@ -41,7 +41,7 @@ function buildLoanCard(loan) {
   card.innerHTML = `
     <div class="loan-card-top">
       <div class="loan-book-title">${loan.bookTitle || loan.bookId}</div>
-      <span class="loan-status ${sc.cls}">${sc.emoji} ${sc.label}</span>
+      <span class="loan-status ${sc.cls}">${sc.label}</span>
     </div>
     <div class="loan-card-details">
       <div class="loan-detail-item">
@@ -62,7 +62,7 @@ function buildLoanCard(loan) {
       </div>
       <div class="loan-detail-item">
         <span class="ldi-label">Batas Kembali</span>
-        <span class="ldi-value ${overdue ? 'overdue-text' : ''}">${formatDate(loan.tanggalKembali)}${overdue ? ' ⚠️ Terlambat!' : ''}</span>
+        <span class="ldi-value ${overdue ? 'overdue-text' : ''}">${formatDate(loan.tanggalKembali)}${overdue ? ' Terlambat!' : ''}</span>
       </div>
       ${loan.catatan ? `<div class="loan-detail-item loan-note"><span class="ldi-label">Catatan</span><span class="ldi-value">${loan.catatan}</span></div>` : ''}
     </div>

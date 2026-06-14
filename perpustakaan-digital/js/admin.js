@@ -23,10 +23,10 @@ let _toast;
 
 // ── Status Config ─────────────────────────────────────────────
 const STATUS_CONFIG = {
-  menunggu:     { label: 'Menunggu', emoji: '⏳', cls: 'status-pending' },
-  dipinjam:     { label: 'Dipinjam', emoji: '📖', cls: 'status-active' },
-  dikembalikan: { label: 'Dikembalikan', emoji: '✅', cls: 'status-returned' },
-  ditolak:      { label: 'Ditolak', emoji: '❌', cls: 'status-rejected' },
+  menunggu:     { label: 'Menunggu', cls: 'status-pending' },
+  dipinjam:     { label: 'Dipinjam', cls: 'status-active' },
+  dikembalikan: { label: 'Dikembalikan', cls: 'status-returned' },
+  ditolak:      { label: 'Ditolak', cls: 'status-rejected' },
 };
 
 // ── Toast ─────────────────────────────────────────────────────
@@ -124,21 +124,21 @@ function renderLoans() {
     if (loan.status === 'menunggu') {
       actionsHTML = `
         <button class="action-btn action-approve" onclick="confirmAction('${loan.id}','dipinjam','Setujui peminjaman ini?')">
-          ✅ Setujui
+          Setujui
         </button>
         <button class="action-btn action-reject" onclick="confirmAction('${loan.id}','ditolak','Tolak peminjaman ini?')">
-          ❌ Tolak
+          Tolak
         </button>`;
     } else if (loan.status === 'dipinjam') {
       actionsHTML = `
         <button class="action-btn action-return" onclick="confirmAction('${loan.id}','dikembalikan','Tandai buku sudah dikembalikan?')">
-          📦 Dikembalikan
+          Dikembalikan
         </button>`;
     }
 
     actionsHTML += `
       <button class="action-btn action-delete" onclick="confirmAction('${loan.id}','DELETE','Hapus data peminjaman ini? Aksi ini tidak bisa dibatalkan.')">
-        🗑️ Hapus
+        Hapus
       </button>`;
 
     card.innerHTML = `
@@ -146,15 +146,15 @@ function renderLoans() {
         <div>
           <div class="admin-book-title">${loan.bookTitle || loan.bookId}</div>
           <div class="admin-borrower">${loan.nama} — ${loan.dusun}</div>
-          <div class="admin-phone">📱 ${loan.hp}</div>
+          <div class="admin-phone">${loan.hp}</div>
         </div>
-        <span class="loan-status ${sc.cls}">${sc.emoji} ${sc.label}</span>
+        <span class="loan-status ${sc.cls}">${sc.label}</span>
       </div>
       <div class="admin-card-dates">
-        <span>📅 Pinjam: ${formatDate(loan.tanggalPinjam)}</span>
-        <span>📅 Kembali: <span class="${overdue ? 'overdue-text' : ''}">${formatDate(loan.tanggalKembali)}${overdue ? ' ⚠️' : ''}</span></span>
+        <span>Pinjam: ${formatDate(loan.tanggalPinjam)}</span>
+        <span>Kembali: <span class="${overdue ? 'overdue-text' : ''}">${formatDate(loan.tanggalKembali)}${overdue ? ' Terlambat!' : ''}</span></span>
       </div>
-      ${loan.catatan ? `<div class="admin-card-note">💬 ${loan.catatan}</div>` : ''}
+      ${loan.catatan ? `<div class="admin-card-note">${loan.catatan}</div>` : ''}
       <div class="admin-card-actions">${actionsHTML}</div>
     `;
     adminLoans.appendChild(card);
@@ -175,7 +175,7 @@ let _pendingAction = null;
 
 window.confirmAction = function (loanId, action, message) {
   _pendingAction = { loanId, action };
-  confirmTitle.textContent = action === 'DELETE' ? '🗑️ Hapus Data' : '📋 Konfirmasi';
+  confirmTitle.textContent = action === 'DELETE' ? 'Hapus Data' : 'Konfirmasi';
   confirmMessage.textContent = message;
   btnConfirm.textContent = action === 'DELETE' ? 'Ya, Hapus' : 'Ya, Lanjutkan';
   btnConfirm.className = 'btn-confirm' + (action === 'DELETE' ? ' btn-danger' : '');
@@ -194,11 +194,11 @@ btnConfirm.addEventListener('click', () => {
 
   if (action === 'DELETE') {
     LoanDB.deleteLoan(loanId);
-    showToast('🗑️ Data peminjaman dihapus');
+    showToast('Data peminjaman dihapus');
   } else {
     LoanDB.updateStatus(loanId, action);
     const statusLabel = STATUS_CONFIG[action]?.label || action;
-    showToast(`✅ Status diubah menjadi "${statusLabel}"`);
+    showToast(`Status diubah menjadi "${statusLabel}"`);
   }
 
   closeConfirmModal();

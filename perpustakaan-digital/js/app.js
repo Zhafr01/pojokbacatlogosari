@@ -401,13 +401,13 @@ window.submitBorrow = function (e) {
   const hp    = document.getElementById('borrow-hp').value.trim();
 
   if (!nama || !dusun || !hp) {
-    showToast('⚠️ Lengkapi semua field', 3000);
+    showToast('Lengkapi semua field', 3000);
     return;
   }
 
   // Check if user already has active loan for this book
   if (LoanDB.hasActiveLoan(book.id, hp)) {
-    showToast('⚠️ Anda sudah meminjam buku ini', 3000);
+    showToast('Anda sudah meminjam buku ini', 3000);
     return;
   }
 
@@ -415,7 +415,7 @@ window.submitBorrow = function (e) {
   const totalStok = book.stok || 0;
   const activeLoans = LoanDB.getActiveLoansForBook(book.id);
   if (activeLoans >= totalStok) {
-    showToast('❌ Stok buku habis', 3000);
+    showToast('Stok buku habis', 3000);
     return;
   }
 
@@ -428,7 +428,7 @@ window.submitBorrow = function (e) {
   });
 
   closeBorrowModal();
-  showToast('✅ Peminjaman berhasil diajukan!', 3500);
+  showToast('Peminjaman berhasil diajukan!', 3500);
 
   // Refresh stock display
   openDetail(book);
@@ -459,7 +459,7 @@ async function init() {
     console.error(err);
     bookGrid.innerHTML = '';
     emptyState.classList.remove('hidden');
-    showToast('⚠️ Gagal memuat data buku', 4000);
+    showToast('Gagal memuat data buku', 4000);
   }
 }
 
