@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="Katalog Buku Fisik Pojok Baca Tlogosari — Pinjam buku fisik pilihan secara gratis">
+  <meta name="theme-color" content="#6366F1">
+  <title>Buku Fisik — Pojok Baca Tlogosari</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/png" href="icons/icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+<body class="page-body">
+
+  <!-- Header -->
+  <header class="page-header">
+    <div class="page-header-inner">
+      <a href="index.html" class="logo">
+        <img src="icons/logo.png" alt="BookShelf Logo" class="logo-img">
+      </a>
+      <h1 class="page-title">📚 Buku Fisik</h1>
+      <nav class="header-nav">
+        <a href="index.html" class="nav-link">
+          <span class="nav-icon">🏠</span>
+          <span class="nav-text">Beranda</span>
+        </a>
+        <a href="buku-digital.html" class="nav-link">
+          <span class="nav-icon">💻</span>
+          <span class="nav-text">E-Book</span>
+        </a>
+        <a href="peminjaman.html" class="nav-link">
+          <span class="nav-icon">📋</span>
+          <span class="nav-text">Peminjaman</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page Hero -->
+  <div class="catalog-page-hero fisik-hero">
+    <div class="catalog-page-hero-inner">
+      <div class="catalog-hero-icon">📚</div>
+      <div>
+        <h2 class="catalog-hero-title">Koleksi Buku Fisik</h2>
+        <p class="catalog-hero-sub">Pinjam buku fisik secara gratis, durasi <strong>10 hari</strong> per peminjaman.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <main class="catalog-main" id="catalog-main-fisik">
+
+    <!-- Search & Filter Bar -->
+    <div class="catalog-controls">
+      <div class="catalog-search-wrap">
+        <span class="catalog-search-ic">🔍</span>
+        <input id="katalog-search" type="search" class="catalog-search-input"
+          placeholder="Cari judul, penulis, genre..."
+          autocomplete="off" spellcheck="false">
+      </div>
+      <div class="catalog-filters">
+        <div class="cs-wrap" id="cs-genre"></div>
+        <div class="cs-wrap" id="cs-rating"></div>
+        <div class="cs-wrap" id="cs-sort"></div>
+        <button class="reset-btn" id="reset-btn">↺ Reset</button>
+      </div>
+    </div>
+
+    <!-- Count -->
+    <div class="catalog-count-bar">
+      <span id="catalog-count" class="book-count-badge"></span>
+    </div>
+
+    <!-- Grid -->
+    <div class="catalog-grid" id="katalog-grid" role="list">
+      <div class="skeleton-cover"></div>
+      <div class="skeleton-cover"></div>
+      <div class="skeleton-cover"></div>
+      <div class="skeleton-cover"></div>
+      <div class="skeleton-cover"></div>
+      <div class="skeleton-cover"></div>
+    </div>
+
+    <!-- Empty state -->
+    <div id="catalog-empty" class="empty-state hidden">
+      <div class="empty-icon">📚</div>
+      <p>Tidak ada buku fisik yang cocok</p>
+    </div>
+
+  </main>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/db.js"></script>
+  <script src="js/katalog-fisik.js"></script>
+</body>
+</html>

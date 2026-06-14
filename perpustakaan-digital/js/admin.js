@@ -3,6 +3,7 @@
    ============================================================= */
 'use strict';
 
+// ── Constants & Auth ──────────────────────────────────────────
 const ADMIN_PASSWORD = 'tlogosarijaya2026';
 const SESSION_KEY    = 'pojokbaca_admin_session';
 
@@ -152,7 +153,7 @@ function renderLoans() {
       </div>
       <div class="admin-card-dates">
         <span>Pinjam: ${formatDate(loan.tanggalPinjam)}</span>
-        <span>Kembali: <span class="${overdue ? 'overdue-text' : ''}">${formatDate(loan.tanggalKembali)}${overdue ? ' Terlambat!' : ''}</span></span>
+        <span>Kembali: <span class="${overdue ? 'overdue-text' : ''}">${formatDate(loan.tanggalKembali)}${overdue ? ' ⚠️ Terlambat!' : ''}</span></span>
       </div>
       ${loan.catatan ? `<div class="admin-card-note">${loan.catatan}</div>` : ''}
       <div class="admin-card-actions">${actionsHTML}</div>
@@ -211,6 +212,161 @@ document.addEventListener('keydown', e => {
     closeConfirmModal();
   }
 });
+
+// ── Tab switching ─────────────────────────────────────────────
+let allBooksData = [];
+
+window.switchAdminTab = function (tab) {
+  const panels = ['peminjaman', 'buku'];
+  panels.forEach(p => {
+    document.getElementById(`panel-${p}`)?.classList.toggle('hidden', p !== tab);
+    document.getElementById(`tab-${p}`)?.classList.toggle('active', p === tab);
+  });
+  if (tab === 'buku' && allBooksData.length === 0) {
+    loadBooks();
+  }
+};
+
+// ── Load books untuk Kelola Buku ──────────────────────────────
+async function loadBooks() {
+  try {
+    const res = await fetch('./data/books.json');
+    if (!res.ok) throw new Error('gagal');
+    const raw = await res.json();
+    allBooksData = BookDB.mergeWithOverrides(raw);
+    renderKelolaBuku(allBooksData, raw);
+  } catch (err) {
+    document.getElementById('empty-kelola')?.classList.remove('hidden');
+  }
+}
+
+// ── Render Kelola Buku ────────────────────────────────────────
+function renderKelolaBuku(books, rawBooks) {
+  const grid = document.getElementById('kelola-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  books.forEach((book) => {
+    const card = document.createElement('div');
+    card.className = 'kelola-card';
+    card.id = `kelola-card-${book.id}`;
+
+    const rawBook = rawBooks.find(b => b.id === book.id) || book;
+    const isOverridden = JSON.stringify({
+      stok: book.stok, online: book.online, offline: book.offline
+    }) !== JSON.stringify({
+      stok: rawBook.stok, online: rawBook.online, offline: rawBook.offline
+    });
+
+    card.innerHTML = `
+      <div class="kelola-card-top">
+        <div class="kelola-cover-mini" style="background:linear-gradient(135deg,${(book.cover_colors||['#6366F1','#4F46E5'])[0]},${(book.cover_colors||['#6366F1','#4F46E5'])[1]})">
+          <span>${book.kategori === 'Novel' ? '📖' : book.kategori === 'Sastra' ? '🪶' : book.kategori === 'Pendidikan' ? '🎓' : '📚'}</span>
+        </div>
+        <div class="kelola-book-info">
+          <div class="kelola-book-title">${book.judul}</div>
+          <div class="kelola-book-author">${book.penulis}</div>
+          <div class="kelola-book-cat">${book.kategori || 'Umum'} · ${book.tahun || '—'}</div>
+          ${isOverridden ? '<span class="kelola-overridden-badge">✏️ Diubah</span>' : ''}
+        </div>
+      </div>
+
+      <div class="kelola-controls">
+        <div class="kelola-control-row">
+          <span class="kelola-label">📦 Stok Fisik</span>
+          <div class="kelola-stok-wrap">
+            <button class="stok-btn stok-minus" onclick="changeStok('${book.id}', -1)" aria-label="Kurangi stok">−</button>
+            <input type="number" class="stok-input" id="stok-${book.id}"
+              value="${book.stok}" min="0" max="99"
+              onchange="saveBookField('${book.id}', 'stok', parseInt(this.value) || 0)">
+            <button class="stok-btn stok-plus" onclick="changeStok('${book.id}', 1)" aria-label="Tambah stok">+</button>
+          </div>
+        </div>
+
+        <div class="kelola-toggles">
+          <label class="kelola-toggle-wrap" for="toggle-offline-${book.id}">
+            <span class="toggle-label-text">📚 Buku Fisik</span>
+            <div class="toggle-switch-wrap">
+              <input type="checkbox" id="toggle-offline-${book.id}" class="toggle-input"
+                ${book.offline ? 'checked' : ''}
+                onchange="saveBookField('${book.id}', 'offline', this.checked)">
+              <span class="toggle-slider"></span>
+            </div>
+          </label>
+          <label class="kelola-toggle-wrap" for="toggle-online-${book.id}">
+            <span class="toggle-label-text">💻 E-Book</span>
+            <div class="toggle-switch-wrap">
+              <input type="checkbox" id="toggle-online-${book.id}" class="toggle-input"
+                ${book.online ? 'checked' : ''}
+                onchange="saveBookField('${book.id}', 'online', this.checked)">
+              <span class="toggle-slider"></span>
+            </div>
+          </label>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+// ── Admin book controls ───────────────────────────────────────
+window.changeStok = function (bookId, delta) {
+  const input = document.getElementById(`stok-${bookId}`);
+  if (!input) return;
+  const newVal = Math.max(0, (parseInt(input.value) || 0) + delta);
+  input.value = newVal;
+  saveBookField(bookId, 'stok', newVal);
+};
+
+window.saveBookField = function (bookId, field, value) {
+  const book = allBooksData.find(b => b.id === bookId);
+  if (!book) return;
+
+  const updates = { [field]: value };
+
+  // Automasi sinkronisasi Stok & Toggle "Buku Fisik" (offline)
+  if (field === 'stok') {
+    if (value === 0 && book.offline) {
+      updates.offline = false;
+      const toggle = document.getElementById(`toggle-offline-${bookId}`);
+      if (toggle) toggle.checked = false;
+    } else if (value > 0 && !book.offline) {
+      updates.offline = true;
+      const toggle = document.getElementById(`toggle-offline-${bookId}`);
+      if (toggle) toggle.checked = true;
+    }
+  } else if (field === 'offline') {
+    if (value === true && book.stok === 0) {
+      updates.stok = 1;
+      const input = document.getElementById(`stok-${bookId}`);
+      if (input) input.value = 1;
+    } else if (value === false && book.stok > 0) {
+      updates.stok = 0;
+      const input = document.getElementById(`stok-${bookId}`);
+      if (input) input.value = 0;
+    }
+  }
+
+  // Simpan perubahan
+  Object.assign(book, updates);
+  BookDB.updateBook(bookId, updates);
+
+  // Tampilkan badge "Diubah" jika belum ada
+  const cardInfo = document.querySelector(`#kelola-card-${bookId} .kelola-book-info`);
+  if (cardInfo && !cardInfo.querySelector('.kelola-overridden-badge')) {
+    cardInfo.insertAdjacentHTML('beforeend', '<span class="kelola-overridden-badge">✏️ Diubah</span>');
+  }
+
+  showToast(`${field === 'stok' ? 'Stok' : field === 'online' ? 'E-Book' : 'Buku Fisik'} diperbarui`, 1800);
+};
+
+window.resetAllOverrides = function () {
+  if (!confirm('Reset semua perubahan ke data awal buku.json?')) return;
+  BookDB.resetAll();
+  allBooksData = [];
+  loadBooks();
+  showToast('Semua perubahan direset', 2600);
+};
 
 // ── Init ──────────────────────────────────────────────────────
 checkSession();

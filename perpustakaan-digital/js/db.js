@@ -1,8 +1,11 @@
 /* =============================================================
-   db.js — Pojok Baca Tlogosari — Loan Database (localStorage)
+   db.js — Pojok Baca Tlogosari — Loan & Book Database (localStorage)
    ============================================================= */
 'use strict';
 
+// ══════════════════════════════════════════════════════════════
+//  LoanDB — Manajemen peminjaman
+// ══════════════════════════════════════════════════════════════
 const LoanDB = (() => {
   const STORAGE_KEY = 'pojokbaca_loans';
 
@@ -164,5 +167,75 @@ const LoanDB = (() => {
     hasActiveLoan,
     getStats,
     getByStatus,
+  };
+})();
+
+
+// ══════════════════════════════════════════════════════════════
+//  BookDB — Admin overrides untuk data buku (stok, online/offline)
+// ══════════════════════════════════════════════════════════════
+const BookDB = (() => {
+  const STORAGE_KEY = 'pojokbaca_book_overrides';
+
+  function getOverrides() {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+    } catch {
+      return {};
+    }
+  }
+
+  function saveOverrides(overrides) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(overrides));
+  }
+
+  /**
+   * Update book override fields
+   * @param {string} bookId
+   * @param {Object} fields - { stok?, online?, offline? }
+   */
+  function updateBook(bookId, fields) {
+    const overrides = getOverrides();
+    if (!overrides[bookId]) overrides[bookId] = {};
+    Object.assign(overrides[bookId], fields);
+    saveOverrides(overrides);
+  }
+
+  /**
+   * Merge original books array with localStorage overrides
+   * @param {Array} books - original books from JSON
+   * @returns {Array} merged books
+   */
+  function mergeWithOverrides(books) {
+    const overrides = getOverrides();
+    return books.map(book => {
+      const ov = overrides[book.id];
+      if (!ov) return book;
+      return { ...book, ...ov };
+    });
+  }
+
+  /**
+   * Get override for a single book
+   * @param {string} bookId
+   * @returns {Object|null}
+   */
+  function getBookOverride(bookId) {
+    return getOverrides()[bookId] || null;
+  }
+
+  /**
+   * Reset all overrides (return to original data)
+   */
+  function resetAll() {
+    localStorage.removeItem(STORAGE_KEY);
+  }
+
+  return {
+    getOverrides,
+    updateBook,
+    mergeWithOverrides,
+    getBookOverride,
+    resetAll,
   };
 })();

@@ -3,10 +3,7 @@
    ============================================================= */
 'use strict';
 
-let allBooks      = [];
-let filteredBooks = [];
-let filterState   = { genre: '', rating: '', sort: 'rating' };
-let customSelects = {};
+let allBooks = [];
 
 // ── DOM refs ──────────────────────────────────────────────────
 const appWrapper     = document.getElementById('app-wrapper');
@@ -15,10 +12,10 @@ const detailBackdrop = document.getElementById('detail-backdrop');
 const popularGrid    = document.getElementById('popular-grid');
 const bookGrid       = document.getElementById('book-grid');
 const bookCount      = document.getElementById('book-count');
-const emptyState     = document.getElementById('empty-state');
 const searchInput    = document.getElementById('search-input');
-const resetBtn       = document.getElementById('reset-btn');
 const toastEl        = document.getElementById('toast');
+
+let homeFilter = 'all'; // 'all' | 'offline' | 'online'
 
 // Detail DOM
 const detailCoverWrap     = document.getElementById('detail-cover-wrap');
@@ -62,90 +59,6 @@ function showToast(msg, ms = 2600) {
   toastEl.classList.add('show');
   _toast = setTimeout(() => toastEl.classList.remove('show'), ms);
 }
-
-// ── Custom Select ─────────────────────────────────────────────
-function buildCustomSelect(containerId, label, options, onChange) {
-  const wrap = document.getElementById(containerId);
-  if (!wrap) return;
-  wrap.innerHTML = '';
-
-  let current = options[0];
-
-  // Chevron SVG
-  const chevronSVG = `<svg class="cs-chevron" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>`;
-
-  // Trigger
-  const trigger = document.createElement('button');
-  trigger.type = 'button';
-  trigger.className = 'cs-trigger';
-
-  const lblEl  = document.createElement('span');
-  lblEl.className = 'cs-lbl';
-  lblEl.textContent = label;
-
-  const divEl  = document.createElement('span');
-  divEl.className = 'cs-divider';
-
-  const valEl  = document.createElement('span');
-  valEl.className = 'cs-val';
-  valEl.textContent = current.label;
-
-  trigger.appendChild(lblEl);
-  trigger.appendChild(divEl);
-  trigger.appendChild(valEl);
-  trigger.insertAdjacentHTML('beforeend', chevronSVG);
-
-  // Dropdown
-  const dropdown = document.createElement('div');
-  dropdown.className = 'cs-dropdown';
-
-  function selectOpt(opt, silent = false) {
-    current = opt;
-    valEl.textContent = opt.label;
-    dropdown.querySelectorAll('.cs-item').forEach(el => {
-      el.classList.toggle('selected', el.dataset.value === String(opt.value));
-    });
-    wrap.classList.remove('open');
-    if (!silent) onChange(opt.value);
-  }
-
-  options.forEach(opt => {
-    const item = document.createElement('div');
-    item.className = 'cs-item' + (opt.value === current.value ? ' selected' : '');
-    item.dataset.value = opt.value;
-
-    const dot = document.createElement('span');
-    dot.className = 'cs-item-dot';
-    item.appendChild(dot);
-    item.appendChild(document.createTextNode(opt.label));
-
-    item.addEventListener('click', () => selectOpt(opt));
-    dropdown.appendChild(item);
-  });
-
-  trigger.addEventListener('click', e => {
-    e.stopPropagation();
-    const isOpen = wrap.classList.contains('open');
-    // Close all other selects
-    document.querySelectorAll('.cs-wrap.open').forEach(el => el.classList.remove('open'));
-    if (!isOpen) wrap.classList.add('open');
-  });
-
-  wrap.appendChild(trigger);
-  wrap.appendChild(dropdown);
-
-  return {
-    reset() { selectOpt(options[0], false); },
-    getValue() { return current.value; },
-  };
-}
-
-// Close any open dropdown on outside click
-document.addEventListener('click', () => {
-  document.querySelectorAll('.cs-wrap.open').forEach(el => el.classList.remove('open'));
-});
 
 // ── Cover builder ─────────────────────────────────────────────
 function buildCover(book, idx, extraClass = '') {
@@ -206,7 +119,7 @@ function buildCard(book, idx) {
   return card;
 }
 
-// ── Render ────────────────────────────────────────────────────
+// ── Render sections ───────────────────────────────────────────
 function renderPopular(books) {
   popularGrid.innerHTML = '';
   const popular = books.filter(b => b.populer);
@@ -218,69 +131,65 @@ function renderPopular(books) {
   popular.forEach((book, i) => popularGrid.appendChild(buildCard(book, i)));
 }
 
-function renderGrid(books) {
+function renderAllBooks(books) {
   bookGrid.innerHTML = '';
-  if (!books.length) {
-    emptyState.classList.remove('hidden');
-    bookCount.textContent = '';
+  const emptyEl = document.getElementById('empty-state');
+
+  let filtered = books;
+  if (homeFilter === 'offline') filtered = books.filter(b => b.offline);
+  if (homeFilter === 'online')  filtered = books.filter(b => b.online);
+
+  if (!filtered.length) {
+    emptyEl?.classList.remove('hidden');
+    if (bookCount) bookCount.textContent = '';
     return;
   }
-  emptyState.classList.add('hidden');
-  const total = allBooks.length;
-  bookCount.textContent = books.length === total
-    ? `${total} buku`
-    : `${books.length} / ${total} buku`;
-  books.forEach((book, i) => bookGrid.appendChild(buildCard(book, i)));
-}
+  emptyEl?.classList.add('hidden');
+  if (bookCount) bookCount.textContent = `${filtered.length} buku`;
 
-// ── Filter & sort ─────────────────────────────────────────────
-function applyFilters() {
-  const q   = searchInput.value.trim().toLowerCase();
-  const { genre, rating, sort } = filterState;
-
-  filteredBooks = allBooks.filter(b => {
-    const mQ = !q ||
-      b.judul.toLowerCase().includes(q) ||
-      b.penulis.toLowerCase().includes(q) ||
-      (b.sinopsis || '').toLowerCase().includes(q);
-    const mG = !genre || (b.kategori || 'Umum') === genre;
-    const mR = !rating || (b.rating || 0) >= parseFloat(rating);
-    return mQ && mG && mR;
+  filtered.forEach((book, i) => {
+    const card = buildCard(book, i);
+    if (book.offline || book.online) {
+      const badge = document.createElement('div');
+      if (book.offline && book.online) {
+        badge.className = 'card-type-badge badge-both';
+        badge.textContent = '📚💻';
+      } else if (book.offline) {
+        badge.className = 'card-type-badge badge-fisik';
+        badge.textContent = '📚 Fisik';
+      } else {
+        badge.className = 'card-type-badge badge-online';
+        badge.textContent = '💻 E-Book';
+      }
+      card.appendChild(badge);
+    }
+    bookGrid.appendChild(card);
   });
+}
 
-  filteredBooks.sort((a, b) => {
-    if (sort === 'tahun') return (b.tahun || 0) - (a.tahun || 0);
-    if (sort === 'judul') return a.judul.localeCompare(b.judul);
-    return (b.rating || 0) - (a.rating || 0);
+window.setHomeFilter = function (filter) {
+  homeFilter = filter;
+  document.querySelectorAll('.home-tab').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.filter === filter);
   });
+  handleSearch();
+};
 
-  renderGrid(filteredBooks);
+// ── Search (live filter pada homepage) ─────────────────────────
+function handleSearch() {
+  const q = searchInput.value.trim().toLowerCase();
+  const src = q
+    ? allBooks.filter(b =>
+        b.judul.toLowerCase().includes(q) ||
+        b.penulis.toLowerCase().includes(q) ||
+        (b.sinopsis || '').toLowerCase().includes(q)
+      )
+    : allBooks;
+  renderPopular(src);
+  renderAllBooks(src);
 }
 
-// ── Init custom selects ───────────────────────────────────────
-function initSelects(books) {
-  const genres = [...new Set(books.map(b => b.kategori || 'Umum'))];
-  const genreOpts = [
-    { value: '', label: 'Semua Genre' },
-    ...genres.map(g => ({ value: g, label: `${catEmoji(g)} ${g}` })),
-  ];
-
-  const ratingOpts = [
-    { value: '',    label: 'Semua Rating' },
-    { value: '4.5', label: '★ 4.5 ke atas' },
-    { value: '4',   label: '★ 4.0 ke atas' },
-  ];
-
-  const sortOpts = [
-    { value: 'rating', label: 'Rating Tertinggi' },
-    { value: 'tahun',  label: 'Terbaru' },
-    { value: 'judul',  label: 'A – Z' },
-  ];
-
-  customSelects.genre  = buildCustomSelect('cs-genre',  'Genre',  genreOpts,  v => { filterState.genre  = v; applyFilters(); });
-  customSelects.rating = buildCustomSelect('cs-rating', 'Rating', ratingOpts, v => { filterState.rating = v; applyFilters(); });
-  customSelects.sort   = buildCustomSelect('cs-sort',   'Urutan', sortOpts,   v => { filterState.sort   = v; applyFilters(); });
-}
+searchInput && searchInput.addEventListener('input', handleSearch);
 
 // ── Open detail ───────────────────────────────────────────────
 function openDetail(book) {
@@ -327,12 +236,18 @@ function openDetail(book) {
     document.body.style.overflow = 'hidden';
   }
 
-  // ── Stock & borrow ───────────────────────────────────────
+  // ── Stock & borrow ─────────────────────────────────────────
   const totalStok = book.stok || 0;
   const activeLoans = LoanDB.getActiveLoansForBook(book.id);
   const available = Math.max(0, totalStok - activeLoans);
   detailStock.textContent = `${available} / ${totalStok}`;
   detailStock.className = 'borrow-stock-badge ' + (available > 0 ? 'stock-ok' : 'stock-empty');
+
+  // Sembunyikan borrow section jika buku tidak offline
+  const borrowSection = document.querySelector('.borrow-section');
+  if (borrowSection) {
+    borrowSection.style.display = book.offline ? '' : 'none';
+  }
 
   if (available > 0) {
     btnBorrow.disabled = false;
@@ -355,18 +270,6 @@ window.closeDetail = function () {
   detailBackdrop.classList.add('hidden');
   document.body.style.overflow = '';
 };
-
-// ── Event listeners ───────────────────────────────────────────
-searchInput.addEventListener('input', applyFilters);
-
-resetBtn.addEventListener('click', () => {
-  searchInput.value = '';
-  filterState = { genre: '', rating: '', sort: 'rating' };
-  customSelects.genre?.reset();
-  customSelects.rating?.reset();
-  customSelects.sort?.reset();
-  applyFilters();
-});
 
 // ── Borrow Modal ──────────────────────────────────────────────
 const borrowModalOverlay = document.getElementById('borrow-modal-overlay');
@@ -405,13 +308,11 @@ window.submitBorrow = function (e) {
     return;
   }
 
-  // Check if user already has active loan for this book
   if (LoanDB.hasActiveLoan(book.id, hp)) {
     showToast('Anda sudah meminjam buku ini', 3000);
     return;
   }
 
-  // Check stock availability
   const totalStok = book.stok || 0;
   const activeLoans = LoanDB.getActiveLoansForBook(book.id);
   if (activeLoans >= totalStok) {
@@ -419,18 +320,9 @@ window.submitBorrow = function (e) {
     return;
   }
 
-  LoanDB.createLoan({
-    bookId: book.id,
-    bookTitle: book.judul,
-    nama,
-    dusun,
-    hp,
-  });
-
+  LoanDB.createLoan({ bookId: book.id, bookTitle: book.judul, nama, dusun, hp });
   closeBorrowModal();
   showToast('Peminjaman berhasil diajukan!', 3500);
-
-  // Refresh stock display
   openDetail(book);
 };
 
@@ -445,20 +337,32 @@ document.addEventListener('keydown', e => {
   }
 });
 
+// ── URL param: ?book=ID (redirect dari halaman katalog) ────────
+function checkUrlBook() {
+  const params = new URLSearchParams(window.location.search);
+  const bookId = params.get('book');
+  if (bookId) {
+    const book = allBooks.find(b => b.id === bookId);
+    if (book) {
+      setTimeout(() => openDetail(book), 200);
+    }
+  }
+}
+
 // ── Init ──────────────────────────────────────────────────────
 async function init() {
   try {
     const res = await fetch('./data/books.json');
     if (!res.ok) throw new Error('books.json tidak ditemukan');
-    allBooks = await res.json();
-    filteredBooks = [...allBooks];
-    initSelects(allBooks);
+    const raw = await res.json();
+    allBooks = BookDB.mergeWithOverrides(raw);
+
     renderPopular(allBooks);
-    renderGrid(allBooks);
+    renderAllBooks(allBooks);
+
+    checkUrlBook();
   } catch (err) {
     console.error(err);
-    bookGrid.innerHTML = '';
-    emptyState.classList.remove('hidden');
     showToast('Gagal memuat data buku', 4000);
   }
 }

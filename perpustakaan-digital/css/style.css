@@ -338,6 +338,28 @@ h1 {
 }
 
 /* ============================================================
+   CATALOG TABS (Online/Offline)
+   ============================================================ */
+.catalog-tabs {
+  display: flex; gap: 8px; margin-bottom: 16px;
+  background: var(--bg-card); padding: 6px; border-radius: 12px;
+  border: 1.5px solid var(--border); width: fit-content;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+.catalog-tab {
+  padding: 8px 16px; border-radius: 8px;
+  font-size: 0.85rem; font-weight: 700; color: var(--text-med);
+  transition: all 0.2s var(--ease);
+}
+.catalog-tab:hover {
+  background: var(--bg); color: var(--text-dark);
+}
+.catalog-tab.active {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white; box-shadow: 0 4px 12px rgba(99,102,241,0.25);
+}
+
+/* ============================================================
    FILTERS BAR + CUSTOM SELECT
    ============================================================ */
 .filters-bar {
@@ -483,13 +505,57 @@ h1 {
   gap: 16px;
 }
 
+/* ── Home Tabs ───────────────────────────────────────────── */
+.home-tabs {
+  display: flex; gap: 4px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  padding: 5px;
+  width: fit-content;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.home-tab {
+  padding: 8px 16px; border-radius: 10px;
+  font-size: 0.8rem; font-weight: 700;
+  color: var(--text-med);
+  transition: all 0.2s var(--ease);
+  font-family: var(--font);
+}
+.home-tab:hover { background: var(--bg-card); color: var(--text-dark); }
+.home-tab.active {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  color: white;
+  box-shadow: 0 4px 14px rgba(99,102,241,0.25);
+}
+
+@media (max-width: 600px) {
+  .home-tabs { width: 100%; }
+  .home-tab { flex: 1; text-align: center; padding: 8px 6px; }
+}
+
 /* ── BOOK CARD ───────────────────────────────────────────── */
 .book-card {
   cursor: pointer;
   display: flex; flex-direction: column;
   gap: 8px;
+  position: relative;
   animation: cardIn 0.4s var(--ease) both;
 }
+
+.card-type-badge {
+  position: absolute; top: 10px; right: 10px; z-index: 5;
+  font-size: 0.65rem; font-weight: 800;
+  padding: 4px 8px; border-radius: 6px;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  color: var(--text-dark);
+}
+.badge-fisik { color: #059669; }
+.badge-online { color: var(--primary); }
+.badge-both { color: #D97706; }
 @keyframes cardIn {
   from { opacity:0; transform:translateY(12px); }
   to   { opacity:1; transform:translateY(0); }
@@ -925,3 +991,182 @@ h1 {
 
 /* ── UTILITY ─────────────────────────────────────────────── */
 .hidden { display: none !important; }
+
+/* ============================================================
+   PREVIEW SECTIONS (Homepage — Buku Fisik & E-Book)
+   ============================================================ */
+.preview-section { padding-top: 8px; }
+
+.section-header-left {
+  display: flex; flex-direction: column; gap: 2px;
+}
+.section-sub {
+  font-size: 0.74rem; font-weight: 500;
+  color: var(--text-light); margin-top: 2px;
+}
+
+/* "Lihat Semua →" button */
+.see-all-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 18px; border-radius: 99px;
+  font-size: 0.78rem; font-weight: 800;
+  color: var(--primary);
+  background: var(--primary-pale);
+  border: 1.5px solid var(--border-hi);
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.see-all-btn:hover {
+  background: var(--primary); color: white;
+  border-color: var(--primary);
+  box-shadow: 0 4px 14px rgba(99,102,241,0.3);
+  transform: translateY(-1px);
+}
+.see-all-btn:active { transform: scale(0.97); }
+.see-all-arrow {
+  font-size: 1rem; font-weight: 900;
+  transition: transform 0.2s;
+}
+.see-all-btn:hover .see-all-arrow {
+  transform: translateX(3px);
+}
+
+/* Card badges */
+.book-card { position: relative; }
+
+.card-stock-badge {
+  position: absolute; top: 8px; left: 8px; z-index: 10;
+  font-size: 0.6rem; font-weight: 800;
+  padding: 3px 8px; border-radius: 99px;
+  backdrop-filter: blur(4px);
+  letter-spacing: 0.2px;
+}
+.badge-ok    { background: rgba(16,185,129,0.9); color: white; }
+.badge-empty { background: rgba(220,38,38,0.85); color: white; }
+
+.card-online-badge {
+  position: absolute; top: 8px; left: 8px; z-index: 10;
+  font-size: 0.6rem; font-weight: 800;
+  padding: 3px 8px; border-radius: 99px;
+  background: rgba(99,102,241,0.9);
+  color: white;
+  backdrop-filter: blur(4px);
+  letter-spacing: 0.2px;
+}
+/* ============================================================
+   MOBILE RESPONSIVE — Comprehensive Fixes
+   ============================================================ */
+
+/* ── Header ─────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .cat-header {
+    padding: 10px 16px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .search-wrap {
+    order: 3;
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+  .logo-img { height: 36px; }
+  .header-nav { margin-left: auto; }
+}
+
+/* ── Hero ────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .hero {
+    padding: 24px 16px 20px;
+    gap: 16px;
+  }
+  h1 { font-size: 1.5rem; }
+  .hero-sub { font-size: 0.8rem; margin-bottom: 16px; }
+  .btn-primary, .btn-outline {
+    padding: 10px 18px;
+    font-size: 0.8rem;
+  }
+}
+
+/* ── Sections ────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .books-section { padding: 16px; }
+  .preview-section { padding-top: 4px; }
+
+  .section-header {
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .section-header-left { flex: 1; }
+  .see-all-btn {
+    padding: 6px 14px;
+    font-size: 0.72rem;
+  }
+
+  /* Book scroll cards — smaller on mobile */
+  .books-scroll .book-card { width: 130px; }
+  .books-scroll .skeleton-cover { width: 130px; }
+  .books-scroll { gap: 10px; }
+
+  /* Book grid — 2 columns on small phones */
+  .books-grid {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+  }
+}
+
+/* ── Detail Panel (mobile) ─────────────────────────────── */
+@media (max-width: 480px) {
+  .detail-inner { min-width: unset; }
+
+  .detail-top {
+    flex-direction: row;
+    gap: 14px;
+    padding: 16px;
+  }
+  .detail-cover-wrap { width: 100px; }
+
+  .detail-title { font-size: 0.95rem; }
+  .detail-section { padding: 16px; }
+  .detail-section-title { font-size: 0.82rem; }
+  .detail-synopsis { font-size: 0.77rem; }
+
+  .legal-card { padding: 12px; }
+  .legal-card-head { gap: 8px; margin-bottom: 8px; }
+  .legal-card-icon { width: 30px; height: 30px; font-size: 0.95rem; }
+  .legal-link { padding: 8px 10px; font-size: 0.74rem; }
+
+  .borrow-card { padding: 14px; }
+  .btn-borrow { padding: 12px; font-size: 0.9rem; }
+
+  .detail-disclaimer { margin: 12px 16px 20px; font-size: 0.72rem; }
+}
+
+/* ── Borrow Modal (mobile) ─────────────────────────────── */
+@media (max-width: 480px) {
+  .modal-card { border-radius: 20px; }
+  .modal-header { padding: 16px 18px; }
+  .modal-book-info { padding: 14px 18px; }
+  #borrow-form { padding: 16px 18px; }
+}
+
+/* ── Admin Tabs (mobile) ─────────────────────────────────── */
+@media (max-width: 480px) {
+  .admin-tabs {
+    width: 100%;
+    justify-content: stretch;
+  }
+  .admin-tab {
+    flex: 1;
+    text-align: center;
+    padding: 10px 8px;
+    font-size: 0.8rem;
+  }
+}
+
+/* Safe area for notched phones (PWA) */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .catalog-panel { padding-bottom: env(safe-area-inset-bottom); }
+  .toast { bottom: calc(24px + env(safe-area-inset-bottom)); }
+}

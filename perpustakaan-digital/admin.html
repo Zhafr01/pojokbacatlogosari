@@ -62,12 +62,15 @@
         <h1 class="page-title">Dashboard Admin</h1>
         <nav class="header-nav">
           <a href="index.html" class="nav-link">
+            <span class="nav-icon">🏠</span>
             <span class="nav-text">Katalog</span>
           </a>
           <a href="peminjaman.html" class="nav-link">
+            <span class="nav-icon">📋</span>
             <span class="nav-text">Peminjaman</span>
           </a>
           <button class="nav-link nav-logout" onclick="logout()">
+            <span class="nav-icon">🚪</span>
             <span class="nav-text">Logout</span>
           </button>
         </nav>
@@ -77,43 +80,71 @@
     <!-- Main -->
     <main class="page-main">
 
-      <!-- Stats Cards -->
-      <section class="stats-grid">
-        <div class="stat-card stat-total">
-          <div class="stat-num" id="stat-total">0</div>
-          <div class="stat-label">Total Peminjaman</div>
-        </div>
-        <div class="stat-card stat-pending">
-          <div class="stat-num" id="stat-menunggu">0</div>
-          <div class="stat-label">Menunggu</div>
-        </div>
-        <div class="stat-card stat-active">
-          <div class="stat-num" id="stat-dipinjam">0</div>
-          <div class="stat-label">Dipinjam</div>
-        </div>
-        <div class="stat-card stat-returned">
-          <div class="stat-num" id="stat-dikembalikan">0</div>
-          <div class="stat-label">Dikembalikan</div>
-        </div>
-      </section>
-
-      <!-- Filter Bar -->
-      <section class="admin-filter-bar">
-        <button class="admin-filter-btn active" data-status="" onclick="filterAdmin('')">Semua</button>
-        <button class="admin-filter-btn" data-status="menunggu" onclick="filterAdmin('menunggu')">⏳ Menunggu</button>
-        <button class="admin-filter-btn" data-status="dipinjam" onclick="filterAdmin('dipinjam')">📖 Dipinjam</button>
-        <button class="admin-filter-btn" data-status="dikembalikan" onclick="filterAdmin('dikembalikan')">✅
-          Kembali</button>
-        <button class="admin-filter-btn" data-status="ditolak" onclick="filterAdmin('ditolak')">❌ Ditolak</button>
-      </section>
-
-      <!-- Loan Table / Cards -->
-      <section class="admin-loans" id="admin-loans"></section>
-
-      <!-- Empty Admin -->
-      <div class="empty-admin hidden" id="empty-admin">
-        <p class="empty-search-text">Belum ada data peminjaman.</p>
+      <!-- Admin Tabs -->
+      <div class="admin-tabs" id="admin-tabs">
+        <button class="admin-tab active" id="tab-peminjaman" onclick="switchAdminTab('peminjaman')">
+          📋 Peminjaman
+        </button>
+        <button class="admin-tab" id="tab-buku" onclick="switchAdminTab('buku')">
+          📚 Kelola Buku
+        </button>
       </div>
+
+      <!-- ── TAB: PEMINJAMAN ── -->
+      <div id="panel-peminjaman">
+
+        <!-- Stats Cards -->
+        <section class="stats-grid">
+          <div class="stat-card stat-total">
+            <div class="stat-num" id="stat-total">0</div>
+            <div class="stat-label">Total Peminjaman</div>
+          </div>
+          <div class="stat-card stat-pending">
+            <div class="stat-num" id="stat-menunggu">0</div>
+            <div class="stat-label">Menunggu</div>
+          </div>
+          <div class="stat-card stat-active">
+            <div class="stat-num" id="stat-dipinjam">0</div>
+            <div class="stat-label">Dipinjam</div>
+          </div>
+          <div class="stat-card stat-returned">
+            <div class="stat-num" id="stat-dikembalikan">0</div>
+            <div class="stat-label">Dikembalikan</div>
+          </div>
+        </section>
+
+        <!-- Filter Bar -->
+        <section class="admin-filter-bar">
+          <button class="admin-filter-btn active" data-status="" onclick="filterAdmin('')">Semua</button>
+          <button class="admin-filter-btn" data-status="menunggu" onclick="filterAdmin('menunggu')">⏳ Menunggu</button>
+          <button class="admin-filter-btn" data-status="dipinjam" onclick="filterAdmin('dipinjam')">📖 Dipinjam</button>
+          <button class="admin-filter-btn" data-status="dikembalikan" onclick="filterAdmin('dikembalikan')">✅ Kembali</button>
+          <button class="admin-filter-btn" data-status="ditolak" onclick="filterAdmin('ditolak')">❌ Ditolak</button>
+        </section>
+
+        <!-- Loan Table / Cards -->
+        <section class="admin-loans" id="admin-loans"></section>
+
+        <!-- Empty Admin -->
+        <div class="empty-admin hidden" id="empty-admin">
+          <p class="empty-search-text">Belum ada data peminjaman.</p>
+        </div>
+
+      </div><!-- /panel-peminjaman -->
+
+      <!-- ── TAB: KELOLA BUKU ── -->
+      <div id="panel-buku" class="hidden">
+        <div class="kelola-header">
+          <p class="kelola-desc">Ubah stok dan ketersediaan (online/offline) buku. Perubahan disimpan di perangkat ini.</p>
+          <button class="btn-reset-overrides" id="btn-reset-overrides" onclick="resetAllOverrides()">
+            🔄 Reset Semua Perubahan
+          </button>
+        </div>
+        <div class="kelola-grid" id="kelola-grid"></div>
+        <div class="empty-admin hidden" id="empty-kelola">
+          <p class="empty-search-text">Gagal memuat data buku.</p>
+        </div>
+      </div><!-- /panel-buku -->
 
     </main>
   </div>

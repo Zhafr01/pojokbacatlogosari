@@ -54,7 +54,7 @@
         <p class="hero-sub">Katalog buku pilihan dengan sumber legal<br>untuk dibaca online atau dibeli.</p>
         <div class="hero-btns">
           <button class="btn-primary" onclick="document.getElementById('all-section').scrollIntoView({behavior:'smooth'})">
-            Jelajahi Semua Buku
+            Jelajahi Koleksi
           </button>
           <button class="btn-outline" onclick="document.getElementById('popular-section').scrollIntoView({behavior:'smooth'})">
             Buku Populer
@@ -73,7 +73,7 @@
     <!-- Popular Books -->
     <section class="books-section" id="popular-section">
       <div class="section-header">
-        <h2 class="section-title">Buku Populer</h2>
+        <h2 class="section-title">🔥 Buku Populer</h2>
       </div>
       <div class="books-scroll" id="popular-grid">
         <div class="skeleton-cover"></div>
@@ -83,21 +83,27 @@
       </div>
     </section>
 
-    <!-- All Books -->
+    <!-- Semua Buku -->
     <section class="books-section" id="all-section">
 
-      <!-- Filters — custom dropdown (diisi JS) -->
-      <div class="filters-bar">
-        <div class="cs-wrap" id="cs-genre"></div>
-        <div class="cs-wrap" id="cs-rating"></div>
-        <div class="cs-wrap" id="cs-sort"></div>
-        <button class="reset-btn" id="reset-btn">↺ Reset</button>
+      <!-- Tab filter Fisik / E-Book / Semua -->
+      <div class="home-tabs" id="home-tabs">
+        <button class="home-tab active" data-filter="all" onclick="setHomeFilter('all')">
+          📚 Semua
+        </button>
+        <button class="home-tab" data-filter="offline" onclick="setHomeFilter('offline')">
+          📚 Buku Fisik
+        </button>
+        <button class="home-tab" data-filter="online" onclick="setHomeFilter('online')">
+          💻 E-Book
+        </button>
       </div>
 
-      <div class="section-header">
-        <h2 class="section-title">Semua Buku</h2>
+      <div class="section-header" style="margin-top:12px">
+        <h2 class="section-title">Semua Koleksi</h2>
         <span id="book-count" class="book-count-badge"></span>
       </div>
+
       <div class="books-grid" id="book-grid" role="list">
         <div class="skeleton-cover"></div>
         <div class="skeleton-cover"></div>
@@ -106,10 +112,12 @@
         <div class="skeleton-cover"></div>
         <div class="skeleton-cover"></div>
       </div>
+
       <div id="empty-state" class="empty-state hidden">
         <div class="empty-icon">🔍</div>
         <p>Buku tidak ditemukan</p>
       </div>
+
     </section>
 
   </div><!-- /catalog-panel -->
