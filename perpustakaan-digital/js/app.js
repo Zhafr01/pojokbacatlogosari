@@ -15,7 +15,8 @@ const bookCount      = document.getElementById('book-count');
 const searchInput    = document.getElementById('search-input');
 const toastEl        = document.getElementById('toast');
 
-let homeFilter = 'all'; // 'all' | 'offline' | 'online'
+let homeFilter   = 'all'; // 'all' | 'offline' | 'online'
+let homeFilterState = { genre: '', rating: '', sort: 'default' };
 
 // Detail DOM
 const detailCoverWrap     = document.getElementById('detail-cover-wrap');
@@ -74,20 +75,21 @@ function buildCover(book, idx, extraClass = '') {
   spine.style.background = c2;
   wrap.appendChild(spine);
 
-  if (book.cover) {
-    const img = document.createElement('img');
-    img.src = book.cover;
-    img.alt = book.judul;
-    img.loading = 'lazy';
-    img.onerror = () => img.remove();
-    wrap.appendChild(img);
-  }
-
   const fallback = document.createElement('div');
   fallback.className = 'cover-fallback';
   fallback.innerHTML = `
     <span class="cf-emoji">${catEmoji(cat)}</span>
     <span class="cf-title">${book.judul}</span>`;
+
+  if (book.cover) {
+    const img = document.createElement('img');
+    img.src = book.cover;
+    img.alt = book.judul;
+    img.loading = 'lazy';
+    img.onload = () => { fallback.style.display = 'none'; }; // Sembunyikan fallback jika gambar berhasil di-load
+    img.onerror = () => { img.remove(); fallback.style.display = 'flex'; }; // Tampilkan fallback jika gagal
+    wrap.appendChild(img);
+  }
   wrap.appendChild(fallback);
   return wrap;
 }
@@ -135,9 +137,26 @@ function renderAllBooks(books) {
   bookGrid.innerHTML = '';
   const emptyEl = document.getElementById('empty-state');
 
+  // 1. Filter berdasarkan tipe (tab)
   let filtered = books;
   if (homeFilter === 'offline') filtered = books.filter(b => b.offline);
   if (homeFilter === 'online')  filtered = books.filter(b => b.online);
+
+  // 2. Filter genre
+  if (homeFilterState.genre) {
+    filtered = filtered.filter(b => (b.kategori || 'Umum') === homeFilterState.genre);
+  }
+
+  // 3. Filter rating minimum
+  if (homeFilterState.rating) {
+    filtered = filtered.filter(b => (b.rating || 0) >= parseFloat(homeFilterState.rating));
+  }
+
+  // 4. Urutkan
+  const sort = homeFilterState.sort;
+  if (sort === 'rating') filtered = [...filtered].sort((a, b) => (b.rating || 0) - (a.rating || 0));
+  else if (sort === 'tahun') filtered = [...filtered].sort((a, b) => (b.tahun || 0) - (a.tahun || 0));
+  else if (sort === 'judul') filtered = [...filtered].sort((a, b) => a.judul.localeCompare(b.judul, 'id'));
 
   if (!filtered.length) {
     emptyEl?.classList.remove('hidden');
@@ -174,6 +193,92 @@ window.setHomeFilter = function (filter) {
   });
   handleSearch();
 };
+
+function initHomeFilters(books) {
+  const genres = [...new Set(books.map(b => b.kategori || 'Umum'))].sort();
+  const genreContainer = document.getElementById('hf-genres');
+  
+  if (genreContainer) {
+    let genreHtml = `<button class="hf-genre-pill active" data-genre="">Semua</button>`;
+    genres.forEach(g => {
+      genreHtml += `<button class="hf-genre-pill" data-genre="${g}">${g}</button>`;
+    });
+    genreContainer.innerHTML = genreHtml;
+
+    genreContainer.querySelectorAll('.hf-genre-pill').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        genreContainer.querySelectorAll('.hf-genre-pill').forEach(b => b.classList.remove('active'));
+        e.currentTarget.classList.add('active');
+        homeFilterState.genre = e.currentTarget.dataset.genre;
+        handleSearch();
+      });
+    });
+  }
+
+  function setupDropdown(id, stateKey, onChange) {
+    const dd = document.getElementById(id);
+    if (!dd) return;
+    const trigger = dd.querySelector('.cd-trigger');
+    const valText = dd.querySelector('.cd-value');
+    const items = dd.querySelectorAll('.cd-item');
+
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      document.querySelectorAll('.custom-dropdown.open').forEach(el => {
+        if (el !== dd) el.classList.remove('open');
+      });
+      dd.classList.toggle('open');
+    });
+
+    items.forEach(item => {
+      item.addEventListener('click', () => {
+        items.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        valText.textContent = item.textContent;
+        homeFilterState[stateKey] = item.dataset.value;
+        dd.classList.remove('open');
+        onChange();
+      });
+    });
+  }
+
+  setupDropdown('dd-rating', 'rating', handleSearch);
+  setupDropdown('dd-sort', 'sort', handleSearch);
+
+  // Close dropdowns on outside click
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.custom-dropdown.open').forEach(el => el.classList.remove('open'));
+  });
+
+  const resetBtn = document.getElementById('home-reset-btn');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      homeFilterState = { genre: '', rating: '', sort: 'default' };
+      
+      const ddRating = document.getElementById('dd-rating');
+      if (ddRating) {
+        ddRating.querySelector('.cd-value').textContent = 'Semua';
+        ddRating.querySelectorAll('.cd-item').forEach(i => i.classList.remove('active'));
+        ddRating.querySelector('[data-value=""]').classList.add('active');
+      }
+
+      const ddSort = document.getElementById('dd-sort');
+      if (ddSort) {
+        ddSort.querySelector('.cd-value').textContent = 'Default';
+        ddSort.querySelectorAll('.cd-item').forEach(i => i.classList.remove('active'));
+        ddSort.querySelector('[data-value="default"]').classList.add('active');
+      }
+
+      if (genreContainer) {
+        genreContainer.querySelectorAll('.hf-genre-pill').forEach(b => b.classList.remove('active'));
+        const allBtn = genreContainer.querySelector('[data-genre=""]');
+        if (allBtn) allBtn.classList.add('active');
+      }
+      searchInput.value = '';
+      handleSearch();
+    });
+  }
+}
 
 // ── Search (live filter pada homepage) ─────────────────────────
 function handleSearch() {
@@ -357,6 +462,7 @@ async function init() {
     const raw = await res.json();
     allBooks = BookDB.mergeWithOverrides(raw);
 
+    initHomeFilters(allBooks);
     renderPopular(allBooks);
     renderAllBooks(allBooks);
 

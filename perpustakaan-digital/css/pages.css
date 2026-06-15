@@ -513,6 +513,20 @@
   display: flex; align-items: center; justify-content: center;
   font-size: 1.6rem;
   box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  position: relative;
+  overflow: hidden;
+}
+.kelola-cover-upload {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 1.2rem;
+  opacity: 0; transition: opacity 0.2s;
+  cursor: pointer;
+}
+.kelola-cover-mini:hover .kelola-cover-upload {
+  opacity: 1;
 }
 .kelola-book-info { flex: 1; min-width: 0; }
 .kelola-book-title {

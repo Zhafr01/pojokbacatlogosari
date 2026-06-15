@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=3">
 </head>
 <body>
 
@@ -99,7 +99,45 @@
         </button>
       </div>
 
-      <div class="section-header" style="margin-top:12px">
+      <!-- Filter Genre, Rating, Sort -->
+      <div class="home-filters" id="home-filters">
+        <div class="hf-row">
+          <div class="hf-genres" id="hf-genres">
+            <!-- Diisi JS -->
+          </div>
+          <div class="hf-selects">
+            <div class="custom-dropdown" id="dd-rating">
+              <div class="cd-trigger">
+                <span class="cd-label">⭐ Rating</span>
+                <span class="cd-value">Semua</span>
+                <span class="cd-icon">▾</span>
+              </div>
+              <div class="cd-menu">
+                <div class="cd-item active" data-value="">Semua</div>
+                <div class="cd-item" data-value="4.5">★ 4.5+</div>
+                <div class="cd-item" data-value="4.0">★ 4.0+</div>
+                <div class="cd-item" data-value="3.5">★ 3.5+</div>
+              </div>
+            </div>
+            <div class="custom-dropdown" id="dd-sort">
+              <div class="cd-trigger">
+                <span class="cd-label">↕ Urutan</span>
+                <span class="cd-value">Default</span>
+                <span class="cd-icon">▾</span>
+              </div>
+              <div class="cd-menu">
+                <div class="cd-item active" data-value="default">Default</div>
+                <div class="cd-item" data-value="rating">Rating ↓</div>
+                <div class="cd-item" data-value="tahun">Terbaru</div>
+                <div class="cd-item" data-value="judul">A – Z</div>
+              </div>
+            </div>
+            <button class="hf-reset-btn" id="home-reset-btn">↺ Reset</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-header" style="margin-top:4px">
         <h2 class="section-title">Semua Koleksi</h2>
         <span id="book-count" class="book-count-badge"></span>
       </div>
@@ -264,7 +302,7 @@
   </div>
 </div>
 
-<script src="js/db.js"></script>
-<script src="js/app.js"></script>
+<script src="js/db.js?v=3"></script>
+<script src="js/app.js?v=3"></script>
 </body>
 </html>

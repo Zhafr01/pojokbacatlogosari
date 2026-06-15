@@ -260,8 +260,12 @@ function renderKelolaBuku(books, rawBooks) {
 
     card.innerHTML = `
       <div class="kelola-card-top">
-        <div class="kelola-cover-mini" style="background:linear-gradient(135deg,${(book.cover_colors||['#6366F1','#4F46E5'])[0]},${(book.cover_colors||['#6366F1','#4F46E5'])[1]})">
-          <span>${book.kategori === 'Novel' ? '📖' : book.kategori === 'Sastra' ? '🪶' : book.kategori === 'Pendidikan' ? '🎓' : '📚'}</span>
+        <div class="kelola-cover-mini" style="background:linear-gradient(135deg,${(book.cover_colors||['#6366F1','#4F46E5'])[0]},${(book.cover_colors||['#6366F1','#4F46E5'])[1]});${book.cover ? `background-image:url(${book.cover});background-size:cover;background-position:center;` : ''}">
+          ${!book.cover ? `<span>${book.kategori === 'Novel' ? '📖' : book.kategori === 'Sastra' ? '🪶' : book.kategori === 'Pendidikan' ? '🎓' : '📚'}</span>` : ''}
+          <label class="kelola-cover-upload" title="Ubah Cover" for="cover-upload-${book.id}">
+            📷
+            <input type="file" id="cover-upload-${book.id}" accept="image/*" style="display:none;" onchange="uploadCover('${book.id}', this)">
+          </label>
         </div>
         <div class="kelola-book-info">
           <div class="kelola-book-title">${book.judul}</div>
@@ -316,6 +320,39 @@ window.changeStok = function (bookId, delta) {
   const newVal = Math.max(0, (parseInt(input.value) || 0) + delta);
   input.value = newVal;
   saveBookField(bookId, 'stok', newVal);
+};
+
+window.uploadCover = function(bookId, inputEl) {
+  const file = inputEl.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      // Resize with canvas to prevent massive base64 strings in localStorage
+      const canvas = document.createElement('canvas');
+      const MAX_WIDTH = 300;
+      let width = img.width;
+      let height = img.height;
+
+      if (width > MAX_WIDTH) {
+        height = Math.round((height * MAX_WIDTH) / width);
+        width = MAX_WIDTH;
+      }
+      canvas.width = width;
+      canvas.height = height;
+
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+      saveBookField(bookId, 'cover', dataUrl);
+      showToast('Cover buku berhasil diperbarui');
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
 };
 
 window.saveBookField = function (bookId, field, value) {
