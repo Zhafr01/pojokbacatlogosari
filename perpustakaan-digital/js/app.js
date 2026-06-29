@@ -27,6 +27,8 @@ const detailTitle         = document.getElementById('detail-title');
 const detailScore         = document.getElementById('detail-score');
 const detailCount         = document.getElementById('detail-count');
 const diPenulis           = document.getElementById('di-penulis');
+const diTempatTerbit      = document.getElementById('di-tempat-terbit');
+const diPenerbit          = document.getElementById('di-penerbit');
 const diTahun             = document.getElementById('di-tahun');
 const diBahasa            = document.getElementById('di-bahasa');
 const diHalaman           = document.getElementById('di-halaman');
@@ -271,15 +273,25 @@ function openDetail(book) {
   const bgColor = getVintageColor(idx);
   const cat = book.kategori || 'Umum';
 
-  detailCoverWrap.style.background = bgColor;
+  if (book.cover) {
+    detailCoverWrap.style.background = `url(${book.cover}) center/cover no-repeat`;
+    detailCoverEmoji.style.display = 'none';
+    detailCoverTitle.style.display = 'none';
+  } else {
+    detailCoverWrap.style.background = bgColor;
+    detailCoverEmoji.style.display = '';
+    detailCoverTitle.style.display = '';
+    detailCoverEmoji.textContent = catEmoji(cat);
+    detailCoverTitle.textContent = book.judul;
+  }
   detailCoverWrap.style.border = '1.5px solid rgba(0,0,0,0.15)';
-  detailCoverEmoji.textContent = catEmoji(cat);
-  detailCoverTitle.textContent = book.judul;
   detailCat.textContent = `${catEmoji(cat)} ${cat}`;
   detailTitle.textContent = book.judul;
   detailScore.textContent = (book.rating || 0).toFixed(1);
   detailCount.textContent = book.rating_count ? `(${book.rating_count} rating)` : '';
   diPenulis.textContent  = book.penulis  || '—';
+  diTempatTerbit.textContent = book.tempat_terbit || '—';
+  diPenerbit.textContent = book.penerbit || '—';
   diTahun.textContent    = book.tahun    || '—';
   diBahasa.textContent   = book.bahasa   || '—';
   diHalaman.textContent  = book.halaman  ? `${book.halaman} halaman` : '—';

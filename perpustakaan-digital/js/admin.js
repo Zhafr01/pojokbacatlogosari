@@ -501,7 +501,10 @@ function renderKelolaBuku(books, rawBooks) {
           </label>
         </div>
         <div class="kelola-book-info">
-          <div class="kelola-book-title">${book.judul}</div>
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap: 8px;">
+            <div class="kelola-book-title">${book.judul}</div>
+            <button onclick="openBookFormModal('${book.id}')" style="background:transparent; border:1px solid var(--border-hi); border-radius:4px; cursor:pointer; font-size:0.9rem; padding: 2px 6px;" title="Edit Identitas">✏️</button>
+          </div>
           <div class="kelola-book-author">${book.penulis}</div>
           <div class="kelola-book-cat">${book.kategori || 'Umum'} · ${book.tahun || '—'}</div>
           ${isOverridden ? '<span class="kelola-overridden-badge">✏️ Diubah</span>' : ''}
@@ -637,6 +640,142 @@ window.resetAllOverrides = function () {
   loadBooks();
   showToast('Semua perubahan direset', 2600);
 };
+
+// ── Edit / Add Book Modal ──────────────────────────────────────
+window.openBookFormModal = function(bookId = null) {
+  const modal = document.getElementById('book-form-modal');
+  if (!modal) return;
+  const form = document.getElementById('book-form');
+  const title = document.getElementById('book-form-title');
+  form.reset();
+
+  if (bookId) {
+    title.textContent = 'Edit Identitas Buku';
+    const book = allBooksData.find(b => b.id === bookId);
+    if (book) {
+      document.getElementById('book-form-id').value = book.id;
+      document.getElementById('book-form-judul').value = book.judul || '';
+      document.getElementById('book-form-penulis').value = book.penulis || '';
+      document.getElementById('book-form-kategori').value = book.kategori || 'Umum';
+      document.getElementById('book-form-kategori-val').textContent = book.kategori || 'Umum';
+      document.querySelectorAll('#book-form-kategori-dropdown .cfs-item').forEach(item => {
+        item.classList.toggle('selected', item.dataset.val === (book.kategori || 'Umum'));
+      });
+      document.getElementById('book-form-tahun').value = book.tahun || '';
+      document.getElementById('book-form-tempat').value = book.tempat_terbit || '';
+      document.getElementById('book-form-penerbit').value = book.penerbit || '';
+      document.getElementById('book-form-bahasa').value = book.bahasa || '';
+      document.getElementById('book-form-halaman').value = book.halaman || '';
+      document.getElementById('book-form-sinopsis').value = book.sinopsis || '';
+      document.getElementById('book-form-link-baca').value = (book.link_baca && book.link_baca.length > 0) ? book.link_baca[0].url : '';
+      document.getElementById('book-form-link-beli').value = (book.link_beli && book.link_beli.length > 0) ? book.link_beli[0].url : '';
+      document.getElementById('book-form-kode-buku').value = (book.kode_buku || []).join(', ');
+    }
+  } else {
+    title.textContent = 'Tambah Buku Baru';
+    document.getElementById('book-form-id').value = '';
+    document.getElementById('book-form-kategori').value = 'Umum';
+    document.getElementById('book-form-kategori-val').textContent = 'Umum';
+    document.querySelectorAll('#book-form-kategori-dropdown .cfs-item').forEach(item => {
+        item.classList.toggle('selected', item.dataset.val === 'Umum');
+    });
+  }
+
+  modal.classList.remove('hidden');
+};
+
+window.closeBookFormModal = function() {
+  document.getElementById('book-form-modal')?.classList.add('hidden');
+};
+
+window.submitBookForm = function(e) {
+  e.preventDefault();
+  const id = document.getElementById('book-form-id').value;
+  
+  const linkBacaUrl = document.getElementById('book-form-link-baca').value.trim();
+  const linkBeliUrl = document.getElementById('book-form-link-beli').value.trim();
+  const kodeStr = document.getElementById('book-form-kode-buku').value.trim();
+
+  const data = {
+    judul: document.getElementById('book-form-judul').value.trim(),
+    penulis: document.getElementById('book-form-penulis').value.trim(),
+    kategori: document.getElementById('book-form-kategori').value,
+    tahun: parseInt(document.getElementById('book-form-tahun').value) || null,
+    tempat_terbit: document.getElementById('book-form-tempat').value.trim(),
+    penerbit: document.getElementById('book-form-penerbit').value.trim(),
+    bahasa: document.getElementById('book-form-bahasa').value.trim(),
+    halaman: parseInt(document.getElementById('book-form-halaman').value) || null,
+    sinopsis: document.getElementById('book-form-sinopsis').value.trim(),
+    kode_buku: kodeStr ? kodeStr.split(',').map(s => s.trim()).filter(Boolean) : []
+  };
+
+  if (linkBacaUrl) data.link_baca = [{ nama: 'Baca Online', url: linkBacaUrl }];
+  else data.link_baca = [];
+  
+  if (linkBeliUrl) data.link_beli = [{ nama: 'Beli Buku', url: linkBeliUrl }];
+  else data.link_beli = [];
+
+  if (id) {
+    BookDB.updateBook(id, data);
+    showToast('Identitas buku diperbarui');
+  } else {
+    data.stok = 0;
+    data.offline = false;
+    data.online = false;
+    BookDB.addBook(data);
+    showToast('Buku baru berhasil ditambahkan');
+  }
+
+  closeBookFormModal();
+  allBooksData = [];
+  document.getElementById('kelola-grid').innerHTML = '';
+  loadBooks();
+};
+
+// Close modal on Escape update
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (!confirmModal.classList.contains('hidden')) {
+      closeConfirmModal();
+    }
+    const addLoanModal = document.getElementById('add-loan-modal');
+    if (addLoanModal && !addLoanModal.classList.contains('hidden')) {
+      closeAddLoanModal();
+    }
+    const bookFormModal = document.getElementById('book-form-modal');
+    if (bookFormModal && !bookFormModal.classList.contains('hidden')) {
+      closeBookFormModal();
+    }
+  }
+});
+
+// ── Setup Custom Dropdown Kategori ─────────────────────────────
+const catWrap = document.getElementById('book-form-kategori-wrap');
+const catVal = document.getElementById('book-form-kategori-val');
+const catInput = document.getElementById('book-form-kategori');
+if (catWrap) {
+  catWrap.onclick = (e) => {
+    e.stopPropagation();
+    catWrap.classList.toggle('open');
+  };
+  const items = catWrap.querySelectorAll('.cfs-item');
+  items.forEach(item => {
+    item.onclick = (e) => {
+      e.stopPropagation();
+      catInput.value = item.dataset.val;
+      catVal.textContent = item.dataset.val;
+      items.forEach(i => i.classList.remove('selected'));
+      item.classList.add('selected');
+      catWrap.classList.remove('open');
+    };
+  });
+}
+
+document.addEventListener('click', e => {
+  if (catWrap && catWrap.classList.contains('open') && !catWrap.contains(e.target)) {
+    catWrap.classList.remove('open');
+  }
+});
 
 // ── Init ──────────────────────────────────────────────────────
 checkSession();

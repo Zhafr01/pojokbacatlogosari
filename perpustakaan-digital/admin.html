@@ -139,11 +139,16 @@
 
       <!-- ── TAB: KELOLA BUKU ── -->
       <div id="panel-buku" class="hidden">
-        <div class="kelola-header">
-          <p class="kelola-desc">Ubah stok dan ketersediaan (online/offline) buku. Perubahan disimpan di perangkat ini.</p>
-          <button class="btn-reset-overrides" id="btn-reset-overrides" onclick="resetAllOverrides()">
-            🔄 Reset Semua Perubahan
-          </button>
+        <div class="kelola-header" style="flex-wrap: wrap; gap: 10px; display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1.5px dashed var(--border);">
+          <p class="kelola-desc" style="margin: 0; flex: 1; min-width: 200px;">Ubah stok, ketersediaan, dan data buku. Perubahan disimpan lokal.</p>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="btn-primary" style="font-size: 0.8rem; padding: 8px 12px; border-radius: 99px; box-shadow: 2px 2px 0 rgba(0,0,0,0.8);" onclick="openBookFormModal()">
+              ➕ Tambah Buku
+            </button>
+            <button class="btn-reset-overrides" id="btn-reset-overrides" onclick="resetAllOverrides()">
+              🔄 Reset Semua
+            </button>
+          </div>
         </div>
         <div class="kelola-grid" id="kelola-grid"></div>
         <div class="empty-admin hidden" id="empty-kelola">
@@ -220,6 +225,91 @@
         </div>
         <button type="submit" class="btn-submit-borrow">
           Simpan Peminjaman
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit/Add Book Modal -->
+  <div class="modal-overlay hidden" id="book-form-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="book-form-title">Tambah Buku</h3>
+        <button class="modal-close" onclick="closeBookFormModal()" aria-label="Tutup">✕</button>
+      </div>
+      <form id="book-form" style="padding: 24px; max-height: 70vh; overflow-y: auto;" onsubmit="submitBookForm(event)">
+        <input type="hidden" id="book-form-id">
+        <div class="form-group">
+          <label for="book-form-judul">Judul Buku <span style="color:var(--danger,#ef4444);font-size:0.85em">*wajib</span></label>
+          <input type="text" id="book-form-judul" placeholder="Masukkan judul" required autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="book-form-penulis">Penulis <span style="color:var(--danger,#ef4444);font-size:0.85em">*wajib</span></label>
+          <input type="text" id="book-form-penulis" placeholder="Nama penulis" required autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="book-form-kategori">Kategori</label>
+          <div class="custom-form-select" id="book-form-kategori-wrap" tabindex="0">
+            <div class="cfs-value" id="book-form-kategori-val">Umum</div>
+            <div class="cfs-icon">▾</div>
+            <div class="cfs-dropdown" id="book-form-kategori-dropdown">
+              <div class="cfs-list">
+                <div class="cfs-item" data-val="Novel">Novel</div>
+                <div class="cfs-item" data-val="Sastra">Sastra</div>
+                <div class="cfs-item" data-val="Pendidikan">Pendidikan</div>
+                <div class="cfs-item" data-val="Pengembangan Diri">Pengembangan Diri</div>
+                <div class="cfs-item" data-val="Sains">Sains</div>
+                <div class="cfs-item" data-val="Sejarah">Sejarah</div>
+                <div class="cfs-item" data-val="Teknologi">Teknologi</div>
+                <div class="cfs-item selected" data-val="Umum">Umum</div>
+              </div>
+            </div>
+          </div>
+          <input type="hidden" id="book-form-kategori" value="Umum">
+        </div>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <div class="form-group" style="flex:1; min-width: 120px;">
+            <label for="book-form-tahun">Tahun Terbit</label>
+            <input type="number" id="book-form-tahun" placeholder="Contoh: 2023">
+          </div>
+          <div class="form-group" style="flex:1; min-width: 120px;">
+            <label for="book-form-halaman">Jml Halaman</label>
+            <input type="number" id="book-form-halaman" placeholder="Contoh: 300">
+          </div>
+        </div>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <div class="form-group" style="flex:1; min-width: 120px;">
+            <label for="book-form-tempat">Tempat Terbit</label>
+            <input type="text" id="book-form-tempat" placeholder="Kota terbit">
+          </div>
+          <div class="form-group" style="flex:1; min-width: 120px;">
+            <label for="book-form-penerbit">Penerbit</label>
+            <input type="text" id="book-form-penerbit" placeholder="Nama penerbit">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="book-form-bahasa">Bahasa</label>
+          <input type="text" id="book-form-bahasa" placeholder="Indonesia, Inggris, dll">
+        </div>
+        <div class="form-group">
+          <label for="book-form-sinopsis">Sinopsis</label>
+          <textarea id="book-form-sinopsis" rows="4" placeholder="Tulis sinopsis singkat..." style="width: 100%; border: 2px solid var(--text-dark); border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; padding: 10px 14px; font-family: var(--font); resize: vertical; background: transparent; box-shadow: 2px 2px 0 var(--text-faint); color: var(--text-dark); outline: none;"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="book-form-link-baca">URL Baca Online</label>
+          <input type="url" id="book-form-link-baca" placeholder="https://...">
+        </div>
+        <div class="form-group">
+          <label for="book-form-link-beli">URL Beli Buku (E-Book)</label>
+          <input type="url" id="book-form-link-beli" placeholder="https://...">
+        </div>
+        <div class="form-group">
+          <label for="book-form-kode-buku">Kode Fisik (Pisahkan dengan koma)</label>
+          <input type="text" id="book-form-kode-buku" placeholder="Contoh: B-001, B-002">
+          <p style="font-size:0.75rem; color:var(--text-muted); margin-top:4px;">Kode unik eksemplar fisik untuk peminjaman offline.</p>
+        </div>
+        <button type="submit" class="btn-submit-borrow" style="margin-top: 10px;">
+          Simpan Buku
         </button>
       </form>
     </div>

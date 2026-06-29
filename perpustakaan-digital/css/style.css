@@ -66,6 +66,22 @@ a { text-decoration:none; color:inherit; }
 img { max-width:100%; display:block; }
 select { font-family:var(--font); }
 
+/* ── GLOBAL SCROLLBAR ────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-hi);
+  border-radius: 99px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-faint);
+}
+
 /* ── APP WRAPPER (two-column flex) ───────────────────────── */
 .app-wrapper {
   display: flex;

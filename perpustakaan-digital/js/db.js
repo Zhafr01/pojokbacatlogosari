@@ -230,11 +230,34 @@ const BookDB = (() => {
    */
   function mergeWithOverrides(books) {
     const overrides = getOverrides();
-    return books.map(book => {
+    const originalIds = new Set(books.map(b => b.id));
+    
+    // Merge existing books
+    const merged = books.map(book => {
       const ov = overrides[book.id];
       if (!ov) return book;
       return { ...book, ...ov };
     });
+
+    // Append new books that don't exist in original array
+    for (const [id, ov] of Object.entries(overrides)) {
+      if (!originalIds.has(id)) {
+        merged.push({ id, ...ov });
+      }
+    }
+    
+    return merged;
+  }
+
+  /**
+   * Add a brand new book to overrides
+   * @param {Object} data - book data
+   */
+  function addBook(data) {
+    const overrides = getOverrides();
+    const newId = 'book_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+    overrides[newId] = data;
+    saveOverrides(overrides);
   }
 
   /**
@@ -256,6 +279,7 @@ const BookDB = (() => {
   return {
     getOverrides,
     updateBook,
+    addBook,
     mergeWithOverrides,
     getBookOverride,
     resetAll,
