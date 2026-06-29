@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="description" content="Dashboard Admin Pojok Baca Tlogosari — Kelola peminjaman buku">
-  <meta name="theme-color" content="#6366F1">
+  <meta name="theme-color" content="#f6f0e4">
   <title>Admin — Pojok Baca Tlogosari</title>
   <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/png" href="icons/icon-192.png">
@@ -65,10 +65,7 @@
             <span class="nav-icon">🏠</span>
             <span class="nav-text">Katalog</span>
           </a>
-          <a href="peminjaman.html" class="nav-link">
-            <span class="nav-icon">📋</span>
-            <span class="nav-text">Peminjaman</span>
-          </a>
+
           <button class="nav-link nav-logout" onclick="logout()">
             <span class="nav-icon">🚪</span>
             <span class="nav-text">Logout</span>
@@ -112,6 +109,14 @@
             <div class="stat-label">Dikembalikan</div>
           </div>
         </section>
+
+        <!-- Section Header -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <h2 style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark);">Data Peminjaman</h2>
+          <button class="btn-primary" style="font-size: 0.85rem; padding: 8px 16px; border-radius: 99px; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(99,102,241,0.2);" onclick="openAddLoanModal()">
+            <span style="font-size: 1.1rem; line-height: 1;">+</span> Tambah Peminjaman
+          </button>
+        </div>
 
         <!-- Filter Bar -->
         <section class="admin-filter-bar">
@@ -164,6 +169,59 @@
         <button class="btn-cancel" onclick="closeConfirmModal()">Batal</button>
         <button class="btn-confirm" id="btn-confirm">Ya, Lanjutkan</button>
       </div>
+    </div>
+  </div>
+
+  <!-- Add Loan Modal -->
+  <div class="modal-overlay hidden" id="add-loan-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Tambah Peminjaman</h3>
+        <button class="modal-close" onclick="closeAddLoanModal()" aria-label="Tutup">✕</button>
+      </div>
+      <form id="add-loan-form" style="padding: 24px;" onsubmit="submitAddLoan(event)">
+        <div class="form-group">
+          <label for="add-loan-book">Pilih Buku (Hanya Fisik yang Tersedia)</label>
+          <div class="custom-form-select" id="add-loan-book-wrap" tabindex="0">
+            <div class="cfs-value" id="add-loan-book-val">-- Pilih Buku --</div>
+            <div class="cfs-icon">▾</div>
+            <div class="cfs-dropdown" id="add-loan-book-dropdown"></div>
+          </div>
+          <input type="hidden" id="add-loan-book" required>
+        </div>
+
+        <!-- Kode Buku (appears after book is chosen) -->
+        <div class="form-group hidden" id="add-loan-kode-group">
+          <label for="add-loan-kode">📦 Kode Fisik Buku <span style="color:var(--danger,#ef4444);font-size:0.85em">*wajib</span></label>
+          <div id="add-loan-kode-wrap">
+            <!-- Populated by JS: input + datalist + kode-chips -->
+            <input type="text" id="add-loan-kode" placeholder="Pilih atau ketik kode..." autocomplete="off" style="width:100%;">
+          </div>
+          <p style="font-size:0.78rem;color:var(--text-muted,#94a3b8);margin-top:4px;">
+            Kode eksemplar fisik buku yang diserahkan ke peminjam.
+          </p>
+        </div>
+
+        <div class="form-group">
+          <label for="add-loan-nama">Nama Lengkap Peminjam</label>
+          <input type="text" id="add-loan-nama" placeholder="Masukkan nama" required autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="add-loan-dusun">Dusun / Alamat</label>
+          <input type="text" id="add-loan-dusun" placeholder="Contoh: Dusun Tlogosari" required>
+        </div>
+        <div class="form-group">
+          <label for="add-loan-hp">Nomor HP / WhatsApp</label>
+          <input type="tel" id="add-loan-hp" placeholder="08xxxxxxxxxx" required pattern="[0-9]{10,15}">
+        </div>
+        <div class="form-note">
+          <span>ℹ️</span>
+          <span>Peminjaman yang ditambahkan oleh admin akan langsung berstatus <strong>Dipinjam</strong>.</span>
+        </div>
+        <button type="submit" class="btn-submit-borrow">
+          Simpan Peminjaman
+        </button>
+      </form>
     </div>
   </div>
 

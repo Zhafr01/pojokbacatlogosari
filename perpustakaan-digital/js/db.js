@@ -30,7 +30,7 @@ const LoanDB = (() => {
 
   /**
    * Create a new loan request
-   * @param {Object} data - { bookId, bookTitle, nama, dusun, hp }
+   * @param {Object} data - { bookId, bookTitle, nama, dusun, hp, kodeFisik? }
    * @returns {Object} the created loan record
    */
   function createLoan(data) {
@@ -53,6 +53,8 @@ const LoanDB = (() => {
       createdAt: now.toISOString(),
     };
 
+    if (data.kodeFisik) loan.kodeFisik = data.kodeFisik;
+
     loans.unshift(loan);
     saveAll(loans);
     return loan;
@@ -63,17 +65,36 @@ const LoanDB = (() => {
    * @param {string} id - loan ID
    * @param {string} status - new status
    * @param {string} catatan - optional note
+   * @param {string} kodeFisik - optional physical book code (given when approving)
    * @returns {Object|null} updated loan or null if not found
    */
-  function updateStatus(id, status, catatan = '') {
+  function updateStatus(id, status, catatan = '', kodeFisik = '') {
     const loans = getAll();
     const loan = loans.find(l => l.id === id);
     if (!loan) return null;
     loan.status = status;
     if (catatan) loan.catatan = catatan;
+    if (kodeFisik) loan.kodeFisik = kodeFisik;
     loan.updatedAt = new Date().toISOString();
     saveAll(loans);
     return loan;
+  }
+
+  /**
+   * Get all physical book codes currently in active use for a book
+   * @param {string} bookId
+   * @returns {Set<string>} set of kode fisik currently borrowed (menunggu | dipinjam)
+   */
+  function getUsedCodes(bookId) {
+    const used = new Set();
+    getAll().forEach(l => {
+      if (l.bookId === bookId &&
+          (l.status === 'menunggu' || l.status === 'dipinjam') &&
+          l.kodeFisik) {
+        used.add(l.kodeFisik);
+      }
+    });
+    return used;
   }
 
   /**
@@ -167,6 +188,7 @@ const LoanDB = (() => {
     hasActiveLoan,
     getStats,
     getByStatus,
+    getUsedCodes,
   };
 })();
 

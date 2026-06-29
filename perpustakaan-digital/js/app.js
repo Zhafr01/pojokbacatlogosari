@@ -37,12 +37,9 @@ const detailStock         = document.getElementById('detail-stock');
 const btnBorrow           = document.getElementById('btn-borrow');
 
 // ── Palettes & helpers ────────────────────────────────────────
-const PALETTE = [
-  ['#FF6B35','#F7A06B'], ['#2D6A4F','#1B4332'],
-  ['#F59E0B','#D97706'], ['#7C3AED','#5B21B6'],
-  ['#0E9F7E','#065F46'], ['#1A73E8','#0D47A1'],
-  ['#E91E63','#880E4F'], ['#DC2626','#991B1B'],
-  ['#D97706','#92400E'], ['#1E3A5F','#0F172A'],
+const VINTAGE_COLORS = [
+  'var(--card-red)', 'var(--card-green)', 'var(--card-yellow)',
+  'var(--card-purple)', 'var(--card-blue)', 'var(--card-orange)'
 ];
 const CAT_EMOJI = {
   'Novel':'📖','Sastra':'🪶','Pendidikan':'🎓',
@@ -50,7 +47,7 @@ const CAT_EMOJI = {
   'Teknologi':'💻','Umum':'📚',
 };
 const catEmoji = cat => CAT_EMOJI[cat] || '📚';
-const getPalette = i => PALETTE[i % PALETTE.length];
+const getVintageColor = i => VINTAGE_COLORS[i % VINTAGE_COLORS.length];
 
 // ── Toast ─────────────────────────────────────────────────────
 let _toast;
@@ -61,39 +58,6 @@ function showToast(msg, ms = 2600) {
   _toast = setTimeout(() => toastEl.classList.remove('show'), ms);
 }
 
-// ── Cover builder ─────────────────────────────────────────────
-function buildCover(book, idx, extraClass = '') {
-  const [c1, c2] = book.cover_colors || getPalette(idx);
-  const cat = book.kategori || 'Umum';
-
-  const wrap = document.createElement('div');
-  wrap.className = 'book-cover' + (extraClass ? ' ' + extraClass : '');
-  wrap.style.background = `linear-gradient(155deg,${c1} 0%,${c2} 100%)`;
-
-  const spine = document.createElement('div');
-  spine.className = 'book-spine';
-  spine.style.background = c2;
-  wrap.appendChild(spine);
-
-  const fallback = document.createElement('div');
-  fallback.className = 'cover-fallback';
-  fallback.innerHTML = `
-    <span class="cf-emoji">${catEmoji(cat)}</span>
-    <span class="cf-title">${book.judul}</span>`;
-
-  if (book.cover) {
-    const img = document.createElement('img');
-    img.src = book.cover;
-    img.alt = book.judul;
-    img.loading = 'lazy';
-    img.onload = () => { fallback.style.display = 'none'; }; // Sembunyikan fallback jika gambar berhasil di-load
-    img.onerror = () => { img.remove(); fallback.style.display = 'flex'; }; // Tampilkan fallback jika gagal
-    wrap.appendChild(img);
-  }
-  wrap.appendChild(fallback);
-  return wrap;
-}
-
 // ── Book card ─────────────────────────────────────────────────
 function buildCard(book, idx) {
   const card = document.createElement('article');
@@ -102,17 +66,22 @@ function buildCard(book, idx) {
   card.setAttribute('tabindex', '0');
   card.setAttribute('aria-label', `Lihat detail: ${book.judul}`);
   card.style.animationDelay = `${idx * 0.055}s`;
+  card.style.setProperty('--card-color', getVintageColor(idx));
 
-  card.appendChild(buildCover(book, allBooks.indexOf(book)));
+  const cat = book.kategori || 'Umum';
 
-  const info = document.createElement('div');
-  info.innerHTML = `
-    <p class="card-title">${book.judul}</p>
-    <div class="card-rating">
+  const hasCover = !!book.cover;
+
+  card.innerHTML = `
+    <div class="masking-tape"></div>
+    ${hasCover ? `<div class="card-cover-img" style="background-image: url(${book.cover})"></div>` : ''}
+    <div class="card-icon" style="${hasCover ? 'display:none;' : ''}">${catEmoji(cat)}</div>
+    <h3 class="card-title" style="${hasCover ? 'text-shadow: 1px 1px 4px rgba(0,0,0,0.8), -1px -1px 4px rgba(0,0,0,0.8); z-index:3;' : ''}">${book.judul}</h3>
+    <div class="card-rating" style="${hasCover ? 'z-index:4;' : ''}">
       <span class="card-star">★</span>
       ${(book.rating || 0).toFixed(1)}
-    </div>`;
-  card.appendChild(info);
+    </div>
+  `;
 
   card.addEventListener('click', () => openDetail(book));
   card.addEventListener('keydown', e => {
@@ -299,10 +268,11 @@ searchInput && searchInput.addEventListener('input', handleSearch);
 // ── Open detail ───────────────────────────────────────────────
 function openDetail(book) {
   const idx = allBooks.indexOf(book);
-  const [c1, c2] = book.cover_colors || getPalette(idx);
+  const bgColor = getVintageColor(idx);
   const cat = book.kategori || 'Umum';
 
-  detailCoverWrap.style.background = `linear-gradient(155deg,${c1} 0%,${c2} 100%)`;
+  detailCoverWrap.style.background = bgColor;
+  detailCoverWrap.style.border = '1.5px solid rgba(0,0,0,0.15)';
   detailCoverEmoji.textContent = catEmoji(cat);
   detailCoverTitle.textContent = book.judul;
   detailCat.textContent = `${catEmoji(cat)} ${cat}`;
@@ -355,12 +325,10 @@ function openDetail(book) {
   }
 
   if (available > 0) {
-    btnBorrow.disabled = false;
-    btnBorrow.textContent = '';
-    btnBorrow.innerHTML = '<span>📖</span> Pinjam Buku Ini';
+    btnBorrow.disabled = true;
+    btnBorrow.innerHTML = 'Lapor Admin untuk Meminjam';
   } else {
     btnBorrow.disabled = true;
-    btnBorrow.textContent = '';
     btnBorrow.innerHTML = '<span>❌</span> Stok Habis';
   }
 
@@ -376,67 +344,11 @@ window.closeDetail = function () {
   document.body.style.overflow = '';
 };
 
-// ── Borrow Modal ──────────────────────────────────────────────
-const borrowModalOverlay = document.getElementById('borrow-modal-overlay');
-const borrowForm         = document.getElementById('borrow-form');
-const modalBookInfo      = document.getElementById('modal-book-info');
-
-window.openBorrowModal = function () {
-  const book = window._currentBorrowBook;
-  if (!book) return;
-  modalBookInfo.innerHTML = `
-    <div class="mbi-title">${book.judul}</div>
-    <div class="mbi-author">${book.penulis}</div>`;
-  borrowModalOverlay.classList.remove('hidden');
-  document.body.style.overflow = 'hidden';
-};
-
-window.closeBorrowModal = function () {
-  borrowModalOverlay.classList.add('hidden');
-  if (!appWrapper.classList.contains('detail-open') || window.innerWidth > 768) {
-    document.body.style.overflow = '';
-  }
-  borrowForm.reset();
-};
-
-window.submitBorrow = function (e) {
-  e.preventDefault();
-  const book = window._currentBorrowBook;
-  if (!book) return;
-
-  const nama  = document.getElementById('borrow-nama').value.trim();
-  const dusun = document.getElementById('borrow-dusun').value.trim();
-  const hp    = document.getElementById('borrow-hp').value.trim();
-
-  if (!nama || !dusun || !hp) {
-    showToast('Lengkapi semua field', 3000);
-    return;
-  }
-
-  if (LoanDB.hasActiveLoan(book.id, hp)) {
-    showToast('Anda sudah meminjam buku ini', 3000);
-    return;
-  }
-
-  const totalStok = book.stok || 0;
-  const activeLoans = LoanDB.getActiveLoansForBook(book.id);
-  if (activeLoans >= totalStok) {
-    showToast('Stok buku habis', 3000);
-    return;
-  }
-
-  LoanDB.createLoan({ bookId: book.id, bookTitle: book.judul, nama, dusun, hp });
-  closeBorrowModal();
-  showToast('Peminjaman berhasil diajukan!', 3500);
-  openDetail(book);
-};
 
 // ── Keyboard shortcuts ────────────────────────────────────────
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
-    if (borrowModalOverlay && !borrowModalOverlay.classList.contains('hidden')) {
-      closeBorrowModal();
-    } else if (appWrapper.classList.contains('detail-open')) {
+    if (appWrapper.classList.contains('detail-open')) {
       closeDetail();
     }
   }

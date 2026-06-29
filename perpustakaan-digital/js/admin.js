@@ -155,6 +155,7 @@ function renderLoans() {
         <span>Pinjam: ${formatDate(loan.tanggalPinjam)}</span>
         <span>Kembali: <span class="${overdue ? 'overdue-text' : ''}">${formatDate(loan.tanggalKembali)}${overdue ? ' ⚠️ Terlambat!' : ''}</span></span>
       </div>
+      ${loan.kodeFisik ? `<div class="admin-card-kode"><span class="kode-label">📦 Kode Fisik:</span> <span class="kode-value">${loan.kodeFisik}</span></div>` : ''}
       ${loan.catatan ? `<div class="admin-card-note">${loan.catatan}</div>` : ''}
       <div class="admin-card-actions">${actionsHTML}</div>
     `;
@@ -208,10 +209,241 @@ btnConfirm.addEventListener('click', () => {
 
 // Close modal on Escape
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && !confirmModal.classList.contains('hidden')) {
-    closeConfirmModal();
+  if (e.key === 'Escape') {
+    if (!confirmModal.classList.contains('hidden')) {
+      closeConfirmModal();
+    }
+    const addLoanModal = document.getElementById('add-loan-modal');
+    if (addLoanModal && !addLoanModal.classList.contains('hidden')) {
+      closeAddLoanModal();
+    }
   }
 });
+
+// ── Add Loan Modal ────────────────────────────────────────────
+window.openAddLoanModal = async function () {
+  const modal = document.getElementById('add-loan-modal');
+  if (!modal) return;
+  
+  if (allBooksData.length === 0) {
+    await loadBooks(); // Ensure books are loaded
+  }
+  
+  const selectWrap = document.getElementById('add-loan-book-wrap');
+  const selectVal = document.getElementById('add-loan-book-val');
+  const dropdown = document.getElementById('add-loan-book-dropdown');
+  const hiddenInput = document.getElementById('add-loan-book');
+  
+  if (dropdown && selectWrap && selectVal && hiddenInput) {
+    dropdown.innerHTML = '';
+    hiddenInput.value = '';
+    selectVal.textContent = '-- Pilih Buku --';
+    
+    // Add Search Input
+    const searchWrap = document.createElement('div');
+    searchWrap.className = 'cfs-search';
+    const searchInput = document.createElement('input');
+    searchInput.type = 'text';
+    searchInput.className = 'cfs-search-input';
+    searchInput.placeholder = 'Cari judul buku...';
+    searchWrap.appendChild(searchInput);
+    dropdown.appendChild(searchWrap);
+    
+    // Add List Container
+    const listContainer = document.createElement('div');
+    listContainer.className = 'cfs-list';
+    dropdown.appendChild(listContainer);
+    
+    // Only show books that are physical (offline) and have stock > 0
+    const availableBooks = [];
+    allBooksData.filter(b => b.offline && b.stok > 0).forEach(book => {
+      const activeLoans = LoanDB.getActiveLoansForBook(book.id);
+      const available = Math.max(0, book.stok - activeLoans);
+      if (available > 0) {
+        availableBooks.push({ book, available });
+      }
+    });
+
+    if (availableBooks.length === 0) {
+      const item = document.createElement('div');
+      item.className = 'cfs-item';
+      item.textContent = 'Tidak ada buku fisik tersedia';
+      listContainer.appendChild(item);
+      searchWrap.style.display = 'none'; // Hide search if no books
+    } else {
+      const renderItems = (query = '') => {
+        listContainer.innerHTML = '';
+        const lowerQuery = query.toLowerCase();
+        let matchCount = 0;
+        
+        availableBooks.forEach(({ book, available }) => {
+          if (!book.judul.toLowerCase().includes(lowerQuery)) return;
+          matchCount++;
+          
+          const item = document.createElement('div');
+          item.className = 'cfs-item';
+          if (hiddenInput.value === book.id) item.classList.add('selected');
+          
+          item.textContent = `${book.judul} (Tersedia: ${available})`;
+          item.onclick = (e) => {
+            e.stopPropagation();
+            hiddenInput.value = book.id;
+            selectVal.textContent = item.textContent;
+            selectWrap.classList.remove('open');
+            listContainer.querySelectorAll('.cfs-item').forEach(i => i.classList.remove('selected'));
+            item.classList.add('selected');
+            searchInput.value = ''; // Reset search on select
+            renderItems(); // Reset list
+            // Show kode buku options for selected book
+            renderKodeBukuOptions(book);
+          };
+          listContainer.appendChild(item);
+        });
+        
+        if (matchCount === 0) {
+          const item = document.createElement('div');
+          item.className = 'cfs-item';
+          item.textContent = 'Buku tidak ditemukan';
+          item.style.pointerEvents = 'none';
+          item.style.opacity = '0.6';
+          listContainer.appendChild(item);
+        }
+      };
+      
+      renderItems();
+      
+      searchInput.addEventListener('input', (e) => {
+        renderItems(e.target.value);
+      });
+      searchInput.addEventListener('click', (e) => e.stopPropagation());
+    }
+
+    // Toggle dropdown
+    selectWrap.onclick = (e) => {
+      e.stopPropagation();
+      const isOpen = selectWrap.classList.contains('open');
+      selectWrap.classList.toggle('open');
+      if (!isOpen && availableBooks.length > 0) {
+        setTimeout(() => searchInput.focus(), 50);
+      }
+    };
+  }
+  
+  // ── Helper: render kode buku options after book is chosen ───
+  function renderKodeBukuOptions(book) {
+    const wrap = document.getElementById('add-loan-kode-wrap');
+    const select = document.getElementById('add-loan-kode');
+    const kodeGroup = document.getElementById('add-loan-kode-group');
+    if (!wrap || !select || !kodeGroup) return;
+
+    const usedCodes = LoanDB.getUsedCodes(book.id);
+    const allCodes = book.kode_buku || [];
+    const availableCodes = allCodes.filter(k => !usedCodes.has(k));
+
+    // Show the kode group
+    kodeGroup.classList.remove('hidden');
+    select.innerHTML = '';
+
+    if (availableCodes.length === 0) {
+      // Fallback: allow manual input
+      wrap.innerHTML = `<input type="text" id="add-loan-kode" placeholder="Masukkan kode fisik buku" autocomplete="off" style="width:100%;">`;
+    } else {
+      // Build datalist for autocomplete + dropdown
+      wrap.innerHTML = `
+        <input type="text" id="add-loan-kode" list="kode-buku-list"
+          placeholder="Pilih atau ketik kode..."
+          autocomplete="off" style="width:100%;">
+        <datalist id="kode-buku-list">
+          ${availableCodes.map(k => `<option value="${k}">${k}</option>`).join('')}
+        </datalist>
+        <div class="kode-chips">
+          ${availableCodes.map(k =>
+            `<button type="button" class="kode-chip" onclick="selectKodeChip('${k}')">${k}</button>`
+          ).join('')}
+        </div>
+      `;
+    }
+  }
+
+  window.selectKodeChip = function(kode) {
+    const input = document.getElementById('add-loan-kode');
+    if (input) {
+      input.value = kode;
+      // Highlight active chip
+      document.querySelectorAll('.kode-chip').forEach(c => {
+        c.classList.toggle('active', c.textContent === kode);
+      });
+    }
+  };
+
+  modal.classList.remove('hidden');
+};
+
+// Close dropdown on outside click
+document.addEventListener('click', e => {
+  const selectWrap = document.getElementById('add-loan-book-wrap');
+  if (selectWrap && selectWrap.classList.contains('open') && !selectWrap.contains(e.target)) {
+    selectWrap.classList.remove('open');
+  }
+});
+
+window.closeAddLoanModal = function () {
+  const modal = document.getElementById('add-loan-modal');
+  if (modal) {
+    modal.classList.add('hidden');
+    document.getElementById('add-loan-form').reset();
+  }
+};
+
+window.submitAddLoan = function (e) {
+  e.preventDefault();
+  
+  const bookId   = document.getElementById('add-loan-book').value;
+  const nama     = document.getElementById('add-loan-nama').value.trim();
+  const dusun    = document.getElementById('add-loan-dusun').value.trim();
+  const hp       = document.getElementById('add-loan-hp').value.trim();
+  const kodeInput = document.getElementById('add-loan-kode');
+  const kodeFisik = kodeInput ? kodeInput.value.trim() : '';
+  
+  if (!bookId || !nama || !dusun || !hp) {
+    showToast('Lengkapi semua field', 3000);
+    return;
+  }
+  
+  if (!kodeFisik) {
+    showToast('Kode buku wajib diisi', 3000);
+    return;
+  }
+  
+  const book = allBooksData.find(b => b.id === bookId);
+  if (!book) return;
+  
+  // Validate kode is not already borrowed
+  const usedCodes = LoanDB.getUsedCodes(book.id);
+  if (usedCodes.has(kodeFisik)) {
+    showToast(`Kode "${kodeFisik}" sedang dipinjam orang lain`, 3000);
+    return;
+  }
+  
+  if (LoanDB.hasActiveLoan(book.id, hp)) {
+    showToast('Peminjam sudah meminjam buku ini', 3000);
+    return;
+  }
+  
+  const activeLoans = LoanDB.getActiveLoansForBook(book.id);
+  if (activeLoans >= book.stok) {
+    showToast('Stok buku habis', 3000);
+    return;
+  }
+  
+  // Create loan with kodeFisik, then immediately approve (admin-created)
+  const newLoan = LoanDB.createLoan({ bookId: book.id, bookTitle: book.judul, nama, dusun, hp, kodeFisik });
+  LoanDB.updateStatus(newLoan.id, 'dipinjam', '', kodeFisik);
+  
+  closeAddLoanModal();
+  refreshDashboard();
+  showToast(`Peminjaman “${kodeFisik}” berhasil ditambahkan!`, 3500);
+};
 
 // ── Tab switching ─────────────────────────────────────────────
 let allBooksData = [];
@@ -229,6 +461,7 @@ window.switchAdminTab = function (tab) {
 
 // ── Load books untuk Kelola Buku ──────────────────────────────
 async function loadBooks() {
+  if (allBooksData.length > 0) return; // Already loaded
   try {
     const res = await fetch('./data/books.json');
     if (!res.ok) throw new Error('gagal');
