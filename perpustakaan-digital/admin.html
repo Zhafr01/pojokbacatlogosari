@@ -111,11 +111,16 @@
         </section>
 
         <!-- Section Header -->
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;">
           <h2 style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark);">Data Peminjaman</h2>
-          <button class="btn-primary" style="font-size: 0.85rem; padding: 8px 16px; border-radius: 99px; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(99,102,241,0.2);" onclick="openAddLoanModal()">
-            <span style="font-size: 1.1rem; line-height: 1;">+</span> Tambah Peminjaman
-          </button>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="btn-primary" style="font-size: 0.85rem; padding: 8px 16px; border-radius: 99px; display: flex; align-items: center; gap: 6px; background: #10B981; box-shadow: 0 4px 12px rgba(16,185,129,0.2);" onclick="openScannerModal()">
+              <span style="font-size: 1.1rem; line-height: 1;">📷</span> Scan QR
+            </button>
+            <button class="btn-primary" style="font-size: 0.85rem; padding: 8px 16px; border-radius: 99px; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(99,102,241,0.2);" onclick="openAddLoanModal()">
+              <span style="font-size: 1.1rem; line-height: 1;">+</span> Tambah Peminjaman
+            </button>
+          </div>
         </div>
 
         <!-- Filter Bar -->
@@ -315,7 +320,22 @@
     </div>
   </div>
 
+  <!-- Scanner Modal -->
+  <div class="modal-overlay hidden" id="scanner-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Scan QR Peminjaman</h3>
+        <button class="modal-close" onclick="closeScannerModal()" aria-label="Tutup">✕</button>
+      </div>
+      <div style="padding: 24px;">
+        <div id="qr-reader" style="width: 100%; border-radius: 8px; overflow: hidden; margin-bottom: 16px;"></div>
+        <p style="font-size: 0.85rem; color: var(--text-muted); text-align: center;">Arahkan kamera ke QR Code di layar peminjam.</p>
+      </div>
+    </div>
+  </div>
+
   <script src="js/db.js?v=2"></script>
+  <script src="js/html5-qrcode.min.js"></script>
   <script src="js/admin.js?v=2"></script>
 </body>
 

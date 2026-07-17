@@ -337,11 +337,15 @@ function openDetail(book) {
   }
 
   if (available > 0) {
-    btnBorrow.disabled = true;
-    btnBorrow.innerHTML = 'Lapor Admin untuk Meminjam';
+    btnBorrow.disabled = false;
+    btnBorrow.style.pointerEvents = 'auto';
+    btnBorrow.innerHTML = 'Ajukan Peminjaman';
+    btnBorrow.onclick = () => openRequestLoanModal();
   } else {
     btnBorrow.disabled = true;
+    btnBorrow.style.pointerEvents = 'none';
     btnBorrow.innerHTML = '<span>❌</span> Stok Habis';
+    btnBorrow.onclick = null;
   }
 
   // Store current book for modal
@@ -398,3 +402,62 @@ async function init() {
 }
 
 init();
+
+// ── QR Code Loan Request Modal ────────────────────────────────
+const requestLoanModal = document.getElementById('request-loan-modal');
+const requestLoanFormContainer = document.getElementById('request-loan-form-container');
+const requestLoanQrContainer = document.getElementById('request-loan-qr-container');
+const qrcodeBox = document.getElementById('qrcode-box');
+
+window.openRequestLoanModal = function() {
+  if (!window._currentBorrowBook) return;
+  document.getElementById('request-loan-form').reset();
+  requestLoanFormContainer.classList.remove('hidden');
+  requestLoanQrContainer.classList.add('hidden');
+  qrcodeBox.innerHTML = ''; // Clear previous QR
+  requestLoanModal.classList.remove('hidden');
+};
+
+window.closeRequestLoanModal = function() {
+  requestLoanModal.classList.add('hidden');
+};
+
+window.submitRequestLoan = function(e) {
+  e.preventDefault();
+  
+  const nama = document.getElementById('req-loan-nama').value.trim();
+  const dusun = document.getElementById('req-loan-dusun').value.trim();
+  const hp = document.getElementById('req-loan-hp').value.trim();
+  
+  if (!nama || !dusun || !hp || !window._currentBorrowBook) {
+    showToast('Harap isi semua data dengan benar.');
+    return;
+  }
+
+  // Create JSON payload
+  const payload = {
+    bId: window._currentBorrowBook.id,
+    bTitle: window._currentBorrowBook.judul,
+    n: nama,
+    d: dusun,
+    hp: hp
+  };
+
+  const qrDataString = JSON.stringify(payload);
+
+  // Generate QR Code
+  qrcodeBox.innerHTML = '';
+  new QRCode(qrcodeBox, {
+    text: qrDataString,
+    width: 200,
+    height: 200,
+    colorDark : "#000000",
+    colorLight : "#ffffff",
+    correctLevel : QRCode.CorrectLevel.M
+  });
+
+  // Switch view
+  requestLoanFormContainer.classList.add('hidden');
+  requestLoanQrContainer.classList.remove('hidden');
+};
+

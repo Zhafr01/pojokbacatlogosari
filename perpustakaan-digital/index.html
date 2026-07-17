@@ -244,9 +244,9 @@
             <span class="borrow-stock-label">Stok tersedia:</span>
             <span class="borrow-stock-badge" id="detail-stock">—</span>
           </div>
-          <p class="borrow-info">Peminjaman buku fisik hanya dapat dilakukan melalui Admin. Silakan lapor ke Admin untuk meminjam buku ini.</p>
+          <p class="borrow-info">Klik tombol di bawah untuk mengisi data dan mendapatkan QR Code peminjaman.</p>
           <div class="btn-borrow" id="btn-borrow" style="pointer-events: none;">
-            Lapor Admin untuk Meminjam
+            Ajukan Peminjaman
           </div>
         </div>
       </div>
@@ -272,6 +272,46 @@
 
 
 
+<!-- Request Loan Modal -->
+<div class="modal-overlay hidden" id="request-loan-modal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3 class="modal-title">Ajukan Peminjaman</h3>
+      <button class="modal-close" onclick="closeRequestLoanModal()" aria-label="Tutup">✕</button>
+    </div>
+    
+    <div id="request-loan-form-container" style="padding: 24px;">
+      <p style="margin-bottom: 16px; font-size: 0.9rem; color: var(--text-muted);">Isi data diri Anda. Setelah selesai, tunjukkan QR Code ke Admin untuk meminjam buku.</p>
+      <form id="request-loan-form" onsubmit="submitRequestLoan(event)">
+        <div class="form-group">
+          <label for="req-loan-nama">Nama Lengkap</label>
+          <input type="text" id="req-loan-nama" placeholder="Masukkan nama Anda" required autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="req-loan-dusun">Dusun / Alamat</label>
+          <input type="text" id="req-loan-dusun" placeholder="Contoh: Dusun Tlogosari" required>
+        </div>
+        <div class="form-group">
+          <label for="req-loan-hp">Nomor HP / WhatsApp</label>
+          <input type="tel" id="req-loan-hp" placeholder="08xxxxxxxxxx" required pattern="[0-9]{10,15}">
+        </div>
+        <button type="submit" class="btn-submit-borrow">
+          Buat QR Code
+        </button>
+      </form>
+    </div>
+
+    <!-- QR Code Result Container -->
+    <div id="request-loan-qr-container" class="hidden" style="padding: 24px; text-align: center;">
+      <h4 style="margin-bottom: 12px; font-size: 1.1rem;">QR Code Peminjaman</h4>
+      <div id="qrcode-box" style="display: flex; justify-content: center; margin-bottom: 16px; padding: 16px; background: white; border-radius: 8px;"></div>
+      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 16px;">Tunjukkan layar ini ke Admin Pojok Baca untuk discan.</p>
+      <button class="btn-outline" onclick="closeRequestLoanModal()" style="width: 100%; border: 2px solid var(--text-dark); background: transparent; padding: 12px; font-weight: 700; border-radius: 99px; box-shadow: 2px 2px 0 var(--text-dark);">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/qrcode.min.js"></script>
 <script src="js/db.js?v=3"></script>
 <script src="js/app.js?v=3"></script>
 </body>

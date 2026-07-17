@@ -330,7 +330,7 @@ window.openAddLoanModal = async function () {
   }
   
   // ── Helper: render kode buku options after book is chosen ───
-  function renderKodeBukuOptions(book) {
+  window.renderKodeBukuOptions = function(book) {
     const wrap = document.getElementById('add-loan-kode-wrap');
     const select = document.getElementById('add-loan-kode');
     const kodeGroup = document.getElementById('add-loan-kode-group');
@@ -746,6 +746,10 @@ document.addEventListener('keydown', e => {
     if (bookFormModal && !bookFormModal.classList.contains('hidden')) {
       closeBookFormModal();
     }
+    const scannerModal = document.getElementById('scanner-modal');
+    if (scannerModal && !scannerModal.classList.contains('hidden')) {
+      closeScannerModal();
+    }
   }
 });
 
@@ -779,3 +783,72 @@ document.addEventListener('click', e => {
 
 // ── Init ──────────────────────────────────────────────────────
 checkSession();
+
+// ── QR Scanner Logic ──────────────────────────────────────────
+let html5QrcodeScanner = null;
+
+window.openScannerModal = function() {
+  const modal = document.getElementById('scanner-modal');
+  modal.classList.remove('hidden');
+  
+  if (!html5QrcodeScanner) {
+    // using Html5QrcodeScanner from html5-qrcode.min.js
+    html5QrcodeScanner = new Html5QrcodeScanner(
+      "qr-reader", { fps: 10, qrbox: {width: 250, height: 250} }, false
+    );
+  }
+  
+  html5QrcodeScanner.render(onScanSuccess, onScanError);
+};
+
+window.closeScannerModal = function() {
+  const modal = document.getElementById('scanner-modal');
+  modal.classList.add('hidden');
+  
+  if (html5QrcodeScanner) {
+    html5QrcodeScanner.clear().catch(error => {
+      console.error("Failed to clear html5QrcodeScanner.", error);
+    });
+    html5QrcodeScanner = null;
+  }
+};
+
+async function onScanSuccess(decodedText, decodedResult) {
+  try {
+    const data = JSON.parse(decodedText);
+    if (!data.bId || !data.n || !data.hp) {
+      throw new Error("Invalid format");
+    }
+    
+    // Close Scanner
+    closeScannerModal();
+    
+    // Open Add Loan Modal and populate
+    await openAddLoanModal(); 
+    
+    document.getElementById('add-loan-book').value = data.bId;
+    document.getElementById('add-loan-nama').value = data.n;
+    document.getElementById('add-loan-dusun').value = data.d || '';
+    document.getElementById('add-loan-hp').value = data.hp;
+    
+    // Set Book Title and populate physical codes
+    const book = allBooksData.find(b => b.id === data.bId);
+    if (book) {
+      document.getElementById('add-loan-book-val').textContent = book.judul;
+      if (typeof window.renderKodeBukuOptions === 'function') {
+        window.renderKodeBukuOptions(book);
+      }
+    } else {
+      document.getElementById('add-loan-book-val').textContent = data.bTitle || data.bId;
+    }
+    
+    showToast("Data QR berhasil dimuat!", 3000);
+  } catch (err) {
+    console.error("QR Parse Error", err);
+    showToast("QR Code tidak valid!", 3000);
+  }
+}
+
+function onScanError(errorMessage) {
+  // Ignored
+}
