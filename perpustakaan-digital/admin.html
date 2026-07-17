@@ -114,10 +114,10 @@
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 8px;">
           <h2 style="font-size: 1.1rem; font-weight: 800; color: var(--text-dark);">Data Peminjaman</h2>
           <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <button class="btn-primary" style="font-size: 0.85rem; padding: 8px 16px; border-radius: 99px; display: flex; align-items: center; gap: 6px; background: #10B981; box-shadow: 0 4px 12px rgba(16,185,129,0.2);" onclick="openScannerModal()">
+            <button class="btn-primary" style="display: flex; align-items: center; gap: 6px;" onclick="openScannerModal()">
               <span style="font-size: 1.1rem; line-height: 1;">📷</span> Scan QR
             </button>
-            <button class="btn-primary" style="font-size: 0.85rem; padding: 8px 16px; border-radius: 99px; display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(99,102,241,0.2);" onclick="openAddLoanModal()">
+            <button class="btn-primary" style="display: flex; align-items: center; gap: 6px;" onclick="openAddLoanModal()">
               <span style="font-size: 1.1rem; line-height: 1;">+</span> Tambah Peminjaman
             </button>
           </div>
@@ -147,10 +147,10 @@
         <div class="kelola-header" style="flex-wrap: wrap; gap: 10px; display: flex; justify-content: space-between; align-items: center; padding-bottom: 16px; border-bottom: 1.5px dashed var(--border);">
           <p class="kelola-desc" style="margin: 0; flex: 1; min-width: 200px;">Ubah stok, ketersediaan, dan data buku. Perubahan disimpan lokal.</p>
           <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-            <button class="btn-primary" style="font-size: 0.8rem; padding: 8px 12px; border-radius: 99px; box-shadow: 2px 2px 0 rgba(0,0,0,0.8);" onclick="openBookFormModal()">
+            <button class="btn-primary" style="display: flex; align-items: center; gap: 6px;" onclick="openBookFormModal()">
               ➕ Tambah Buku
             </button>
-            <button class="btn-reset-overrides" id="btn-reset-overrides" onclick="resetAllOverrides()">
+            <button class="btn-reset-overrides" id="btn-reset-overrides" style="display: flex; align-items: center; gap: 6px;" onclick="resetAllOverrides()">
               🔄 Reset Semua
             </button>
           </div>
