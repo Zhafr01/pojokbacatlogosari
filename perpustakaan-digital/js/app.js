@@ -410,8 +410,32 @@ const requestLoanQrContainer = document.getElementById('request-loan-qr-containe
 const qrcodeBox = document.getElementById('qrcode-box');
 
 window.openRequestLoanModal = function() {
-  if (!window._currentBorrowBook) return;
+  const book = window._currentBorrowBook;
+  if (!book) return;
   document.getElementById('request-loan-form').reset();
+  
+  // Populate Kode Fisik if available
+  const kodeGroup = document.getElementById('req-loan-kode-group');
+  const kodeSelect = document.getElementById('req-loan-kode');
+  const allCodes = book.kode_buku || [];
+  const usedCodes = LoanDB.getUsedCodes(book.id);
+  const availableCodes = allCodes.filter(k => !usedCodes.has(k));
+  
+  if (availableCodes.length > 0) {
+    kodeGroup.style.display = 'block';
+    kodeSelect.innerHTML = '<option value="">Pilih kode buku yang Anda pegang</option>';
+    availableCodes.forEach(k => {
+      const opt = document.createElement('option');
+      opt.value = k;
+      opt.textContent = k;
+      kodeSelect.appendChild(opt);
+    });
+    kodeSelect.required = true;
+  } else {
+    kodeGroup.style.display = 'none';
+    kodeSelect.required = false;
+  }
+
   requestLoanFormContainer.classList.remove('hidden');
   requestLoanQrContainer.classList.add('hidden');
   qrcodeBox.innerHTML = ''; // Clear previous QR
@@ -428,6 +452,8 @@ window.submitRequestLoan = function(e) {
   const nama = document.getElementById('req-loan-nama').value.trim();
   const dusun = document.getElementById('req-loan-dusun').value.trim();
   const hp = document.getElementById('req-loan-hp').value.trim();
+  const kodeSelect = document.getElementById('req-loan-kode');
+  const kodeFisik = (kodeSelect && !kodeSelect.disabled && kodeSelect.offsetParent !== null) ? kodeSelect.value : '';
   
   if (!nama || !dusun || !hp || !window._currentBorrowBook) {
     showToast('Harap isi semua data dengan benar.');
@@ -442,6 +468,10 @@ window.submitRequestLoan = function(e) {
     d: dusun,
     hp: hp
   };
+
+  if (kodeFisik) {
+    payload.k = kodeFisik;
+  }
 
   const qrDataString = JSON.stringify(payload);
 

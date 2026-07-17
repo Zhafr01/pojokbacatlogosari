@@ -837,6 +837,15 @@ async function onScanSuccess(decodedText, decodedResult) {
       document.getElementById('add-loan-book-val').textContent = book.judul;
       if (typeof window.renderKodeBukuOptions === 'function') {
         window.renderKodeBukuOptions(book);
+        
+        // If Kode Fisik is included in QR, select it automatically
+        if (data.k) {
+          setTimeout(() => {
+            if (typeof window.selectKodeChip === 'function') {
+              window.selectKodeChip(data.k);
+            }
+          }, 50);
+        }
       }
     } else {
       document.getElementById('add-loan-book-val').textContent = data.bTitle || data.bId;
