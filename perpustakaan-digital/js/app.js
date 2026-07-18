@@ -385,7 +385,7 @@ function checkUrlBook() {
 // ── Init ──────────────────────────────────────────────────────
 async function init() {
   try {
-    const res = await fetch('./data/books.json');
+    const res = await fetch('./data/books.json?v=' + new Date().getTime());
     if (!res.ok) throw new Error('books.json tidak ditemukan');
     const raw = await res.json();
     allBooks = BookDB.mergeWithOverrides(raw);

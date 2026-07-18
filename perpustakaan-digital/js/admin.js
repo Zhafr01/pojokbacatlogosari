@@ -463,7 +463,7 @@ window.switchAdminTab = function (tab) {
 async function loadBooks() {
   if (allBooksData.length > 0) return; // Already loaded
   try {
-    const res = await fetch('./data/books.json');
+    const res = await fetch('./data/books.json?v=' + new Date().getTime());
     if (!res.ok) throw new Error('gagal');
     const raw = await res.json();
     allBooksData = BookDB.mergeWithOverrides(raw);
