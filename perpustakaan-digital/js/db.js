@@ -197,7 +197,7 @@ const LoanDB = (() => {
 //  BookDB — Admin overrides untuk data buku (stok, online/offline)
 // ══════════════════════════════════════════════════════════════
 const BookDB = (() => {
-  const STORAGE_KEY = 'pojokbaca_book_overrides';
+  const STORAGE_KEY = 'pojokbaca_book_overrides_v2';
 
   function getOverrides() {
     try {
