@@ -12821,7 +12821,9 @@
     "kode_buku": [
       "001.UM BBM NUR k"
     ],
-    "cover": "covers/001_um_bbm_nur_k_p5.jpeg"
+    "cover": "covers/001_um_bbm_nur_k_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "002-um-bbm-wil-m",
@@ -12832,7 +12834,9 @@
     "kode_buku": [
       "002.UM BBM WIL m"
     ],
-    "cover": "covers/002_um_bbm_wil_m_p5.jpeg"
+    "cover": "covers/002_um_bbm_wil_m_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "003-um-bbm-chu-s",
@@ -12843,7 +12847,9 @@
     "kode_buku": [
       "003.UM BBM CHU s"
     ],
-    "cover": "covers/003_um_bbm_chu_s_p5.jpeg"
+    "cover": "covers/003_um_bbm_chu_s_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "004-um-bbm-tak-s",
@@ -12854,7 +12860,9 @@
     "kode_buku": [
       "004.UM BBM TAK s"
     ],
-    "cover": "covers/004_um_bbm_tak_s_p5.jpeg"
+    "cover": "covers/004_um_bbm_tak_s_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "005-um-bbm-abd-u",
@@ -12865,7 +12873,9 @@
     "kode_buku": [
       "005.UM BBM ABD u"
     ],
-    "cover": "covers/005_um_bbm_abd_u_p5.jpeg"
+    "cover": "covers/005_um_bbm_abd_u_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "006-um-bbm-sen-p",
@@ -12876,7 +12886,9 @@
     "kode_buku": [
       "006.UM BBM SEN p"
     ],
-    "cover": "covers/006_um_bbm_sen_p_p5.jpeg"
+    "cover": "covers/006_um_bbm_sen_p_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "007-um-bbm-hus-t",
@@ -12887,7 +12899,9 @@
     "kode_buku": [
       "007.UM BBM HUS t"
     ],
-    "cover": "covers/007_um_bbm_hus_t_p5.jpeg"
+    "cover": "covers/007_um_bbm_hus_t_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "008-um-bbm-non-h",
@@ -12898,7 +12912,9 @@
     "kode_buku": [
       "008.UM BBM NON h"
     ],
-    "cover": "covers/008_um_bbm_non_h_p5.jpeg"
+    "cover": "covers/008_um_bbm_non_h_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "009-um-bbm-emm-s",
@@ -12909,7 +12925,9 @@
     "kode_buku": [
       "009.UM BBM EMM s"
     ],
-    "cover": "covers/009_um_bbm_emm_s_p5.jpeg"
+    "cover": "covers/009_um_bbm_emm_s_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "010-um-bbm-ame-s",
@@ -12920,7 +12938,9 @@
     "kode_buku": [
       "010.UM BBM AME s"
     ],
-    "cover": ""
+    "cover": "",
+    "offline": true,
+    "online": false
   },
   {
     "id": "011-um-bbm-cik-p",
@@ -12931,7 +12951,9 @@
     "kode_buku": [
       "011.UM BBM CIK p"
     ],
-    "cover": "covers/011_um_bbm_cik_p_p5.jpeg"
+    "cover": "covers/011_um_bbm_cik_p_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "012-um-bbm-fra-g",
@@ -12942,7 +12964,9 @@
     "kode_buku": [
       "012.UM BBM FRA g"
     ],
-    "cover": "covers/012_um_bbm_fra_g_p5.jpeg"
+    "cover": "covers/012_um_bbm_fra_g_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "013-um-bbm-fai-h",
@@ -12953,7 +12977,9 @@
     "kode_buku": [
       "013,UM BBM FAI h"
     ],
-    "cover": "covers/013_um_bbm_fai_h_p5.jpeg"
+    "cover": "covers/013_um_bbm_fai_h_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "014-um-bbm-ich-f",
@@ -12964,7 +12990,9 @@
     "kode_buku": [
       "014.UM BBM ICH f"
     ],
-    "cover": "covers/014_um_bbm_ich_f_p5.jpeg"
+    "cover": "covers/014_um_bbm_ich_f_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "015-um-bbm-yus-p",
@@ -12975,7 +13003,9 @@
     "kode_buku": [
       "015.UM BBM YUS p"
     ],
-    "cover": "covers/015_um_bbm_yus_p_p5.jpeg"
+    "cover": "covers/015_um_bbm_yus_p_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "016-um-bbm-mit-e",
@@ -12986,7 +13016,9 @@
     "kode_buku": [
       "016,UM BBM MIT e"
     ],
-    "cover": "covers/016_um_bbm_mit_e_p5.jpeg"
+    "cover": "covers/016_um_bbm_mit_e_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "017-um-bbm-rah-k",
@@ -12997,7 +13029,9 @@
     "kode_buku": [
       "017.UM BBM RAH k"
     ],
-    "cover": "covers/017_um_bbm_rah_k_p5.jpeg"
+    "cover": "covers/017_um_bbm_rah_k_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "018-um-bbm-bam-k",
@@ -13008,7 +13042,9 @@
     "kode_buku": [
       "018.UM BBM BAM k"
     ],
-    "cover": "covers/018_um_bbm_bam_k_p5.jpeg"
+    "cover": "covers/018_um_bbm_bam_k_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "019-um-bbm-soe-t",
@@ -13019,7 +13055,9 @@
     "kode_buku": [
       "019.UM BBM SOE t"
     ],
-    "cover": "covers/019_um_bbm_soe_t_p5.jpeg"
+    "cover": "covers/019_um_bbm_soe_t_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "020-um-bbm-elh-b",
@@ -13030,7 +13068,9 @@
     "kode_buku": [
       "020.UM BBM ELH b"
     ],
-    "cover": "covers/020_um_bbm_elh_b_p5.jpeg"
+    "cover": "covers/020_um_bbm_elh_b_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "021-um-bbm-yud-k",
@@ -13041,7 +13081,9 @@
     "kode_buku": [
       "021.UM BBM YUD k"
     ],
-    "cover": ""
+    "cover": "",
+    "offline": true,
+    "online": false
   },
   {
     "id": "022-um-bbm-aoy-d",
@@ -13052,7 +13094,9 @@
     "kode_buku": [
       "022.UM BBM AOY d"
     ],
-    "cover": "covers/022_um_bbm_aoy_d_p5.jpeg"
+    "cover": "covers/022_um_bbm_aoy_d_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "023-um-bbm-eri-h",
@@ -13063,7 +13107,9 @@
     "kode_buku": [
       "023.UM BBM ERI h"
     ],
-    "cover": "covers/023_um_bbm_eri_h_p5.jpeg"
+    "cover": "covers/023_um_bbm_eri_h_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "024-um-bbm-haz-k",
@@ -13074,7 +13120,9 @@
     "kode_buku": [
       "024.UM BBM HAZ k"
     ],
-    "cover": "covers/024_um_bbm_haz_k_p5.jpeg"
+    "cover": "covers/024_um_bbm_haz_k_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "025-um-bbm-cla-h",
@@ -13085,7 +13133,9 @@
     "kode_buku": [
       "025.UM BBM CLA h"
     ],
-    "cover": "covers/025_um_bbm_cla_h_p5.jpeg"
+    "cover": "covers/025_um_bbm_cla_h_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "026-um-bbm-nur-a",
@@ -13096,7 +13146,9 @@
     "kode_buku": [
       "026.UM BBM NUR a"
     ],
-    "cover": "covers/026_um_bbm_nur_a_p5.jpeg"
+    "cover": "covers/026_um_bbm_nur_a_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "027-um-bbm-lei-l",
@@ -13107,7 +13159,9 @@
     "kode_buku": [
       "027.UM BBM LEI l"
     ],
-    "cover": "covers/027_um_bbm_lei_l_p5.jpeg"
+    "cover": "covers/027_um_bbm_lei_l_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "028-um-bbm-lol-a",
@@ -13118,7 +13172,9 @@
     "kode_buku": [
       "028.UM BBM LOL a"
     ],
-    "cover": "covers/028_um_bbm_lol_a_p5.jpeg"
+    "cover": "covers/028_um_bbm_lol_a_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "029-um-bbm-nis-i",
@@ -13129,7 +13185,9 @@
     "kode_buku": [
       "029.UM BBM NIS i"
     ],
-    "cover": "covers/029_um_bbm_nis_i_p5.jpeg"
+    "cover": "covers/029_um_bbm_nis_i_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "030-um-bbm-sri-s",
@@ -13140,7 +13198,9 @@
     "kode_buku": [
       "030.UM BBM SRI s"
     ],
-    "cover": "covers/030_um_bbm_sri_s_p5.jpeg"
+    "cover": "covers/030_um_bbm_sri_s_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "031-um-bbm-put-k",
@@ -13151,7 +13211,9 @@
     "kode_buku": [
       "031.UM BBM PUT k"
     ],
-    "cover": "covers/031_um_bbm_put_k_p5.jpeg"
+    "cover": "covers/031_um_bbm_put_k_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "032-um-bbm-jen-k",
@@ -13162,7 +13224,9 @@
     "kode_buku": [
       "032.UM BBM JEN k"
     ],
-    "cover": "covers/032_um_bbm_jen_k_p5.jpeg"
+    "cover": "covers/032_um_bbm_jen_k_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "033-um-bbm-ria-a",
@@ -13173,7 +13237,9 @@
     "kode_buku": [
       "033.UM BBM RIA a"
     ],
-    "cover": "covers/033_um_bbm_ria_a_p5.jpeg"
+    "cover": "covers/033_um_bbm_ria_a_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "034-um-bbm-ria-a",
@@ -13184,7 +13250,9 @@
     "kode_buku": [
       "034.UM BBM RIA a"
     ],
-    "cover": "covers/034_um_bbm_ria_a_p5.jpeg"
+    "cover": "covers/034_um_bbm_ria_a_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "035-um-bbm-ulf-u",
@@ -13195,7 +13263,9 @@
     "kode_buku": [
       "035.UM BBM ULF u"
     ],
-    "cover": "covers/035_um_bbm_ulf_u_p5.jpeg"
+    "cover": "covers/035_um_bbm_ulf_u_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "036-um-bbm-ulf-a",
@@ -13206,7 +13276,9 @@
     "kode_buku": [
       "036.UM BBM ULF a"
     ],
-    "cover": "covers/036_um_bbm_ulf_a_p5.jpeg"
+    "cover": "covers/036_um_bbm_ulf_a_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "037-um-bbm-ria-a",
@@ -13217,7 +13289,9 @@
     "kode_buku": [
       "037.UM BBM RIA a"
     ],
-    "cover": "covers/037_um_bbm_ria_a_p5.jpeg"
+    "cover": "covers/037_um_bbm_ria_a_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "038-um-bbm-put-u",
@@ -13228,7 +13302,9 @@
     "kode_buku": [
       "038.UM BBM PUT u"
     ],
-    "cover": "covers/038_um_bbm_put_u_p5.jpeg"
+    "cover": "covers/038_um_bbm_put_u_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "039-um-bbm-irm-a",
@@ -13239,7 +13315,9 @@
     "kode_buku": [
       "039.UM BBM IRM a"
     ],
-    "cover": "covers/039_um_bbm_irm_a_p5.jpeg"
+    "cover": "covers/039_um_bbm_irm_a_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "040-um-bbm-yud-a",
@@ -13250,7 +13328,9 @@
     "kode_buku": [
       "040.UM BBM YUD a"
     ],
-    "cover": "covers/040_um_bbm_yud_a_p5.jpeg"
+    "cover": "covers/040_um_bbm_yud_a_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "041-um-bbm-yud-b",
@@ -13261,7 +13341,9 @@
     "kode_buku": [
       "041.UM BBM YUD b"
     ],
-    "cover": "covers/041_um_bbm_yud_b_p5.jpeg"
+    "cover": "covers/041_um_bbm_yud_b_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "042-um-bbm-ria-a",
@@ -13272,7 +13354,9 @@
     "kode_buku": [
       "042.UM BBM RIA a"
     ],
-    "cover": "covers/042_um_bbm_ria_a_p5.jpeg"
+    "cover": "covers/042_um_bbm_ria_a_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "043-um-bbm-ren-b",
@@ -13283,7 +13367,9 @@
     "kode_buku": [
       "043.UM BBM REN b"
     ],
-    "cover": "covers/043_um_bbm_ren_b_p5.jpeg"
+    "cover": "covers/043_um_bbm_ren_b_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "044-um-bbm-des-d",
@@ -13294,7 +13380,9 @@
     "kode_buku": [
       "044.UM BBM DES d"
     ],
-    "cover": "covers/044_um_bbm_des_d_p5.jpeg"
+    "cover": "covers/044_um_bbm_des_d_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "045-um-bbm-dew-s",
@@ -13305,7 +13393,9 @@
     "kode_buku": [
       "045.UM BBM DEW s"
     ],
-    "cover": "covers/045_um_bbm_dew_s_p5.jpeg"
+    "cover": "covers/045_um_bbm_dew_s_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "046-um-bbm-ern-p",
@@ -13316,7 +13406,9 @@
     "kode_buku": [
       "046.UM BBM ERN p"
     ],
-    "cover": "covers/046_um_bbm_ern_p_p5.jpeg"
+    "cover": "covers/046_um_bbm_ern_p_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "047-um-bbm-sep-m",
@@ -13327,7 +13419,9 @@
     "kode_buku": [
       "047.UM BBM SEP m"
     ],
-    "cover": "covers/047_um_bbm_sep_m_p5.jpeg"
+    "cover": "covers/047_um_bbm_sep_m_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "048-um-bbm-pup-m",
@@ -13338,7 +13432,9 @@
     "kode_buku": [
       "048.UM BBM PUP m"
     ],
-    "cover": "covers/048_um_bbm_pup_m_p5.jpeg"
+    "cover": "covers/048_um_bbm_pup_m_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "049-um-bbm-irf-s",
@@ -13349,7 +13445,9 @@
     "kode_buku": [
       "049.UM BBM IRF s"
     ],
-    "cover": "covers/049_um_bbm_irf_s_p5.jpeg"
+    "cover": "covers/049_um_bbm_irf_s_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "050-um-bbm-dia-d",
@@ -13360,7 +13458,9 @@
     "kode_buku": [
       "050.UM BBM DIA d"
     ],
-    "cover": "covers/050_um_bbm_dia_d_p5.jpeg"
+    "cover": "covers/050_um_bbm_dia_d_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "051-um-bbm-tri-g",
@@ -13371,7 +13471,9 @@
     "kode_buku": [
       "051.UM BBM TRI g"
     ],
-    "cover": "covers/051_um_bbm_tri_g_p5.jpeg"
+    "cover": "covers/051_um_bbm_tri_g_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "052-um-bbm-byz-i",
@@ -13382,7 +13484,9 @@
     "kode_buku": [
       "052.UM BBM BYZ i"
     ],
-    "cover": "covers/052_um_bbm_byz_i_p5.jpeg"
+    "cover": "covers/052_um_bbm_byz_i_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "053-um-bbm-alf-j",
@@ -13393,7 +13497,9 @@
     "kode_buku": [
       "053.UM BBM ALF j"
     ],
-    "cover": "covers/053_um_bbm_alf_j_p5.jpeg"
+    "cover": "covers/053_um_bbm_alf_j_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "054-um-bbm-tri-l",
@@ -13404,7 +13510,9 @@
     "kode_buku": [
       "054.UM BBM TRI l"
     ],
-    "cover": "covers/054_um_bbm_tri_l_p5.jpeg"
+    "cover": "covers/054_um_bbm_tri_l_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "055-um-bbm-dew-m",
@@ -13415,7 +13523,9 @@
     "kode_buku": [
       "055.UM BBM DEW m"
     ],
-    "cover": "covers/055_um_bbm_dew_m_p5.jpeg"
+    "cover": "covers/055_um_bbm_dew_m_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "056-um-bbm-and-j",
@@ -13426,7 +13536,9 @@
     "kode_buku": [
       "056.UM BBM AND j"
     ],
-    "cover": "covers/056_um_bbm_and_j_p5.jpeg"
+    "cover": "covers/056_um_bbm_and_j_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "057-um-bbm-ama-k",
@@ -13437,7 +13549,9 @@
     "kode_buku": [
       "057.UM BBM AMA k"
     ],
-    "cover": "covers/057_um_bbm_ama_k_p5.jpeg"
+    "cover": "covers/057_um_bbm_ama_k_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "058-um-bbm-rif-k",
@@ -13448,7 +13562,9 @@
     "kode_buku": [
       "058.UM BBM RIF k"
     ],
-    "cover": "covers/058_um_bbm_rif_k_p5.jpeg"
+    "cover": "covers/058_um_bbm_rif_k_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "059-um-bbm-rif-a",
@@ -13459,7 +13575,9 @@
     "kode_buku": [
       "059.UM BBM RIF a"
     ],
-    "cover": "covers/059_um_bbm_rif_a_p5.jpeg"
+    "cover": "covers/059_um_bbm_rif_a_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "060-um-bbm-ama-m",
@@ -13470,7 +13588,9 @@
     "kode_buku": [
       "060.UM BBM AMA m"
     ],
-    "cover": "covers/060_um_bbm_ama_m_p5.jpeg"
+    "cover": "covers/060_um_bbm_ama_m_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "061-um-bbm-ama-p",
@@ -13481,7 +13601,9 @@
     "kode_buku": [
       "061.UM BBM AMA p"
     ],
-    "cover": "covers/061_um_bbm_ama_p_p5.jpeg"
+    "cover": "covers/061_um_bbm_ama_p_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "062-um-bbm-rif-h",
@@ -13492,7 +13614,9 @@
     "kode_buku": [
       "062.UM BBM RIF h"
     ],
-    "cover": "covers/062_um_bbm_rif_h_p5.jpeg"
+    "cover": "covers/062_um_bbm_rif_h_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "063-um-bbm-rif-t",
@@ -13503,7 +13627,9 @@
     "kode_buku": [
       "063.UM BBM RIF t"
     ],
-    "cover": "covers/063_um_bbm_rif_t_p5.jpeg"
+    "cover": "covers/063_um_bbm_rif_t_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "064-um-bbm-ama-l",
@@ -13514,7 +13640,9 @@
     "kode_buku": [
       "064.UM BBM AMA l"
     ],
-    "cover": "covers/064_um_bbm_ama_l_p5.jpeg"
+    "cover": "covers/064_um_bbm_ama_l_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "065-um-bbm-rif-h",
@@ -13525,7 +13653,9 @@
     "kode_buku": [
       "065.UM BBM RIF h"
     ],
-    "cover": "covers/065_um_bbm_rif_h_p5.jpeg"
+    "cover": "covers/065_um_bbm_rif_h_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "066-um-bbm-rif-l",
@@ -13536,7 +13666,9 @@
     "kode_buku": [
       "066.UM BBM RIF l"
     ],
-    "cover": "covers/066_um_bbm_rif_l_p5.jpeg"
+    "cover": "covers/066_um_bbm_rif_l_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "067-um-bbm-ama-h",
@@ -13547,7 +13679,9 @@
     "kode_buku": [
       "067.UM BBM AMA h"
     ],
-    "cover": "covers/067_um_bbm_ama_h_p5.jpeg"
+    "cover": "covers/067_um_bbm_ama_h_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "068-um-bbm-ama-p",
@@ -13558,7 +13692,9 @@
     "kode_buku": [
       "068.UM BBM AMA p"
     ],
-    "cover": "covers/068_um_bbm_ama_p_p5.jpeg"
+    "cover": "covers/068_um_bbm_ama_p_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "069-um-bbm-rif-t",
@@ -13569,7 +13705,9 @@
     "kode_buku": [
       "069.UM BBM RIF t"
     ],
-    "cover": "covers/069_um_bbm_rif_t_p5.jpeg"
+    "cover": "covers/069_um_bbm_rif_t_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "070-um-bbm-rif-k",
@@ -13580,7 +13718,9 @@
     "kode_buku": [
       "070.UM BBM RIF k"
     ],
-    "cover": "covers/070_um_bbm_rif_k_p5.jpeg"
+    "cover": "covers/070_um_bbm_rif_k_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "071-um-bbm-ama-k",
@@ -13591,7 +13731,9 @@
     "kode_buku": [
       "071.UM BBM AMA k"
     ],
-    "cover": "covers/071_um_bbm_ama_k_p5.jpeg"
+    "cover": "covers/071_um_bbm_ama_k_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "072-um-bbm-rif-k",
@@ -13602,7 +13744,9 @@
     "kode_buku": [
       "072.UM BBM RIF k"
     ],
-    "cover": "covers/072_um_bbm_rif_k_p5.jpeg"
+    "cover": "covers/072_um_bbm_rif_k_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "073-um-bbm-ama-p",
@@ -13613,7 +13757,9 @@
     "kode_buku": [
       "073.UM BBM AMA p"
     ],
-    "cover": "covers/073_um_bbm_ama_p_p5.jpeg"
+    "cover": "covers/073_um_bbm_ama_p_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "074-um-bbm-ama-n",
@@ -13624,7 +13770,9 @@
     "kode_buku": [
       "074.UM BBM AMA n"
     ],
-    "cover": "covers/074_um_bbm_ama_n_p5.jpeg"
+    "cover": "covers/074_um_bbm_ama_n_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "075-um-bbm-ama-c",
@@ -13635,7 +13783,9 @@
     "kode_buku": [
       "075.UM BBM AMA c"
     ],
-    "cover": "covers/075_um_bbm_ama_c_p5.jpeg"
+    "cover": "covers/075_um_bbm_ama_c_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "076-um-bbm-ama-s",
@@ -13646,7 +13796,9 @@
     "kode_buku": [
       "076.UM BBM AMA s"
     ],
-    "cover": "covers/076_um_bbm_ama_s_p5.jpeg"
+    "cover": "covers/076_um_bbm_ama_s_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "077-um-bbm-rif-a",
@@ -13657,7 +13809,9 @@
     "kode_buku": [
       "077.UM BBM RIF a"
     ],
-    "cover": "covers/077_um_bbm_rif_a_p5.jpeg"
+    "cover": "covers/077_um_bbm_rif_a_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "078-um-bbm-ama-s",
@@ -13668,7 +13822,9 @@
     "kode_buku": [
       "078.UM BBM AMA s"
     ],
-    "cover": "covers/078_um_bbm_ama_s_p5.jpeg"
+    "cover": "covers/078_um_bbm_ama_s_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "079-um-bbm-rif-s",
@@ -13679,7 +13835,9 @@
     "kode_buku": [
       "079.UM BBM RIF s"
     ],
-    "cover": "covers/079_um_bbm_rif_s_p5.jpeg"
+    "cover": "covers/079_um_bbm_rif_s_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "080-um-bbm-ama-o",
@@ -13690,7 +13848,9 @@
     "kode_buku": [
       "080.UM BBM AMA o"
     ],
-    "cover": "covers/080_um_bbm_ama_o_p5.jpeg"
+    "cover": "covers/080_um_bbm_ama_o_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "081-um-bbm-ama-v",
@@ -13701,7 +13861,9 @@
     "kode_buku": [
       "081.UM BBM AMA v"
     ],
-    "cover": "covers/081_um_bbm_ama_v_p5.jpeg"
+    "cover": "covers/081_um_bbm_ama_v_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "082-um-bbm-ama-p",
@@ -13712,7 +13874,9 @@
     "kode_buku": [
       "082.UM BBM AMA p"
     ],
-    "cover": "covers/082_um_bbm_ama_p_p5.jpeg"
+    "cover": "covers/082_um_bbm_ama_p_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "083-um-bbm-rif-g",
@@ -13723,7 +13887,9 @@
     "kode_buku": [
       "083.UM BBM RIF g"
     ],
-    "cover": "covers/083_um_bbm_rif_g_p5.jpeg"
+    "cover": "covers/083_um_bbm_rif_g_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "084-um-bbm-ama-m",
@@ -13734,7 +13900,9 @@
     "kode_buku": [
       "084.UM BBM AMA m"
     ],
-    "cover": "covers/084_um_bbm_ama_m_p5.jpeg"
+    "cover": "covers/084_um_bbm_ama_m_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "085-um-bbm-aur-b",
@@ -13745,7 +13913,9 @@
     "kode_buku": [
       "085.UM BBM AUR b"
     ],
-    "cover": "covers/085_um_bbm_aur_b_p5.jpeg"
+    "cover": "covers/085_um_bbm_aur_b_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "086-um-bbm-gib-k",
@@ -13756,7 +13926,9 @@
     "kode_buku": [
       "086.UM BBM GIB k"
     ],
-    "cover": "covers/086_um_bbm_gib_k_p5.jpeg"
+    "cover": "covers/086_um_bbm_gib_k_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "087-um-bbm-gib-p",
@@ -13767,7 +13939,9 @@
     "kode_buku": [
       "087.UM BBM GIB p"
     ],
-    "cover": "covers/087_um_bbm_gib_p_p5.jpeg"
+    "cover": "covers/087_um_bbm_gib_p_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "088-um-bbm-zul-t",
@@ -13778,7 +13952,9 @@
     "kode_buku": [
       "088.UM BBM ZUL t"
     ],
-    "cover": "covers/088_um_bbm_zul_t_p5.jpeg"
+    "cover": "covers/088_um_bbm_zul_t_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "089-um-bbm-zul-b",
@@ -13789,7 +13965,9 @@
     "kode_buku": [
       "089.UM BBM ZUL b"
     ],
-    "cover": "covers/089_um_bbm_zul_b_p5.jpeg"
+    "cover": "covers/089_um_bbm_zul_b_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "090-um-bbm-nov-p",
@@ -13800,7 +13978,9 @@
     "kode_buku": [
       "090.UM BBM NOV p"
     ],
-    "cover": "covers/090_um_bbm_nov_p_p5.jpeg"
+    "cover": "covers/090_um_bbm_nov_p_p5.jpeg",
+    "offline": true,
+    "online": false
   },
   {
     "id": "091-um-bbm-zul-k",
@@ -13811,6 +13991,8 @@
     "kode_buku": [
       "091.UM BBM ZUL k"
     ],
-    "cover": "covers/091_um_bbm_zul_k_p5.jpeg"
+    "cover": "covers/091_um_bbm_zul_k_p5.jpeg",
+    "offline": true,
+    "online": false
   }
 ]
